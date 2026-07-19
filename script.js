@@ -22,20 +22,54 @@ navLinks.querySelectorAll('a').forEach((link) => {
 const track = document.getElementById('marqueeTrack');
 if (track) track.innerHTML += track.innerHTML;
 
+// --- Category "Other" free-text field -----------------------------------
+// Visible and required only while "Other" is selected. Disabled otherwise,
+// so browsers skip its validation and leave it out of the submission.
+const categorySelect = document.getElementById('categorySelect');
+const categoryOtherLabel = document.getElementById('categoryOtherLabel');
+const categoryOtherInput = document.getElementById('categoryOtherInput');
+
+categorySelect.addEventListener('change', () => {
+  const isOther = categorySelect.value === 'Other';
+  categoryOtherLabel.classList.toggle('hidden', !isOther);
+  categoryOtherInput.disabled = !isOther;
+  categoryOtherInput.required = isOther;
+  if (isOther) categoryOtherInput.focus();
+});
+
 // --- Sign-on form -------------------------------------------------------
-// The site is STATIC, so there is no server to receive this by default.
-// This handler swaps the form for the "thank you" panel (matching the
-// original design). To collect real submissions:
-//   • Deploy on Netlify — Netlify Forms picks it up via the data-netlify
-//     attribute. Then DELETE the e.preventDefault() line below so the
-//     form submits normally, OR keep it and read submissions in Netlify.
-//   • Or use Formspree — see README.md.
+// Submits to Formspree (endpoint in the form's `action`) via fetch, so the
+// visitor stays on this page instead of being redirected to Formspree.
+// Success: hide the form, reveal the thank-you panel.
+// Failure: show an inline error and keep everything the visitor typed.
 const form = document.getElementById('signonForm');
 const thanks = document.getElementById('signThanks');
+const errorMsg = document.getElementById('signError');
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault(); // remove this line once a real backend is connected
-  form.classList.add('hidden');
-  thanks.classList.remove('hidden');
-  thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const submitBtn = form.querySelector('.btn-submit');
+  errorMsg.classList.add('hidden');
+  submitBtn.disabled = true;
+
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' },
+    });
+
+    if (!response.ok) {
+      throw new Error('Formspree responded with status ' + response.status);
+    }
+
+    form.classList.add('hidden');
+    thanks.classList.remove('hidden');
+    thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (err) {
+    submitBtn.disabled = false;
+    errorMsg.classList.remove('hidden');
+    errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 });
