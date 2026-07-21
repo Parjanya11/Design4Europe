@@ -206,49 +206,61 @@
         </div>
 
         <!-- ============================================================= -->
-        <!-- Static site: this form needs a form service to receive data.  -->
-        <!-- data-netlify makes it work automatically on Netlify. See      -->
-        <!-- README.md → "Making the form work".                           -->
+        <!-- Submissions go to Formspree (endpoint in the action).         -->
+        <!-- script.js intercepts submit and POSTs via fetch so the        -->
+        <!-- visitor stays on this page.                                   -->
         <!-- ============================================================= -->
-        <form class="signon-form" id="signonForm" name="sign-on" action="answer.php" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="sign-on" />
-          <p class="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
+        <form class="signon-form" id="signonForm" action="https://formspree.io/f/xzdlnvjj" method="POST">
+          <!-- Honeypot: hidden from humans; bots fill it and Formspree drops those (_gotcha convention) -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
           <label>
             <span>Full name</span>
             <input type="text" name="name" required placeholder="Dr. Jane Doe" />
           </label>
           <label>
-            <span>Organisation</span>
-            <input type="text" name="organisation" required placeholder="University / company name" />
-          </label>
-          <label>
             <span>Role</span>
             <input type="text" name="role" required placeholder="Dean, Professor, Director…" />
           </label>
           <label>
+            <span>Country</span>
+            <input name="country" required autocomplete="country-name" placeholder="Netherlands" />
+          </label>
+          <label>
+            <span>Organisation</span>
+            <input name="organisation" required placeholder="University / company name" />
+          </label>
+          <label>
             <span>Category</span>
-            <select name="category" required>
+            <select name="category" id="categorySelect" required>
               <option value="" disabled selected>Select one…</option>
               <option>Design Research faculty</option>
               <option>Design Education institute</option>
               <option>Design Industry</option>
               <option>Policy / public institution</option>
+              <option>Other</option>
             </select>
+          </label>
+          <label class="hidden" id="categoryOtherLabel">
+            <span>Please specify</span>
+            <input name="category_other" id="categoryOtherInput" placeholder="Your category" disabled />
           </label>
           <label class="full">
             <span>Email</span>
             <input name="email" type="email" required placeholder="name@institution.eu" />
           </label>
           <button type="submit" class="btn-submit">Add your signature</button>
-          <p class="form-note">This is a demonstration form. Connect a form service to receive submissions (see README).</p>
+          <p class="form-error hidden" id="signError" role="alert">
+            Something went wrong sending your signature. Please try again.
+          </p>
+          <p class="form-note">We only use your email to confirm your signature.</p>
         </form>
 
         <!-- Thank-you panel, revealed by script.js after submit -->
         <div class="sign-thanks hidden" id="signThanks">
           <div class="thanks-check">&#10003;</div>
           <h3>Thank you for signing on.</h3>
-          <p>Your organisation has been added to the open letter. We'll be in touch as FP10's structure is finalised.</p>
+          <p>Your signature has been added to the open letter. Check your inbox for a confirmation email.</p>
         </div>
       </div>
     </div>
