@@ -35,7 +35,6 @@
         <a href="#ask">The ask</a>
         <a href="#case">The case</a>
         <a href="#why">Why Design</a>
-        <a href="#sign">Sign on</a>
         <a href="#sign" class="btn-sign">Sign the letter</a>
       </div>
     </div>
@@ -211,21 +210,21 @@
         <!-- data-netlify makes it work automatically on Netlify. See      -->
         <!-- README.md → "Making the form work".                           -->
         <!-- ============================================================= -->
-        <form class="signon-form" id="signonForm" name="sign-on" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <form class="signon-form" id="signonForm" name="sign-on" action="answer.php" method="POST" data-netlify="true" netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="sign-on" />
           <p class="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
 
           <label>
             <span>Full name</span>
-            <input name="name" required placeholder="Dr. Jane Doe" />
+            <input type="text" name="name" required placeholder="Dr. Jane Doe" />
           </label>
           <label>
             <span>Organisation</span>
-            <input name="organisation" required placeholder="University / company name" />
+            <input type="text" name="organisation" required placeholder="University / company name" />
           </label>
           <label>
             <span>Role</span>
-            <input name="role" required placeholder="Dean, Professor, Director…" />
+            <input type="text" name="role" required placeholder="Dean, Professor, Director…" />
           </label>
           <label>
             <span>Category</span>
