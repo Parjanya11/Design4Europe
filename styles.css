@@ -219,6 +219,8 @@ a { color: inherit; }
 }
 .signon-form label { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
 .signon-form label.full { grid-column: 1 / -1; }
+/* "Other" specify box sits under Category (col 2), not orphaned under Organisation */
+.signon-form label#categoryOtherLabel { grid-column: 2; }
 .signon-form label > span { font: 600 11px var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
 .signon-form input, .signon-form select {
   border: 1px solid #cdd7ea; border-radius: 6px; padding: 12px 14px;
@@ -325,5 +327,6 @@ a { color: inherit; }
   .stakes-text { font-size: 23px; }
   .ask-lead { font-size: 25px; }
   .signon-form { grid-template-columns: 1fr; padding: 26px 22px; }
+  .signon-form label#categoryOtherLabel { grid-column: auto; } /* single column on mobile */
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
 }
