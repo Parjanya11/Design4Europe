@@ -38,10 +38,11 @@ categorySelect.addEventListener('change', () => {
 });
 
 // --- Sign-on form -------------------------------------------------------
-// Submits to Formspree (endpoint in the form's `action`) via fetch, so the
-// visitor stays on this page instead of being redirected to Formspree.
+// Posts to our own Netlify Function, which stores the signature and sends
+// both the confirmation and the notification email.
 // Success: hide the form, reveal the thank-you panel.
 // Failure: show an inline error and keep everything the visitor typed.
+const SIGNON_ENDPOINT = '/.netlify/functions/signon';
 const form = document.getElementById('signonForm');
 const thanks = document.getElementById('signThanks');
 const errorMsg = document.getElementById('signError');
@@ -54,14 +55,14 @@ form.addEventListener('submit', async (e) => {
   submitBtn.disabled = true;
 
   try {
-    const response = await fetch(form.action, {
+    const response = await fetch(SIGNON_ENDPOINT, {
       method: 'POST',
       body: new FormData(form),
       headers: { Accept: 'application/json' },
     });
 
     if (!response.ok) {
-      throw new Error('Formspree responded with status ' + response.status);
+      throw new Error('Sign-on endpoint responded with status ' + response.status);
     }
 
     form.classList.add('hidden');
