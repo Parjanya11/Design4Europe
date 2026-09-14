@@ -27,9 +27,54 @@ const REQUIRED_ENV = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'NOTIF
 
 export default async (req) => {
   // This endpoint sends real email, so it is not left open to the world.
-  const token = new URL(req.url).searchParams.get('token');
-  if (!process.env.SMTP_TEST_TOKEN || token !== process.env.SMTP_TEST_TOKEN) {
-    return json({ error: 'Not found' }, 404);
+  // The rejection reason is reported explicitly: a diagnostic that cannot
+  // distinguish "misconfigured" from "wrong token" is not much of a diagnostic.
+  // Lengths are reported to expose trailing whitespace or truncation without
+  // ever echoing the token itself.
+  const expected = process.env.SMTP_TEST_TOKEN;
+  const provided = new URL(req.url).searchParams.get('token');
+
+  if (!expected) {
+    return json(
+      {
+        ok: false,
+        stage: 'config',
+        reason: 'SMTP_TEST_TOKEN is not set for this deploy context.',
+        verdict:
+          'The environment variable did not reach the function. If it was saved as a secret, ' +
+          'confirm the value is in the Production field, then redeploy - env vars only reach ' +
+          'a function on a new deploy.',
+      },
+      500,
+    );
+  }
+
+  if (!provided) {
+    return json(
+      {
+        ok: false,
+        stage: 'auth',
+        reason: 'No token query parameter supplied.',
+        verdict: 'Append ?token=YOUR_TOKEN to the URL, using the value you set in Netlify.',
+      },
+      401,
+    );
+  }
+
+  if (provided !== expected) {
+    return json(
+      {
+        ok: false,
+        stage: 'auth',
+        reason: 'Token did not match.',
+        providedLength: provided.length,
+        expectedLength: expected.length,
+        verdict:
+          'Token is configured but does not match. Differing lengths usually mean a truncated ' +
+          'paste or trailing whitespace; equal lengths mean a character is wrong.',
+      },
+      401,
+    );
   }
 
   const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
