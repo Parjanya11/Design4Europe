@@ -1,0 +1,8 @@
+# Only the functions directory is declared here on purpose.
+# Build command and publish directory stay configured in the Netlify UI
+# (publish = repo root, no build step), so this file cannot accidentally
+# override a working site configuration.
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

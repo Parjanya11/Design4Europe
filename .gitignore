@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Secrets - credentials live in Netlify environment variables, never in the repo
+.env
+.env.*
+!.env.example
+
+# Netlify CLI local state
+.netlify/
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

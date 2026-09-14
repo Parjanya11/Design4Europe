@@ -1,0 +1,16 @@
+{
+  "name": "design4europe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Design for Europe (FP10) campaign site - static front end plus Netlify Functions for sign-on handling",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "nodemailer": "^10.0.10"
+  }
+}
