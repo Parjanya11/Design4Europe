@@ -1,7 +1,11 @@
-# Only the functions directory is declared here on purpose.
-# Build command and publish directory stay configured in the Netlify UI
-# (publish = repo root, no build step), so this file cannot accidentally
-# override a working site configuration.
+# Declared here so any Netlify site built from this repo configures itself
+# identically - important when moving the project between accounts.
+#
+# There is no build step: the site is static files at the repo root, and
+# Netlify only needs to install dependencies and bundle the functions.
+
+[build]
+  publish = "."
 
 [functions]
   directory = "netlify/functions"
