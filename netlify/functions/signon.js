@@ -114,6 +114,8 @@ export default async (req) => {
 };
 
 // ---------------------------------------------------------------------
+// Input handling
+// ---------------------------------------------------------------------
 
 async function readFields(req) {
   const contentType = req.headers.get('content-type') || '';
@@ -141,6 +143,83 @@ function isPlausibleEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+// ---------------------------------------------------------------------
+// Email rendering
+//
+// Every message goes out as both plain text and HTML. Mail clients render
+// plain text in a proportional font, where space-padded columns do not line
+// up, so the HTML part carries a real table and the text part drops the
+// column layout entirely rather than pretending.
+// ---------------------------------------------------------------------
+
+const FONT_STACK =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Reads as "15 September 2026 at 22:19 UTC" rather than an ISO timestamp.
+function formatTimestamp(iso) {
+  const d = new Date(iso);
+  const date = d.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+  const time = d.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+  });
+  return `${date} at ${time} UTC`;
+}
+
+// rows: [[label, value], ...]
+function detailsHtml(rows) {
+  const cells = rows
+    .map(
+      ([label, value]) => `
+      <tr>
+        <td style="padding:6px 28px 6px 0;color:#6b7a99;font-size:14px;white-space:nowrap;vertical-align:top;">${escapeHtml(label)}</td>
+        <td style="padding:6px 0;color:#0b1e4d;font-size:15px;font-weight:500;vertical-align:top;">${escapeHtml(value)}</td>
+      </tr>`,
+    )
+    .join('');
+
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:18px 0;">${cells}
+    </table>`;
+}
+
+// No attempt at column alignment here - it cannot survive a proportional font.
+function detailsText(rows) {
+  return rows.map(([label, value]) => `${label}: ${value}`).join('\n');
+}
+
+function wrapHtml(bodyHtml) {
+  return `<!doctype html>
+<html>
+  <body style="margin:0;padding:24px;background:#f7f9fc;">
+    <div style="max-width:560px;margin:0 auto;padding:32px;background:#ffffff;border:1px solid #e1e6f0;border-radius:8px;font-family:${FONT_STACK};font-size:15px;line-height:1.6;color:#45557e;">
+      ${bodyHtml}
+      <p style="margin:28px 0 0;padding-top:18px;border-top:1px solid #e1e6f0;font-size:13px;color:#8b97b4;">
+        Design for Europe &middot;
+        <a href="https://design4europe.eu" style="color:#003198;text-decoration:none;">design4europe.eu</a>
+      </p>
+    </div>
+  </body>
+</html>`;
+}
+
+// ---------------------------------------------------------------------
+// Sending
+// ---------------------------------------------------------------------
+
 function buildTransport() {
   const port = Number(process.env.SMTP_PORT);
   return nodemailer.createTransport({
@@ -156,15 +235,22 @@ function buildTransport() {
 
 async function sendEmails(record) {
   const from = `"Design for Europe" <${process.env.SMTP_USER}>`;
+  const notifyTo = process.env.NOTIFY_TO;
   const transporter = buildTransport();
 
-  // Confirmation to the signatory. Plain text on purpose: it renders
-  // everywhere, never trips image blocking, and reads as correspondence
-  // from a campaign rather than marketing.
+  const signatoryRows = [
+    ['Name', record.name],
+    ['Role', record.role],
+    ['Organisation', record.organisation],
+    ['Country', record.country],
+    ['Category', record.category],
+  ];
+
+  // --- Confirmation to the signatory ---
   const confirmation = transporter.sendMail({
     from,
     to: record.email,
-    replyTo: process.env.NOTIFY_TO,
+    replyTo: notifyTo,
     subject: 'Your signature has been added to the open letter',
     text: [
       `Dear ${record.name},`,
@@ -174,42 +260,56 @@ async function sendEmails(record) {
       '',
       'We have recorded your signature as:',
       '',
-      `  Name          ${record.name}`,
-      `  Role          ${record.role}`,
-      `  Organisation  ${record.organisation}`,
-      `  Country       ${record.country}`,
-      `  Category      ${record.category}`,
+      detailsText(signatoryRows),
       '',
       'We will be in touch as FP10’s structure is finalised.',
       '',
       'If anything above is wrong, or you would like your signature removed,',
-      `reply to this message at ${process.env.NOTIFY_TO}.`,
+      `reply to this message at ${notifyTo}.`,
       '',
       'Design for Europe',
       'https://design4europe.eu',
     ].join('\n'),
+    html: wrapHtml(`
+      <p style="margin:0 0 16px;">Dear ${escapeHtml(record.name)},</p>
+      <p style="margin:0 0 16px;">
+        Thank you for signing the open letter calling on the European Commission
+        to give Design a structural role in FP10.
+      </p>
+      <p style="margin:0;">We have recorded your signature as:</p>
+      ${detailsHtml(signatoryRows)}
+      <p style="margin:0 0 16px;">We will be in touch as FP10&rsquo;s structure is finalised.</p>
+      <p style="margin:0;">
+        If anything above is wrong, or you would like your signature removed,
+        reply to this message at
+        <a href="mailto:${escapeHtml(notifyTo)}" style="color:#003198;">${escapeHtml(notifyTo)}</a>.
+      </p>`),
   });
 
-  // Notification to the campaign mailbox. Reply-To is the signatory, so
-  // answering the notification writes straight back to them.
+  // --- Notification to the campaign mailbox ---
+  // Reply-To is the signatory, so answering writes straight back to them.
+  const notificationRows = [
+    ...signatoryRows,
+    ['Email', record.email],
+    ['Submitted', formatTimestamp(record.submittedAt)],
+  ];
+
   const notification = transporter.sendMail({
     from,
-    to: process.env.NOTIFY_TO,
+    to: notifyTo,
     replyTo: record.email,
     subject: `New signature: ${record.organisation} (${record.country})`,
     text: [
       'A new signature has been added to the open letter.',
       '',
-      `  Name          ${record.name}`,
-      `  Role          ${record.role}`,
-      `  Organisation  ${record.organisation}`,
-      `  Country       ${record.country}`,
-      `  Category      ${record.category}`,
-      `  Email         ${record.email}`,
-      `  Submitted     ${record.submittedAt}`,
+      detailsText(notificationRows),
       '',
       'Reply to this message to respond to the signatory directly.',
     ].join('\n'),
+    html: wrapHtml(`
+      <p style="margin:0;">A new signature has been added to the open letter.</p>
+      ${detailsHtml(notificationRows)}
+      <p style="margin:0;">Reply to this message to respond to the signatory directly.</p>`),
   });
 
   const results = await Promise.allSettled([confirmation, notification]);
