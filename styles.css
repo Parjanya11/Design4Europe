@@ -231,25 +231,29 @@ a { color: inherit; }
   outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,49,152,.12);
 }
 /* Checkbox / radio groups -------------------------------------------------
-   The grid lays out labelled fields in columns; these blocks hold a choice
-   rather than an input, so they opt out of that and stack their own rows. */
+   The heading sits above the bordered box, so these read as fields like any
+   other: same 11px uppercase label, same border colour and radius as the
+   inputs beside them. A fieldset/legend cannot do this - a legend renders on
+   the border itself - so these are divs with role=radiogroup instead. */
 .signon-form .field-block {
-  display: flex; flex-direction: column; gap: 10px;
-  margin: 2px 0 0; padding: 16px 18px;
-  background: #fff; border: 1px solid var(--line); border-radius: 8px;
+  display: flex; flex-direction: column; gap: 7px;
+  min-width: 0; margin: 0; padding: 0; border: 0;
 }
-.signon-form fieldset.field-block { min-width: 0; }
-.signon-form .field-block legend {
-  padding: 0 0 2px;
+.signon-form .field-heading {
   font: 600 11px var(--body); letter-spacing: .1em;
   text-transform: uppercase; color: var(--ink);
+}
+.signon-form .field-box {
+  display: flex; flex-direction: column; gap: 11px;
+  padding: 13px 14px;
+  background: #fff; border: 1px solid #cdd7ea; border-radius: 6px;
 }
 .signon-form label.check {
   display: grid; grid-template-columns: auto 1fr; gap: 11px;
   align-items: start; cursor: pointer;
 }
 .signon-form label.check input {
-  width: 17px; height: 17px; margin: 2px 0 0;
+  width: 17px; height: 17px; margin: 1px 0 0;
   accent-color: var(--accent); cursor: pointer;
 }
 .signon-form label.check > span {

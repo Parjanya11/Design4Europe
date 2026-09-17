@@ -260,27 +260,35 @@
           </label>
 
           <!-- Institutions only: revealed by script.js when signing on behalf of one -->
-          <div class="field-block full hidden" id="logoPermissionBlock">
-            <label class="check">
-              <input type="checkbox" name="logo_permission" value="yes" id="logoPermissionInput" />
-              <span>
-                We may use our organisation&rsquo;s logo on the campaign site.
-                <small>We will email you to request the logo file.</small>
-              </span>
-            </label>
+          <div class="field-block hidden" id="logoPermissionBlock">
+            <span class="field-heading">Organisation logo</span>
+            <div class="field-box">
+              <label class="check">
+                <input type="checkbox" name="logo_permission" value="yes" id="logoPermissionInput" />
+                <span>
+                  We may use your organisation&rsquo;s logo on the campaign site.
+                  <small>We will email you to request the logo file.</small>
+                </span>
+              </label>
+            </div>
           </div>
 
-          <fieldset class="field-block full">
-            <legend>Listing your signature</legend>
-            <label class="check">
-              <input type="radio" name="name_visibility" value="public" checked />
-              <span>Show my name publicly as a signatory</span>
-            </label>
-            <label class="check">
-              <input type="radio" name="name_visibility" value="private" />
-              <span>Keep my name private</span>
-            </label>
-          </fieldset>
+          <!-- A div with role=radiogroup rather than fieldset/legend: a legend
+               renders on the box border, which cannot be made to match the way
+               every other label in this form sits above its input. -->
+          <div class="field-block" role="radiogroup" aria-labelledby="visibilityHeading">
+            <span class="field-heading" id="visibilityHeading">Listing your signature</span>
+            <div class="field-box">
+              <label class="check">
+                <input type="radio" name="name_visibility" value="public" checked />
+                <span>Show my name publicly as a signatory</span>
+              </label>
+              <label class="check">
+                <input type="radio" name="name_visibility" value="private" />
+                <span>Keep my name private</span>
+              </label>
+            </div>
+          </div>
 
           <button type="submit" class="btn-submit">Add your signature</button>
           <p class="form-error hidden" id="signError" role="alert">
