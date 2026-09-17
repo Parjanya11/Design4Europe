@@ -20,10 +20,13 @@ const COLUMNS = [
   ['submittedAt', 'Submitted'],
   ['name', 'Name'],
   ['role', 'Role'],
+  ['signingAs', 'Signing as'],
   ['organisation', 'Organisation'],
   ['country', 'Country'],
   ['category', 'Category'],
   ['email', 'Email'],
+  ['namePublic', 'Name public'],
+  ['logoPermission', 'Logo permission'],
   ['approved', 'Approved'],
 ];
 

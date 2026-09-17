@@ -27,9 +27,14 @@ const LIMITS = {
   category: 100,
   category_other: 200,
   email: 320, // RFC maximum
+  signing_as: 60,
 };
 
-const REQUIRED = ['name', 'role', 'country', 'organisation', 'category', 'email'];
+// Organisation is not here: it is required only for institutional signatories,
+// checked separately below. An individual may genuinely have no institution.
+const REQUIRED = ['name', 'role', 'country', 'category', 'email', 'signing_as'];
+
+const INSTITUTION = 'On behalf of an institution';
 
 export default async (req) => {
   if (req.method !== 'POST') {
@@ -62,6 +67,10 @@ export default async (req) => {
     return json({ ok: false, error: 'Please specify your category.' }, 400);
   }
 
+  if (fields.signing_as === INSTITUTION && !fields.organisation) {
+    return json({ ok: false, error: 'Please name the institution you are signing for.' }, 400);
+  }
+
   if (!isPlausibleEmail(fields.email)) {
     return json({ ok: false, error: 'That email address does not look valid.' }, 400);
   }
@@ -83,6 +92,13 @@ export default async (req) => {
     category: fields.category === 'Other' ? fields.category_other : fields.category,
     categoryRaw: fields.category,
     email: fields.email,
+    signingAs: fields.signing_as,
+    // A checkbox is simply absent when unticked, so treat only an explicit
+    // yes as permission. Never inferred, never defaulted on.
+    logoPermission: fields.logo_permission === 'yes',
+    // Anything other than an explicit public choice is treated as private,
+    // so a malformed or missing value fails closed.
+    namePublic: fields.name_visibility === 'public',
     submittedAt,
     // Approval gate for a future public signatory list. Nothing is
     // published without a deliberate human decision.
@@ -241,9 +257,11 @@ async function sendEmails(record) {
   const signatoryRows = [
     ['Name', record.name],
     ['Role', record.role],
-    ['Organisation', record.organisation],
+    ['Signing as', record.signingAs],
+    ['Organisation', record.organisation || '—'],
     ['Country', record.country],
     ['Category', record.category],
+    ['Name listed publicly', record.namePublic ? 'Yes' : 'No, kept private'],
   ];
 
   // --- Confirmation to the signatory ---
@@ -290,6 +308,7 @@ async function sendEmails(record) {
   // Reply-To is the signatory, so answering writes straight back to them.
   const notificationRows = [
     ...signatoryRows,
+    ['Logo permission', record.logoPermission ? 'Yes - request the file' : 'No'],
     ['Email', record.email],
     ['Submitted', formatTimestamp(record.submittedAt)],
   ];

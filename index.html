@@ -223,13 +223,21 @@
             <span>Role</span>
             <input type="text" name="role" required placeholder="Dean, Professor, Director…" />
           </label>
-          <label class="full">
+          <label>
+            <span>Signing as</span>
+            <select name="signing_as" id="signingAs" required>
+              <option value="" disabled selected>Select one…</option>
+              <option>An individual</option>
+              <option>On behalf of an institution</option>
+            </select>
+          </label>
+          <label>
             <span>Country</span>
             <input name="country" required autocomplete="country-name" placeholder="Netherlands" />
           </label>
           <label>
-            <span>Organisation</span>
-            <input name="organisation" required placeholder="University / company name" />
+            <span id="organisationLabel">Organisation</span>
+            <input name="organisation" id="organisationInput" required placeholder="University / company name" />
           </label>
           <label>
             <span>Category</span>
@@ -250,6 +258,30 @@
             <span>Email</span>
             <input name="email" type="email" required placeholder="name@institution.eu" />
           </label>
+
+          <!-- Institutions only: revealed by script.js when signing on behalf of one -->
+          <div class="field-block full hidden" id="logoPermissionBlock">
+            <label class="check">
+              <input type="checkbox" name="logo_permission" value="yes" id="logoPermissionInput" />
+              <span>
+                We may use our organisation&rsquo;s logo on the campaign site.
+                <small>We will email you to request the logo file.</small>
+              </span>
+            </label>
+          </div>
+
+          <fieldset class="field-block full">
+            <legend>Listing your signature</legend>
+            <label class="check">
+              <input type="radio" name="name_visibility" value="public" checked />
+              <span>Show my name publicly as a signatory</span>
+            </label>
+            <label class="check">
+              <input type="radio" name="name_visibility" value="private" />
+              <span>Keep my name private</span>
+            </label>
+          </fieldset>
+
           <button type="submit" class="btn-submit">Add your signature</button>
           <p class="form-error hidden" id="signError" role="alert">
             Something went wrong sending your signature. Please try again.

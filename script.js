@@ -37,6 +37,30 @@ categorySelect.addEventListener('change', () => {
   if (isOther) categoryOtherInput.focus();
 });
 
+// --- Signing as: individual or institution -------------------------------
+// An individual may genuinely have no institution, so forcing one only
+// produces junk data. The logo question is institutional by nature, so it
+// is hidden entirely for individuals rather than asked pointlessly.
+const signingAs = document.getElementById('signingAs');
+const organisationLabel = document.getElementById('organisationLabel');
+const organisationInput = document.getElementById('organisationInput');
+const logoPermissionBlock = document.getElementById('logoPermissionBlock');
+const logoPermissionInput = document.getElementById('logoPermissionInput');
+
+signingAs.addEventListener('change', () => {
+  const isInstitution = signingAs.value === 'On behalf of an institution';
+
+  organisationLabel.textContent = isInstitution ? 'Organisation' : 'Affiliation (optional)';
+  organisationInput.required = isInstitution;
+  organisationInput.placeholder = isInstitution
+    ? 'University / company name'
+    : 'University or company, if any';
+
+  logoPermissionBlock.classList.toggle('hidden', !isInstitution);
+  // Unchecked when hidden, so a hidden field can never submit a stale yes.
+  if (!isInstitution) logoPermissionInput.checked = false;
+});
+
 // --- Sign-on form -------------------------------------------------------
 // Posts to our own Netlify Function, which stores the signature and sends
 // both the confirmation and the notification email.
