@@ -78,6 +78,7 @@ const SIGNON_ENDPOINT = '/.netlify/functions/signon';
 const form = document.getElementById('signonForm');
 const thanks = document.getElementById('signThanks');
 const errorMsg = document.getElementById('signError');
+const signSub = document.getElementById('signSub');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -98,6 +99,8 @@ form.addEventListener('submit', async (e) => {
     }
 
     form.classList.add('hidden');
+    // "sign on below" makes no sense once the form it refers to is gone.
+    signSub.classList.add('hidden');
     thanks.classList.remove('hidden');
     thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } catch (err) {
