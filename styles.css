@@ -322,6 +322,11 @@ a { color: inherit; }
   object-fit: contain;
   padding: 10px;
 }
+/* Very wide wordmarks get a longer slot. The marks on this page range from
+   roughly 1:1 to 12:1; forced into the standard chip the widest would render
+   about 11px tall and be unreadable. */
+.logo-chip.wide { width: 230px; }
+
 @keyframes dfe-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
 
