@@ -4,14 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- EDIT: browser-tab title + search/link-preview description -->
   <title>Design for Europe: Give Design a role in FP10</title>
-    <link rel="icon" type="image/x-icon" href="/assets/visual-design-for-europe-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="/assets/visual-design-for-europe-icon.svg" />
   <meta name="description" content="An open letter to the European Commission: give Design a structural role in FP10, the Union's next research and innovation programme." />
 
   <meta property="og:title" content="Design for Europe: FP10" />
   <meta property="og:description" content="Europe cannot function without Design. An open letter to the European Commission." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://design4europe.eu/" />
+  <meta property="og:site_name" content="Design for Europe" />
   <!-- <meta property="og:image" content="assets/social-preview.png" /> -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -61,6 +62,21 @@
       </div>
     </div>
   </header>
+
+  <!-- =============================== SIGNATORY LOGOS (BANNER) =============================== -->
+  <!-- Same marquee component as the signatories section below. -->
+  <section class="logo-banner">
+    <div class="marquee">
+      <!-- script.js duplicates the track for a seamless loop -->
+      <div class="marquee-track">
+        <div class="logo-chip"><img src="assets/BEDA_logo.svg" alt="BEDA" /></div>
+        <div class="logo-chip"><img src="assets/clicknl_logo.svg" alt="ClickNL" /></div>
+        <div class="logo-chip"><img src="assets/creativefed-big_img.svg" alt="CreativeFED" /></div>
+        <div class="logo-chip"><img src="assets/logo%20ekip.svg" alt="EKIP" /></div>
+        <div class="logo-chip"><img src="assets/Brand.svg" alt="Brand.Brief" /></div>
+      </div>
+    </div>
+  </section>
 
   <!-- =============================== DIVIDER =============================== -->
   <div class="divider">
@@ -211,7 +227,7 @@
         <!-- script.js intercepts submit and POSTs via fetch so the        -->
         <!-- visitor stays on this page.                                   -->
         <!-- ============================================================= -->
-        <form class="signon-form" id="signonForm" action="https://formspree.io/f/xzdlnvjj" method="POST">
+        <form class="signon-form" id="signonForm" action="/.netlify/functions/signon" method="POST">
           <!-- Honeypot: hidden from humans; bots fill it and Formspree drops those (_gotcha convention) -->
           <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
@@ -312,7 +328,6 @@
     <div class="container signatories-head">
       <div class="section-eyebrow center">Signatories</div>
       <h2 class="section-title">Backed by Europe's design community</h2>
-      <p class="signatories-sub">Placeholder logos below. Research faculties, Education institutes, and Industry partners will appear here as they sign on.</p>
     </div>
     <div class="marquee">
       <!-- The track is duplicated in script.js for a seamless loop -->

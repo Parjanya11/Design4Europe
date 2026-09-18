@@ -18,9 +18,17 @@ navLinks.querySelectorAll('a').forEach((link) => {
 });
 
 // --- Seamless logo marquee ----------------------------------------------
-// Duplicate the row so the -50% keyframe loops without a visible jump.
-const track = document.getElementById('marqueeTrack');
-if (track) track.innerHTML += track.innerHTML;
+// Duplicate each row so the -50% keyframe loops without a visible jump.
+// There is more than one marquee on the page, so select them all.
+// Clones are marked aria-hidden: they exist only to make the loop seamless,
+// and without this a screen reader would announce every logo twice per row.
+document.querySelectorAll('.marquee-track').forEach((track) => {
+  [...track.children].forEach((chip) => {
+    const clone = chip.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+  });
+});
 
 // --- Category "Other" free-text field -----------------------------------
 // Visible and required only while "Other" is selected. Disabled otherwise,
