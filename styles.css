@@ -297,14 +297,14 @@ a { color: inherit; }
 /* =================================================================
    SIGNATORIES MARQUEE
    ================================================================= */
-.signatories { background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.signatories { background: var(--bg); }
 .signatories-head { padding-top: 52px; padding-bottom: 8px; text-align: center; }
 .signatories-head .section-title { margin: 0 0 8px; }
 .signatories-sub { font: 400 15px/1.5 var(--body); color: #96a1bf; margin: 0; }
 .marquee {
   width: 100%; overflow: hidden; padding: 14px 0 52px;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); background-color: var(--bg-soft);
 }
 .marquee-track { display: flex; gap: 36px; width: max-content; animation: dfe-marquee 26s linear infinite; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
@@ -326,6 +326,26 @@ a { color: inherit; }
    roughly 1:1 to 12:1; forced into the standard chip the widest would render
    about 11px tall and be unreadable. */
 .logo-chip.wide { width: 230px; }
+
+.table {
+    align: center;
+    margin: 0px 10px 50px 10px;
+    padding: 5px 5px 5px 5px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius:10px;
+    background-color: var(--bg-soft);
+}
+.table, td {
+    padding: 5px 10px 5px 10px;
+    width: 1125px;
+}
+.dummy {
+    color: var(--bg-soft);
+}
+
+.signatories-inner { max-width: 750px; margin: 10px 10px 10px 10px; }
+
 
 @keyframes dfe-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
