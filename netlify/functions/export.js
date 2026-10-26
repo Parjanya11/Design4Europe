@@ -113,7 +113,10 @@ async function readAllSignatures() {
     const values = await Promise.all(
       batch.map(async (key) => {
         try {
-          return await store.get(key, { type: 'json' });
+          const record = await store.get(key, { type: 'json' });
+          // Carry the storage key so a record can be acted on later -
+          // deleting one for a GDPR erasure request needs its key.
+          return record ? { ...record, key } : null;
         } catch {
           // One unreadable record must not sink the whole export.
           console.error('Unreadable signature record:', key);
