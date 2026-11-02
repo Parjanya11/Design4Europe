@@ -109,3 +109,65 @@ form.addEventListener('submit', async (e) => {
     errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
+
+
+// --- Public signatory list ----------------------------------------------
+// Fetched rather than baked in, so the list reflects new signatures without
+// a redeploy. The endpoint returns only people who chose to be named, and
+// only their name, organisation, country and category - never an email.
+(async () => {
+  const listEl = document.getElementById('rollList');
+  if (!listEl) return;
+
+  const ledeEl = document.getElementById('rollLede');
+  const noteEl = document.getElementById('rollNote');
+  const num = (n) => n.toLocaleString('en');
+
+  // Built as DOM nodes, never an HTML string: these are names typed by the
+  // public, and must not be parsed as markup.
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  };
+
+  try {
+    const res = await fetch('/.netlify/functions/signatories', {
+      headers: { Accept: 'application/json' },
+    });
+    if (!res.ok) throw new Error('status ' + res.status);
+    const data = await res.json();
+
+    const people = data.signatories || [];
+
+    ledeEl.textContent = '';
+    ledeEl.append(
+      'Endorsed by ',
+      el('strong', null, num(data.total)),
+      ' signatories from across Europe.',
+    );
+
+    const frag = document.createDocumentFragment();
+    for (const p of people) {
+      const entry = el('div', 'roll-entry');
+      entry.appendChild(el('div', 'roll-name', p.name));
+      const meta = [p.organisation, p.country].filter(Boolean).join(', ');
+      if (meta) entry.appendChild(el('div', 'roll-meta', meta));
+      frag.appendChild(entry);
+    }
+    listEl.appendChild(frag);
+
+    // Account for people who signed but asked not to be named, so the
+    // headline total is not contradicted by a shorter list beneath it.
+    if (data.unlisted > 0) {
+      noteEl.textContent =
+        'A further ' + num(data.unlisted) +
+        ' signatories asked not to be listed publicly. They are included in the total above.';
+      noteEl.hidden = false;
+    }
+  } catch (err) {
+    ledeEl.textContent =
+      'The list of signatories could not be loaded. Please refresh to try again.';
+  }
+})();

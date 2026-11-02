@@ -120,6 +120,27 @@ a { color: inherit; }
 .btn-outline { color: #fff; background: transparent; border: 1.5px solid rgba(255,255,255,.35); padding: 14.5px 28px; }
 .btn-outline:hover { border-color: #fff; }
 
+/* LinkedIn links ---------------------------------------------------------
+   Lighter than the buttons beside it, so the two calls to action keep
+   their priority and this reads as a secondary route. */
+.hero-social {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 14.5px 4px; text-decoration: none;
+  font: 500 15px var(--body); color: var(--on-navy-2);
+  transition: color .2s;
+}
+.hero-social:hover { color: #fff; }
+.hero-social .li-icon { width: 19px; height: 19px; flex: none; }
+
+.footer-social { display: inline-flex; align-items: center; gap: 8px; }
+.footer-social .li-icon { width: 15px; height: 15px; flex: none; }
+
+/* Both sit on dark grounds, so give focus a visible ring of its own. */
+.hero-social:focus-visible,
+.footer-social:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px;
+}
+
 /* =================================================================
    SIGNATORY LOGO BANNER (reuses the marquee component)
    ================================================================= */
@@ -327,8 +348,57 @@ a { color: inherit; }
    about 11px tall and be unreadable. */
 .logo-chip.wide { width: 230px; }
 
+/* Second bar runs the other way, so a stacked pair reads as one unit
+   rather than two identical strips sliding in lockstep. */
+.marquee-reverse .marquee-track { animation-name: dfe-marquee-reverse; }
+@keyframes dfe-marquee-reverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+/* Stacked bars sit closer together than a single bar's padding allows. */
+.logo-banner .marquee + .marquee,
+.signatories .marquee + .marquee { padding-top: 0; }
+
 @keyframes dfe-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* =================================================================
+   SIGNATORY LIST
+   ================================================================= */
+.roll { background: #fff; border-top: 1px solid var(--line); }
+.roll .container { padding-top: 54px; padding-bottom: 62px; }
+.roll-title { text-align: center; margin-bottom: 14px; }
+
+/* One sentence carries the weight: the figure a reader repeats is
+   "521 signatories across Europe", not a row of separate tiles. */
+.roll-lede {
+  max-width: 60ch; margin: 0 auto 42px; text-align: center;
+  font: 400 17px/1.6 var(--body); color: var(--ink-2);
+}
+.roll-lede strong { color: var(--ink); font-weight: 700; }
+
+/* Four columns on desktop, collapsing on narrow screens. Names are the
+   content; everything else stays quiet so the list reads as a body of
+   support rather than a table. */
+.roll-list { columns: 4; column-gap: 36px; }
+.roll-entry { break-inside: avoid; margin: 0 0 13px; }
+.roll-name { font: 500 14px/1.35 var(--body); color: var(--ink); }
+/* Affiliation is deliberately much lighter and smaller than the name:
+   no border, no fill, nothing that would make the list look like a grid. */
+.roll-meta {
+  font: 400 11.5px/1.4 var(--body); color: var(--ink-3);
+  margin-top: 1px; letter-spacing: .01em;
+}
+
+.roll-note {
+  margin: 40px 0 0; padding-top: 20px; border-top: 1px solid var(--line);
+  font: 400 14px/1.6 var(--body); color: var(--ink-3); text-align: center;
+}
+
+@media (max-width: 1000px) { .roll-list { columns: 3; column-gap: 28px; } }
+@media (max-width: 760px) {
+  .roll-lede { font-size: 15.5px; }
+  .roll-list { columns: 2; column-gap: 22px; }
+}
+@media (max-width: 460px) { .roll-list { columns: 1; } }
 
 /* =================================================================
    FOOTER
