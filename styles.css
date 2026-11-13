@@ -458,7 +458,8 @@ a { color: inherit; }
 .q { margin-top: 40px; }
 .q-lead { margin: 0 0 16px; font: 600 16px var(--body); color: #fff; }
 .q-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 14px; }
-.q-item { margin: 0; }
+.q-item { margin: 0; display: flex; }
+.q-item > .q-text { flex: 1; }
 .q-text {
   margin: 0; padding: 15px 17px; border-left: 3px solid var(--accent-ink);
   background: rgba(255,255,255,.05); border-radius: 0 7px 7px 0;
