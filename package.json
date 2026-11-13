@@ -8,7 +8,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "netlify dev"
+    "dev": "netlify dev",
+    "serve": "npm --prefix tools run serve",
+    "check": "npm --prefix tools run check"
   },
   "dependencies": {
     "@netlify/blobs": "^11.1.0",

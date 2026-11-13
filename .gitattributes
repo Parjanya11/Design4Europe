@@ -1,0 +1,8 @@
+# Store and check out text as LF on every machine, so line endings never
+# show up as changes. Binary assets are left alone.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.pdf binary
