@@ -17,6 +17,20 @@ navLinks.querySelectorAll('a').forEach((link) => {
   });
 });
 
+// --- Signatory logos, second appearance -----------------------------------
+// The logo list is written once, in the banner under the hero. Copy it into
+// the signatories section rather than keeping a second hand-maintained list.
+// Done before the marquee setup below, so both copies loop seamlessly.
+const signatoriesLogos = document.getElementById('signatoriesLogos');
+if (signatoriesLogos) {
+  document.querySelectorAll('.logo-banner .marquee').forEach((bar) => {
+    const copy = bar.cloneNode(true);
+    // Far down the page: no need to fetch until the reader gets there.
+    copy.querySelectorAll('img').forEach((img) => { img.loading = 'lazy'; });
+    signatoriesLogos.appendChild(copy);
+  });
+}
+
 // --- Seamless logo marquee ----------------------------------------------
 // Duplicate each row so the -50% keyframe loops without a visible jump.
 // There is more than one marquee on the page, so select them all.

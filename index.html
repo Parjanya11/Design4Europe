@@ -381,38 +381,11 @@
       <div class="section-eyebrow center">Signatories</div>
       <h2 class="section-title">Backed by Europe's design community</h2>
     </div>
-    <!-- Two bars: institutions above, studios and agencies below.
-           The lower bar scrolls the other way so the pair reads as one
-           unit rather than two identical strips. -->
-      <div class="marquee">
-        <div class="marquee-track">
-          <div class="logo-chip wide"><img src="assets/logos/beda.webp" alt="BEDA" /></div>
-          <div class="logo-chip"><img src="assets/logos/bulgarian-design-council.webp" alt="Bulgarian Design Council" /></div>
-          <div class="logo-chip"><img src="assets/logos/clicknl.webp" alt="ClickNL" /></div>
-          <div class="logo-chip"><img src="assets/logos/creativefed.webp" alt="CreativeFED" /></div>
-          <div class="logo-chip"><img src="assets/logos/danish-design-center.webp" alt="Danish Design Center" /></div>
-          <div class="logo-chip wide"><img src="assets/logos/design-education-trust.webp" alt="The Design Education Trust" /></div>
-          <div class="logo-chip"><img src="assets/logos/dutch-design-foundation.webp" alt="Dutch Design Foundation" /></div>
-          <div class="logo-chip"><img src="assets/logos/ekip.webp" alt="EKIP" /></div>
-          <div class="logo-chip"><img src="assets/logos/greek-design-matters.webp" alt="Greek Design Matters" /></div>
-          <div class="logo-chip wide"><img src="assets/logos/idz-berlin.webp" alt="Internationales Design Zentrum Berlin" /></div>
-          <div class="logo-chip"><img src="assets/logos/tu-delft-ide.webp" alt="TU Delft, Industrial Design Engineering" /></div>
-          <div class="logo-chip"><img src="assets/logos/tue-id.webp" alt="TU/e Industrial Design" /></div>
-          <div class="logo-chip wide"><img src="assets/logos/paris-saclay-design-spot.webp" alt="Universite Paris-Saclay, Design Spot" /></div>
-          <div class="logo-chip wide"><img src="assets/logos/wageningen-ur.webp" alt="Wageningen University & Research" /></div>
-        </div>
-      </div>
-      <div class="marquee marquee-reverse">
-        <div class="marquee-track">
-          <div class="logo-chip"><img src="assets/logos/brand-brief.webp" alt="Brand.Brief" /></div>
-          <div class="logo-chip"><img src="assets/logos/curis-design.webp" alt="Curis Design" /></div>
-          <div class="logo-chip wide"><img src="assets/logos/designtech.webp" alt="Designtech" /></div>
-          <div class="logo-chip"><img src="assets/logos/meso.webp" alt="MESO Digital Interiors" /></div>
-          <div class="logo-chip"><img src="assets/logos/pdr.webp" alt="pdr." /></div>
-          <div class="logo-chip wide"><img src="assets/logos/studio-peter-post.webp" alt="studio peter post x petra esveld" /></div>
-        </div>
-      </div>
-    </section>
+    <!-- The same two logo bars as the banner under the hero. The logo list
+         lives once, in the banner; script.js copies it here, so the two
+         can never drift apart. -->
+    <div id="signatoriesLogos"></div>
+  </section>
 
   <!-- =============================== SIGNATORY LIST =============================== -->
   <section class="roll" id="signatories">
