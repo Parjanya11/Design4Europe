@@ -317,7 +317,8 @@ async function sendEmails(record) {
     from,
     to: notifyTo,
     replyTo: record.email,
-    subject: `New signature: ${record.organisation} (${record.country})`,
+    // Individuals may have no organisation; never let that print "undefined".
+    subject: `New signature: ${record.organisation || record.name} (${record.country})`,
     text: [
       'A new signature has been added to the open letter.',
       '',

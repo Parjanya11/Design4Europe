@@ -276,13 +276,11 @@
           <p class="sign-sub" id="signSub">Organisations sign on below. Every name strengthens the case before FP10 is finalised.</p>
         </div>
 
-        <!-- ============================================================= -->
-        <!-- Submissions go to Formspree (endpoint in the action).         -->
-        <!-- script.js intercepts submit and POSTs via fetch so the        -->
-        <!-- visitor stays on this page.                                   -->
-        <!-- ============================================================= -->
+        <!-- Posts to our own Netlify Function (netlify/functions/signon.js),
+             which stores the signature and sends both emails. script.js
+             intercepts submit so the visitor stays on this page. -->
         <form class="signon-form" id="signonForm" action="/.netlify/functions/signon" method="POST">
-          <!-- Honeypot: hidden from humans; bots fill it and Formspree drops those (_gotcha convention) -->
+          <!-- Honeypot: hidden from humans. Bots fill it, and signon.js silently discards those submissions. -->
           <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
           <label>
