@@ -49,7 +49,10 @@ console.error = () => {};
 const signon = await bundle('signon');
 const signatories = await bundle('signatories');
 const exporter = await bundle('export');
-// The list endpoint as it was before the index, to prove the output matches.
+// The list endpoint as it was before the index, to prove the refactor changed
+// nothing visible. Refactor guard only: when the list's output is meant to
+// change (e.g. how institutional signatories are shown), delete this and the
+// 'matches the previous implementation' test below.
 const oldSource = execSync('git show 08b8f7b:netlify/functions/signatories.js', { cwd: ROOT }).toString();
 const signatoriesBefore = await bundle('signatories-before', oldSource);
 
