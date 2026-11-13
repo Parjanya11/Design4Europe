@@ -1,0 +1,49 @@
+<!doctype html>
+<!--
+  Source for assets/social-preview.png, the image LinkedIn and others show
+  when the site is shared. Built from the hero's own type, colours and
+  watermark. Edit this file, then run `npm run social` in tools/.
+  1200 x 630 is the size every major network expects.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: 'Archivo'; font-weight: 500 900; src: url('/assets/fonts/archivo-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 400 700; src: url('/assets/fonts/ibm-plex-sans-latin.woff2') format('woff2'); }
+  :root { --navy: #04154a; --accent: #f4361a; --on-navy: #c7d2e8; --on-navy-2: #b9c6e2; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; background: var(--navy); overflow: hidden; position: relative;
+         font-family: 'IBM Plex Sans', sans-serif; }
+  .watermark { position: absolute; right: -70px; top: -70px; font: 900 470px/1 'Archivo', sans-serif;
+               color: rgba(255,255,255,.035); letter-spacing: -.02em; }
+  /* 80px margins: LinkedIn and others crop the edges in some layouts. */
+  .inner { position: absolute; inset: 80px 80px 72px; display: flex; flex-direction: column; }
+  .kicker { display: flex; align-items: center; gap: 14px; }
+  .kicker i { width: 40px; height: 3px; background: var(--accent); }
+  .kicker span { font: 600 17px/1 'IBM Plex Sans', sans-serif; letter-spacing: .2em;
+                 text-transform: uppercase; color: var(--accent); }
+  h1 { margin: 30px 0 0; font: 800 84px/1.02 'Archivo', sans-serif; letter-spacing: -.02em; color: #fff; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { margin: 30px 0 0; max-width: 820px; font: 400 27px/1.45 'IBM Plex Sans', sans-serif; color: var(--on-navy-2); }
+  .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between;
+          padding-top: 26px; border-top: 1px solid rgba(255,255,255,.12); }
+  .brand { display: flex; align-items: center; gap: 14px; font: 700 22px/1 'Archivo', sans-serif; color: #fff; }
+  .brand img { width: 40px; height: auto; }
+  .url { font: 500 22px/1 'IBM Plex Sans', sans-serif; color: var(--on-navy); letter-spacing: .01em; }
+</style>
+</head>
+<body>
+  <div class="watermark" aria-hidden="true">FP10</div>
+  <div class="inner">
+    <div class="kicker"><i></i><span>Open letter to the European Commission</span></div>
+    <h1>Europe cannot function without <em>Design.</em></h1>
+    <p class="sub">Give Design a structural role in FP10, the Union's next research and innovation programme.</p>
+    <div class="foot">
+      <div class="brand"><img src="/assets/visual-design-for-europe-icon.svg" alt="">Design for Europe</div>
+      <div class="url">design4europe.eu</div>
+    </div>
+  </div>
+</body>
+</html>
