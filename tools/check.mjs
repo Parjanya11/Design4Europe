@@ -69,8 +69,15 @@ for (const width of WIDTHS) {
   if (layout.thirdParty.length) problems.push(`third-party requests: ${[...new Set(layout.thirdParty)].join(', ')}`);
 
   if (width === 360 || width === 1280) {
-    await page.addScriptTag({ content: axeSource });
-    const res = await page.evaluate(async () => await window.axe.run(document, { resultTypes: ['violations'] }));
+    // axe is injected as an inline script, which the site's own CSP rightly
+    // forbids. Scan in a separate context allowed to bypass it, so the main
+    // page above still runs under the real policy and reports violations.
+    const axeContext = await browser.newContext({ viewport: { width, height: 900 }, bypassCSP: true });
+    const axePage = await axeContext.newPage();
+    await axePage.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' });
+    await axePage.addScriptTag({ content: axeSource });
+    const res = await axePage.evaluate(async () => await window.axe.run(document, { resultTypes: ['violations'] }));
+    await axeContext.close();
     for (const v of res.violations) for (const n of v.nodes) {
       const id = `${v.id} | ${n.target.join(' ')}`;
       seenAxe.add(id);

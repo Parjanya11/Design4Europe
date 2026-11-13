@@ -27,13 +27,47 @@ const FUNCTIONS = {
   'POST /.netlify/functions/signon': async () => [200, JSON.stringify({ ok: true, fake: true })],
 };
 
-export function startServer(port = 8000) {
+// Apply the same response headers as production, read from netlify.toml,
+// so a Content Security Policy problem shows up locally first. Handles the
+// [[headers]] / for / [headers.values] shape used in that file.
+async function loadHeaderRules() {
+  const toml = await readFile(path.join(ROOT, 'netlify.toml'), 'utf8');
+  const rules = [];
+  for (const block of toml.split('[[headers]]').slice(1)) {
+    const pattern = block.match(/for\s*=\s*"([^"]+)"/)?.[1];
+    if (!pattern) continue;
+    const values = {};
+    for (const m of block.matchAll(/^\s*([A-Za-z-]+)\s*=\s*"(.*)"\s*$/gm)) {
+      if (m[1] !== 'for') values[m[1]] = m[2];
+    }
+    // Netlify patterns use * as the only wildcard: match each part literally.
+    const parts = pattern.split('*');
+    const test = (p) => {
+      if (!p.startsWith(parts[0])) return false;
+      let at = parts[0].length;
+      for (const part of parts.slice(1)) {
+        const i = p.indexOf(part, at);
+        if (i === -1) return false;
+        at = i + part.length;
+      }
+      return parts.length > 1 || at === p.length;
+    };
+    rules.push({ test, values });
+  }
+  return rules;
+}
+
+export async function startServer(port = 8000) {
+  const headerRules = await loadHeaderRules();
+  const headersFor = (pathname) =>
+    Object.assign({}, ...headerRules.filter((r) => r.test(pathname)).map((r) => r.values));
+
   const server = createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
     const fn = FUNCTIONS[`${req.method} ${url.pathname}`];
     if (fn) {
       const [status, body] = await fn();
-      res.writeHead(status, { 'content-type': 'application/json; charset=utf-8' });
+      res.writeHead(status, { ...headersFor(url.pathname), 'content-type': 'application/json; charset=utf-8' });
       return res.end(body);
     }
     if (url.pathname.startsWith('/.netlify/')) {
@@ -45,7 +79,7 @@ export function startServer(port = 8000) {
     try {
       if ((await stat(file)).isDirectory()) file = path.join(file, 'index.html');
       const body = await readFile(file);
-      res.writeHead(200, { 'content-type': TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream' });
+      res.writeHead(200, { ...headersFor(url.pathname), 'content-type': TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream' });
       res.end(body);
     } catch {
       res.writeHead(404); res.end('Not found');
