@@ -8,14 +8,17 @@
 //   - NEVER returns an email address, or any field not listed above
 //   - `approved: false` is an override, used to pull an entry down
 //
-// The 145 who asked to stay private are counted in the totals but never
+// Those who asked to stay private are counted in the totals but never
 // named, so the headline figure stays honest without breaking a promise
 // made to them at sign-up.
+//
+// Reads from a cached index (../lib/signature-index.js) rather than every
+// record, and is cached at Netlify's edge, so a page view costs
+// milliseconds rather than one blob read per signature.
 // =====================================================================
 
-import { getStore } from '@netlify/blobs';
-
-const CONCURRENCY = 25;
+import { signatureStore, indexStore } from '../lib/stores.js';
+import { loadIndexedSignatures } from '../lib/signature-index.js';
 
 // Signatories type their own country, so the same place arrives several
 // ways. Normalised for counting and display; the stored value is untouched.
@@ -56,14 +59,14 @@ function normaliseCountry(raw) {
   return value.replace(/\S+/g, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
 }
 
-export default async (req) => {
+export default async (req, context) => {
   if (req.method !== 'GET') {
     return json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
   let records;
   try {
-    records = await readAll();
+    ({ records } = await loadIndexedSignatures(signatureStore(context), indexStore(context)));
   } catch (err) {
     console.error('Signatory list failed:', err.message);
     return json({ ok: false, error: 'Could not load the signatory list.' }, 500);
@@ -86,8 +89,10 @@ export default async (req) => {
     }))
     .filter((r) => r.name);
 
+  // `institutional` is used only to split the two lists; it is not sent.
   const signatories = publishedRecords
     .filter((r) => !r.institutional)
+    .map(({ institutional, ...publicFields }) => publicFields)
     .sort((a, b) => a.name.localeCompare(b.name, 'en'));
 
   // Institutional endorsements carry different weight to an individual's,
@@ -121,27 +126,17 @@ export default async (req) => {
       organisationList,
     },
     200,
-    // Public and slow-changing: cache briefly so a burst of visitors does
-    // not become a burst of function calls.
-    { 'cache-control': 'public, max-age=300, stale-while-revalidate=600' },
+    // Public and slow-changing. Browsers keep it a minute. Netlify's edge
+    // keeps it in the durable cache (shared by every edge node, not one
+    // copy per node) for five minutes, then serves the stale copy
+    // instantly while refreshing in the background. A new signature
+    // appears within about five minutes; no visitor waits for the refresh.
+    {
+      'cache-control': 'public, max-age=60',
+      'netlify-cdn-cache-control': 'public, durable, max-age=300, stale-while-revalidate=86400',
+    },
   );
 };
-
-async function readAll() {
-  const store = getStore('signatures');
-  const { blobs } = await store.list();
-  const keys = blobs.map((b) => b.key);
-
-  const out = [];
-  for (let i = 0; i < keys.length; i += CONCURRENCY) {
-    const batch = keys.slice(i, i + CONCURRENCY);
-    const values = await Promise.all(
-      batch.map((k) => store.get(k, { type: 'json' }).catch(() => null)),
-    );
-    out.push(...values.filter(Boolean));
-  }
-  return out;
-}
 
 function json(body, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {

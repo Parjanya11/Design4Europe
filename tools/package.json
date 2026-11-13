@@ -7,11 +7,13 @@
     "serve": "node serve.mjs",
     "check": "node check.mjs",
     "check:update-baseline": "node check.mjs --update-baseline",
-    "social": "node social.mjs"
+    "social": "node social.mjs",
+    "test:functions": "node test/functions.test.mjs"
   },
   "devDependencies": {
     "axe-core": "4.10.2",
     "playwright": "1.49.1",
-    "sharp": "0.33.5"
+    "sharp": "0.33.5",
+    "esbuild": "0.24.0"
   }
 }
