@@ -33,15 +33,19 @@ if (signatoriesLogos) {
 
 // --- Seamless logo marquee ----------------------------------------------
 // Duplicate each row so the -50% keyframe loops without a visible jump.
-// There is more than one marquee on the page, so select them all.
 // Clones are marked aria-hidden: they exist only to make the loop seamless,
 // and without this a screen reader would announce every logo twice per row.
+// Duration follows the row's length, so every row moves at the same speed
+// however many logos it holds.
+const MARQUEE_PX_PER_SECOND = 60;
 document.querySelectorAll('.marquee-track').forEach((track) => {
   [...track.children].forEach((chip) => {
     const clone = chip.cloneNode(true);
     clone.setAttribute('aria-hidden', 'true');
     track.appendChild(clone);
   });
+  const loopWidth = track.scrollWidth / 2;
+  track.style.animationDuration = (loopWidth / MARQUEE_PX_PER_SECOND).toFixed(1) + 's';
 });
 
 // --- Category "Other" free-text field -----------------------------------
