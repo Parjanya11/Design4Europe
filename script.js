@@ -19,17 +19,51 @@ navLinks.querySelectorAll('a').forEach((link) => {
 
 // --- Signatory logos, second appearance -----------------------------------
 // The logo list is written once, in the banner under the hero. Copy it into
-// the signatories section rather than keeping a second hand-maintained list.
-// Done before the marquee setup below, so both copies loop seamlessly.
-const signatoriesLogos = document.getElementById('signatoriesLogos');
-if (signatoriesLogos) {
-  document.querySelectorAll('.logo-banner .marquee').forEach((bar) => {
-    const copy = bar.cloneNode(true);
+// the Organisations tab as a grid rather than keeping a second hand-maintained
+// list. Done before the marquee setup below, which clones the banner chips.
+const logoGrid = document.getElementById('logoGrid');
+if (logoGrid) {
+  const sortKey = (img) => img.alt.toLowerCase().replace(/^the /, '');
+  const logos = [...document.querySelectorAll('.logo-banner .logo-chip img')]
+    .sort((a, b) => sortKey(a).localeCompare(sortKey(b), 'en'));
+  for (const img of logos) {
+    const tile = document.createElement('div');
+    tile.className = 'logo-tile';
+    const copy = img.cloneNode(false);
     // Far down the page: no need to fetch until the reader gets there.
-    copy.querySelectorAll('img').forEach((img) => { img.loading = 'lazy'; });
-    signatoriesLogos.appendChild(copy);
-  });
+    copy.loading = 'lazy';
+    tile.appendChild(copy);
+    logoGrid.appendChild(tile);
+  }
+  document.getElementById('orgCount').textContent = logos.length;
 }
+
+// --- Signatory tabs -------------------------------------------------------
+// WAI-ARIA tabs: click or arrow keys switch, only the selected tab is in the
+// tab order, and the hidden panel is out of the accessibility tree.
+const sigTabs = [...document.querySelectorAll('.sig-tab')];
+const selectTab = (tab, focus) => {
+  for (const t of sigTabs) {
+    const selected = t === tab;
+    t.setAttribute('aria-selected', String(selected));
+    t.tabIndex = selected ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).hidden = !selected;
+  }
+  if (focus) tab.focus();
+};
+sigTabs.forEach((tab, i) => {
+  tab.addEventListener('click', () => selectTab(tab, false));
+  tab.addEventListener('keydown', (e) => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (step) {
+      e.preventDefault();
+      selectTab(sigTabs[(i + step + sigTabs.length) % sigTabs.length], true);
+    } else if (e.key === 'Home' || e.key === 'End') {
+      e.preventDefault();
+      selectTab(sigTabs[e.key === 'Home' ? 0 : sigTabs.length - 1], true);
+    }
+  });
+});
 
 // --- Seamless logo marquee ----------------------------------------------
 // Duplicate each row so the -50% keyframe loops without a visible jump.
@@ -158,6 +192,7 @@ form.addEventListener('submit', async (e) => {
     const data = await res.json();
 
     const people = data.signatories || [];
+    document.getElementById('peopleCount').textContent = num(people.length);
 
     ledeEl.textContent = '';
     ledeEl.append(

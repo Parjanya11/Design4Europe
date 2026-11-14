@@ -396,31 +396,36 @@
     </div>
   </section>
 
-  <!-- =============================== SIGNATORIES MARQUEE =============================== -->
-  <section class="signatories">
-    <div class="container signatories-head">
-      <div class="section-eyebrow center">Signatories</div>
-      <h2 class="section-title">Backed by Europe's design community</h2>
-    </div>
-    <!-- The same two logo bars as the banner under the hero. The logo list
-         lives once, in the banner; script.js copies it here, so the two
-         can never drift apart. -->
-    <div id="signatoriesLogos"></div>
-  </section>
-
-  <!-- =============================== SIGNATORY LIST =============================== -->
-  <section class="roll" id="signatories">
+  <!-- =============================== SIGNATORIES =============================== -->
+  <!-- Two tabs: organisation logos first, individuals on request. -->
+  <section class="signatories" id="signatories">
     <div class="container">
-      <div class="section-eyebrow center">The undersigned</div>
-      <h2 class="section-title roll-title">Who has signed</h2>
+      <div class="section-eyebrow center">Signatories</div>
+      <h2 class="section-title signatories-title">Backed by Europe's design community</h2>
 
       <!-- Resting state before the signatories function answers; filled in
            place by script.js. -->
       <p class="roll-lede" id="rollLede">Loading the list of signatories&hellip;</p>
 
-      <div class="roll-list" id="rollList" aria-live="polite"></div>
+      <div class="sig-tabs" role="tablist" aria-label="Signatories">
+        <button type="button" class="sig-tab" role="tab" id="tabOrgs" aria-controls="panelOrgs" aria-selected="true">
+          Organisations <span class="sig-count" id="orgCount"></span>
+        </button>
+        <button type="button" class="sig-tab" role="tab" id="tabPeople" aria-controls="panelPeople" aria-selected="false" tabindex="-1">
+          Individuals <span class="sig-count" id="peopleCount"></span>
+        </button>
+      </div>
 
-      <p class="roll-note" id="rollNote" hidden></p>
+      <!-- The logo list lives once, in the banner under the hero; script.js
+           copies it here as a grid, so the two can never drift apart. -->
+      <div class="sig-panel" role="tabpanel" id="panelOrgs" aria-labelledby="tabOrgs" tabindex="0">
+        <div class="logo-grid" id="logoGrid"></div>
+      </div>
+
+      <div class="sig-panel" role="tabpanel" id="panelPeople" aria-labelledby="tabPeople" tabindex="0" hidden>
+        <div class="roll-list" id="rollList" aria-live="polite"></div>
+        <p class="roll-note" id="rollNote" hidden></p>
+      </div>
     </div>
   </section>
 
