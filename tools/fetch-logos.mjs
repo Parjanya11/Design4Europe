@@ -1,4 +1,6 @@
 // Collect signatory logo originals from the sources in logo-sources.json.
+// An entry with neither `url` nor `supplied` keeps the original already in
+// assets/source/logos/; it is still checked and shown on the sheet.
 //
 //   npm run logos:fetch              every entry
 //   npm run logos:fetch -- vdid tum  only these slugs
@@ -14,6 +16,7 @@
 // manifest and run this again.
 
 import sharp from 'sharp';
+import { trimmed } from './logo-trim.mjs';
 import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -63,25 +66,21 @@ async function download(entry) {
     checkSvg(buf.toString('utf8'), entry.slug);
     return { buf, ext: 'svg' };
   }
-  const { format } = await sharp(buf).metadata(); // throws on non-images
-  return { buf: await sharp(buf).trim({ threshold: 12 }).png().toBuffer(), ext: 'png', format };
+  await sharp(buf).metadata(); // throws on non-images
+  return { buf: await sharp(buf).png().toBuffer(), ext: 'png' };
 }
 
-// Supplied files are often screenshots or exports with a white margin;
-// trim it, or the chip padding plus the margin shrinks the logo.
+// Supplied files go in as PNG, trimmed: they're often big exports, and the
+// margin is never wanted. (logos.mjs trims again; that's a no-op.)
 async function supplied(entry) {
-  const buf = await sharp(path.join(SUPPLIED, entry.supplied))
-    .trim({ threshold: 12 })
-    .png()
-    .toBuffer();
+  const buf = await (await trimmed(path.join(SUPPLIED, entry.supplied))).png().toBuffer();
   return { buf, ext: 'png' };
 }
 
-// Render on white, as the chip shows it. A logo that comes out blank was
-// white-on-transparent (sites often serve those for dark headers).
+// Render trimmed and on white, as the chip shows it. A logo that comes out
+// blank was white-on-transparent (sites often serve those for dark headers).
 async function render(file, w, h) {
-  const isSvg = file.endsWith('.svg');
-  return sharp(file, isSvg ? { density: 300 } : {})
+  return (await trimmed(file))
     .resize(w, h, { fit: 'contain', background: '#fff' })
     .flatten({ background: '#fff' })
     .png()
@@ -91,22 +90,29 @@ async function render(file, w, h) {
 const results = [];
 for (const entry of todo) {
   try {
-    const got = entry.url ? await download(entry) : await supplied(entry);
-    // One original per slug: drop any older file with another extension.
-    for (const f of readdirSync(SRC)) {
-      if (path.parse(f).name === entry.slug) rmSync(path.join(SRC, f));
+    const existing = readdirSync(SRC).filter((f) => path.parse(f).name === entry.slug);
+    let file, how;
+    if (entry.url || entry.supplied) {
+      const got = entry.url ? await download(entry) : await supplied(entry);
+      // One original per slug: drop any older file with another extension.
+      for (const f of existing) rmSync(path.join(SRC, f));
+      file = path.join(SRC, `${entry.slug}.${got.ext}`);
+      writeFileSync(file, got.buf);
+      how = entry.url ? 'web' : 'supplied';
+    } else {
+      if (existing.length !== 1) throw new Error(`${entry.slug}: expected one original in assets/source/logos, found ${existing.length}`);
+      file = path.join(SRC, existing[0]);
+      how = 'kept';
     }
-    const file = path.join(SRC, `${entry.slug}.${got.ext}`);
-    writeFileSync(file, got.buf);
 
-    const { width, height } = await sharp(file, got.ext === 'svg' ? { density: 300 } : {}).metadata();
+    const { info: { width, height } } = await (await trimmed(file)).toBuffer({ resolveWithObject: true });
     const stats = await sharp(await render(file, 200, 80)).stats();
     if (stats.channels.every((c) => c.stdev < 1)) {
       throw new Error(`${entry.slug}: renders blank on white (a white logo?). Find a dark version.`);
     }
     const ratio = width / height;
     results.push({ ...entry, file, ratio, wide: ratio > WIDE_RATIO });
-    console.log(`ok   ${entry.slug.padEnd(22)} ${entry.url ? 'web     ' : 'supplied'} ${got.ext}  ${ratio.toFixed(2)}:1`);
+    console.log(`ok   ${entry.slug.padEnd(26)} ${how.padEnd(8)} ${path.extname(file).slice(1).padEnd(4)} ${ratio.toFixed(2)}:1`);
   } catch (err) {
     console.log(`FAIL ${err.message}`);
     process.exitCode = 1;
@@ -122,7 +128,7 @@ if (results.length) {
     const x = (i % COLS) * TILE_W, y = Math.floor(i / COLS) * TILE_H;
     const boxW = r.wide ? 210 : 130;
     layers.push({ input: await render(r.file, boxW, 50), left: x + (TILE_W - boxW) / 2, top: y + 20 });
-    const label = `${r.slug}${r.wide ? ' (wide)' : ''}${r.url ? '' : ' *supplied'}`;
+    const label = `${r.slug}${r.wide ? ' (wide)' : ''}`;
     layers.push({
       input: Buffer.from(`<svg width="${TILE_W}" height="24"><text x="8" y="16" font-size="12" font-family="monospace" fill="#555">${label}</text></svg>`),
       left: x, top: y + 90,

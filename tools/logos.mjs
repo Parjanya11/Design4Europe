@@ -4,10 +4,11 @@
 //
 // Reads originals from assets/source/logos/, writes WebP to assets/logos/
 // sized to 3x the chip's content box (sharp on high-density phones, no
-// bigger). To add a logo: drop the original in assets/source/logos/,
-// run this, and reference assets/logos/<name>.webp in index.html.
+// bigger), after trimming any margin in the file (see logo-trim.mjs).
+// Originals usually arrive through `npm run logos:fetch`; see the README.
 
 import sharp from 'sharp';
+import { trimmed, isSvg } from './logo-trim.mjs';
 import { readdirSync, mkdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,9 +26,8 @@ for (const file of readdirSync(SRC)) {
   const input = path.join(SRC, file);
   const name = path.parse(file).name;
   const output = path.join(OUT, `${name}.webp`);
-  const isSvg = file.toLowerCase().endsWith('.svg');
-  await sharp(input, isSvg ? { density: 300 } : {})
-    .resize({ ...BOX, fit: 'inside', withoutEnlargement: !isSvg })
+  await (await trimmed(input))
+    .resize({ ...BOX, fit: 'inside', withoutEnlargement: !isSvg(file) })
     .webp({ quality: 90, alphaQuality: 100, effort: 6 })
     .toFile(output);
   const a = statSync(input).size, b = statSync(output).size;
