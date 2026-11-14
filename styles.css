@@ -7,6 +7,8 @@
   --ink-2:     #4a5b82;   /* body text on light                  */
   --ink-3:     #5a6890;   /* muted body                          */
   --accent:    #f4361a;   /* red — CTAs, tags, accents           */
+  --accent-ink:#cc2a0e;   /* same red, darkened to clear 4.5:1 as
+                             text on light and behind white text  */
   --blue:      #003198;   /* secondary blue emphasis             */
   --bg:        #ffffff;
   --bg-soft:   #f7f9fc;   /* soft cards / form background         */
@@ -155,6 +157,341 @@ a { color: inherit; }
 .divider-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
 .divider-label { font: 600 11px var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); flex: none; }
 .divider-rule { height: 1.5px; flex: 1; background: linear-gradient(90deg, var(--accent), rgba(244,54,26,0)); }
+
+/* =================================================================
+   FP10 SECTIONS
+   All colours come from the tokens above. Highlights use --accent on
+   light tints that keep AA contrast, never the deck's red-on-red.
+   ================================================================= */
+
+/* Visually hidden, still announced. */
+.u-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --- 1. Where FP10 stands ----------------------------------------- */
+.tl { background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+.tl .container { padding-top: 44px; padding-bottom: 44px; }
+.tl-heading {
+  font: 700 27px/1.2 var(--display); color: var(--ink);
+  margin: 0 0 30px; text-wrap: balance;
+}
+
+/* Horizontal on desktop: one column per step, dots sitting on a rule. */
+.tl-track {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+}
+.tl-step {
+  position: relative; padding: 32px 14px 0 0;
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.tl-step::before {
+  content: ''; position: absolute; top: 7px; left: 0; right: 0;
+  height: 2px; background: #d8e0ee;
+}
+.tl-step:last-child::before { right: calc(100% - 16px); }
+.tl-dot {
+  position: absolute; top: 0; left: 0; width: 16px; height: 16px;
+  border-radius: 50%; background: #fff; border: 2px solid #c2cee4;
+  box-sizing: border-box;
+}
+.tl-date {
+  font: 600 11px var(--body); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tl-step-name { font: 600 14.5px/1.4 var(--body); color: var(--ink); }
+.tl-actor { font: 400 12.5px/1.4 var(--body); color: var(--ink-3); }
+
+.tl-past .tl-dot { background: #c2cee4; border-color: #c2cee4; }
+.tl-past .tl-step-name { color: var(--ink-2); font-weight: 500; }
+
+.tl-now .tl-dot { background: var(--accent-ink); border-color: var(--accent-ink); }
+.tl-here {
+  display: inline-block; width: fit-content; margin-bottom: 5px;
+  font: 700 11px var(--body); letter-spacing: .12em; text-transform: uppercase;
+  color: #fff; background: var(--accent-ink); border-radius: 3px; padding: 3px 7px;
+}
+
+.tl-updated { margin: 24px 0 0; font: 400 12.5px var(--body); color: var(--ink-3); }
+.tl-cta { margin: 7px 0 0; font: 500 15px/1.5 var(--body); color: var(--ink); }
+.tl-cta-link { color: var(--accent-ink); font-weight: 600; text-decoration: none; white-space: nowrap; }
+.tl-cta-link:hover { text-decoration: underline; }
+.tl-cta-link:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; border-radius: 3px; }
+
+/* --- 1b. Trilogue diagram ------------------------------------------ */
+.tg { margin-top: 38px; padding-top: 32px; border-top: 1px solid var(--line); }
+.tg-heading {
+  font: 700 19px/1.25 var(--display); color: var(--ink);
+  margin: 0 0 30px; text-wrap: balance;
+}
+
+/* Commission top-centre, Parliament and Council either side below, all
+   converging on the trilogue node. The gaps are wide on purpose: the
+   connectors live in them, and need room to read as connectors. */
+.tg-stage {
+  display: grid;
+  grid-template-columns: 1fr minmax(170px, 230px) 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 54px;
+  row-gap: 40px;
+  align-items: center;
+  /* Capped so the side boxes do not stretch into wide empty cards on a
+     large screen, which left the connectors looking like stubs. */
+  max-width: 900px;
+}
+
+.tg-actor {
+  display: flex; flex-direction: column; gap: 3px;
+  background: #fff; border: 1px solid var(--line); border-radius: 9px;
+  padding: 13px 15px; min-width: 0;
+}
+.tg-actor-1 { grid-column: 2; grid-row: 1; }
+.tg-actor-2 { grid-column: 1; grid-row: 2; }
+.tg-actor-3 { grid-column: 3; grid-row: 2; }
+.tg-actor-name { font: 700 13.5px/1.3 var(--display); color: var(--ink); }
+.tg-actor-brings { font: 400 12.5px/1.45 var(--body); color: var(--ink-2); }
+.tg-actor-when {
+  font: 600 11px var(--body); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+
+/* The node everything points at. Narrower than its column so the
+   connectors have somewhere to land. */
+.tg-centre {
+  position: relative;
+  grid-column: 2; grid-row: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; text-align: center;
+  background: var(--accent-ink); border-radius: 10px;
+  padding: 18px 16px;
+  box-shadow: 0 6px 20px rgba(204, 42, 14, .26);
+}
+.tg-centre-name { font: 800 18px/1.1 var(--display); color: #fff; }
+.tg-centre-when {
+  font: 600 11px/1.3 var(--body); letter-spacing: .09em;
+  text-transform: uppercase; color: #fff;
+}
+
+/* Connectors are children of the node and reach outwards into the gaps,
+   so they stay attached to it whatever the column widths resolve to. */
+.tg-link { position: absolute; background: #b9c6dd; }
+.tg-link::after {
+  content: ''; position: absolute; width: 7px; height: 7px;
+  border-right: 2px solid #b9c6dd; border-bottom: 2px solid #b9c6dd;
+}
+/* From the Commission, downwards. */
+.tg-link-top {
+  width: 2px; height: 40px; left: 50%; bottom: 100%; transform: translateX(-50%);
+}
+.tg-link-top::after {
+  bottom: -1px; left: 50%; transform: translate(-50%, 0) rotate(45deg);
+}
+/* From the Parliament, rightwards. */
+.tg-link-left {
+  height: 2px; width: 54px; right: 100%; top: 50%; transform: translateY(-50%);
+}
+.tg-link-left::after {
+  right: -1px; top: 50%; transform: translate(0, -50%) rotate(-45deg);
+}
+/* From the Council, leftwards. */
+.tg-link-right {
+  height: 2px; width: 54px; left: 100%; top: 50%; transform: translateY(-50%);
+}
+.tg-link-right::after {
+  left: -1px; top: 50%; transform: translate(0, -50%) rotate(135deg);
+}
+
+@media (max-width: 860px) {
+  .tg-stage { column-gap: 32px; }
+  .tg-link-left, .tg-link-right { width: 32px; }
+}
+
+@media (max-width: 760px) {
+  .tg { margin-top: 30px; padding-top: 26px; }
+  .tg-heading { font-size: 17px; margin-bottom: 18px; }
+  /* Stacked in reading order, trilogue last as the outcome. Connectors
+     are dropped rather than shrunk into illegibility. */
+  .tg-stage { grid-template-columns: 1fr; column-gap: 0; row-gap: 10px; }
+  .tg-actor-1, .tg-actor-2, .tg-actor-3, .tg-centre {
+    grid-column: 1; grid-row: auto;
+  }
+  .tg-centre { align-items: flex-start; text-align: left; padding: 15px 16px; }
+  .tg-link { display: none; }
+}
+
+/* --- 2. Connector diagram ----------------------------------------- */
+.cx { min-width: 0; }
+.cx-wrap { display: flex; flex-direction: column; gap: 12px; }
+/* The FP10 boundary is drawn, so the ECF outside it reads as a separate
+   fund rather than a fifth pillar. */
+.cx-fp10 {
+  position: relative; border: 1.5px solid #ccd6e8;
+  border-radius: 10px; padding: 22px 14px 14px;
+}
+.cx-boundary-label {
+  position: absolute; top: -9px; left: 14px; padding: 0 7px; background: #fff;
+  font: 700 11px var(--body); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.cx-map { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.cx-pillar {
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  border-radius: 7px; padding: 10px 11px; min-width: 0;
+}
+.cx-pillar-id {
+  font: 700 11px var(--body); letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent-ink);
+}
+.cx-pillar-name { font: 600 12.5px/1.3 var(--body); color: var(--ink); overflow-wrap: break-word; hyphens: auto; }
+
+.cx-ecf {
+  display: flex; flex-direction: column; gap: 2px;
+  border: 1.5px dashed #c2cee4; border-radius: 10px; padding: 11px 13px;
+}
+.cx-ecf-name { font: 600 12.5px var(--body); color: var(--ink); }
+.cx-ecf-note { font: 400 11.5px/1.4 var(--body); color: var(--ink-3); }
+
+.cx-caption-head {
+  margin: 20px 0 10px; font: 600 11px var(--body); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.cx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.cx-list li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; }
+.cx-num {
+  width: 20px; height: 20px; border-radius: 50%; background: var(--accent-ink);
+  color: #fff; font: 700 11px/20px var(--body); text-align: center;
+}
+.cx-text { font: 400 13.5px/1.5 var(--body); color: var(--ink-2); }
+
+/* --- 3. Structure map --------------------------------------------- */
+.sm { margin-top: 46px; }
+.sm-legend {
+  list-style: none; margin: 0 0 20px; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 10px 26px;
+}
+.sm-legend-item {
+  display: flex; align-items: center; gap: 8px;
+  font: 400 13.5px var(--body); color: var(--ink-2);
+}
+.sm-swatch { width: 14px; height: 14px; border-radius: 3px; flex: none; }
+.sm-swatch.sm-vertical { background: var(--accent-ink); }
+.sm-swatch.sm-horizontal { background: #fde3de; border: 1px solid #f0a492; }
+.sm-swatch.sm-initiative { background: #c9d8f2; border: 1px solid #5d7dba; }
+.sm-swatch.sm-grants { background: #e8effb; border: 1px solid #a8bde0; }
+
+/* The four pillars sit in one row, as in the source deck. */
+.sm-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: start; }
+.sm-pillar {
+  background: var(--bg-soft); border: 1px solid var(--line);
+  border-radius: 9px; padding: 13px 14px; min-width: 0;
+}
+.sm-summary { cursor: pointer; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sm-summary::-webkit-details-marker { display: none; }
+.sm-summary:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; border-radius: 4px; }
+.sm-pillar-id {
+  font: 700 11px var(--body); letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent-ink);
+}
+.sm-pillar-name { font: 700 14.5px/1.25 var(--display); color: var(--ink); }
+.sm-body { margin-top: 11px; }
+.sm-group-name {
+  margin: 13px 0 6px; font: 600 11px var(--body); letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.sm-windows { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.sm-window { border-radius: 5px; padding: 7px 9px; background: #fff; border: 1px solid var(--line); }
+.sm-window-name {
+  display: block; font: 500 12.5px/1.35 var(--body); color: var(--ink);
+  overflow-wrap: break-word;
+}
+.sm-window-note {
+  display: block; margin-top: 3px; font: 400 11px/1.4 var(--body); color: var(--ink-3);
+  overflow-wrap: break-word;
+}
+/* Attached to the line above it, the way the deck hangs these off a parent. */
+.sm-sub { margin-left: 14px; position: relative; }
+.sm-sub::before {
+  content: ''; position: absolute; left: -9px; top: -3px; bottom: 50%;
+  width: 7px; border-left: 1px solid #b9c6dd; border-bottom: 1px solid #b9c6dd;
+  border-bottom-left-radius: 4px;
+}
+/* Design as a sector of its own: dark red on a light tint, not red on red. */
+.sm-window.sm-vertical { background: #fdeeeb; border-color: var(--accent-ink); }
+.sm-window.sm-vertical .sm-window-name { color: #9e2210; font-weight: 700; }
+.sm-window.sm-horizontal { background: #fdf7f5; border-color: #f3d2c9; }
+.sm-window.sm-initiative { background: #eaf1fd; border-color: #5d7dba; }
+.sm-window.sm-initiative .sm-window-name { color: #1f3f7d; font-weight: 600; }
+.sm-window.sm-grants { background: #f4f8fe; border-color: #a8bde0; }
+.sm-window.sm-grants .sm-window-name { color: #2b4a85; }
+.sm-note { margin: 22px 0 0; font: 400 13px/1.6 var(--body); color: var(--ink-3); max-width: 70ch; }
+
+/* --- 4. Theme cards ------------------------------------------------ */
+.tc { background: var(--bg-soft); border-top: 1px solid var(--line); }
+.tc .container { padding-top: 54px; padding-bottom: 58px; }
+.tc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.tc-card {
+  display: flex; flex-direction: column; gap: 13px;
+  background: #fff; border: 1px solid var(--line); border-radius: 9px;
+  padding: 18px 19px; min-width: 0;
+}
+.tc-pair { display: grid; gap: 10px; }
+.tc-window { display: flex; flex-direction: column; gap: 2px; }
+.tc-window-kind {
+  font: 600 11px var(--body); letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.tc-window-name { font: 600 13.5px/1.35 var(--body); color: var(--ink); }
+.tc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+.tc-chip {
+  font: 600 11.5px var(--body); color: #9e2210;
+  background: #fdeeeb; border: 1px solid #f3bcad;
+  border-radius: 4px; padding: 4px 8px;
+}
+.tc-link { margin-top: 4px; font: 600 13px var(--body); color: var(--accent-ink); text-decoration: none; }
+.tc-link:hover { text-decoration: underline; }
+.tc-link:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; border-radius: 3px; }
+
+/* --- 5. Draft-text quotes (sit on the navy case band) -------------- */
+.q { margin-top: 40px; }
+.q-lead { margin: 0 0 16px; font: 600 16px var(--body); color: #fff; }
+.q-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 14px; }
+.q-item { margin: 0; }
+.q-text {
+  margin: 0; padding: 15px 17px; border-left: 3px solid var(--accent-ink);
+  background: rgba(255,255,255,.05); border-radius: 0 7px 7px 0;
+  font: 400 14px/1.6 var(--body); color: var(--on-navy); text-wrap: pretty;
+}
+.q-attrib { margin: 14px 0 0; font: 400 12.5px var(--body); color: #8b9bc4; }
+
+/* --- FP10 responsive ----------------------------------------------- */
+@media (max-width: 1000px) {
+  .sm-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .tl-heading { font-size: 22px; }
+  /* Vertical timeline: the rule runs down the left of the dots. */
+  .tl-track { grid-auto-flow: row; grid-auto-columns: auto; gap: 22px; }
+  .tl-step { padding: 0 0 0 30px; }
+  .tl-step::before { top: 18px; bottom: -22px; left: 7px; right: auto; width: 2px; height: auto; }
+  .tl-step:last-child::before { display: none; }
+  .tl-dot { top: 1px; }
+  .sm-grid { grid-template-columns: 1fr; }
+  /* Collapsed pillars need to look openable, which only matters here:
+     above this width they are all open already. */
+  .sm-pillar { position: relative; }
+  .sm-summary::after {
+    content: ''; position: absolute; right: 4px; top: 8px;
+    width: 9px; height: 9px;
+    border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3);
+    transform: rotate(45deg); transition: transform .15s ease;
+  }
+  .sm-pillar[open] .sm-summary::after { top: 12px; transform: rotate(-135deg); }
+  .sm-summary { padding-right: 22px; }
+  .tc-grid { grid-template-columns: 1fr; }
+}
 
 /* =================================================================
    THE STAKES
