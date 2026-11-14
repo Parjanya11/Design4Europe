@@ -186,7 +186,9 @@ a { color: inherit; }
 .hero-social:hover { color: #fff; }
 .hero-social .li-icon { width: 19px; height: 19px; flex: none; }
 
-.footer-social { display: inline-flex; align-items: center; gap: 8px; }
+/* `.footer a` (declared later, and more specific) sets display: block, which
+   switched off the flex gap and left the icon touching its label. */
+.footer a.footer-social { display: inline-flex; align-items: center; gap: 8px; }
 .footer-social .li-icon { width: 15px; height: 15px; flex: none; }
 
 /* Both sit on dark grounds, so give focus a visible ring of its own. */
