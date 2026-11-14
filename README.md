@@ -70,13 +70,15 @@ The public list catches up within about five minutes.
 
 ### Add a signatory logo
 
-1. Put the original file in `assets/source/logos/` with a readable name, for example `danish-design-center.png`.
-2. Run `node logos.mjs` in `tools/`. It writes a resized WebP to `assets/logos/`.
-3. Add a chip to the **banner** in `index.html` (there is only one list; the signatories section copies it):
+1. Drop the file you were sent into `assets/new logos/`. It's a local inbox and isn't committed.
+2. Look for a cleaner official file, ideally an SVG: view the source of the organisation's site and search for "logo", or try Wikimedia Commons. Only use it if it's the same design as the one you were sent.
+3. Add an entry to `tools/logo-sources.json`: `url` for a web file, or `supplied` with the inbox filename if there's no web version. The `note` field records why.
+4. In `tools/`, run `npm run logos:fetch -- SLUG`, then `npm run logos`. The first downloads the file or trims the supplied one into `assets/source/logos/`. It refuses SVGs with scripts or external references and rejects logos that render blank on white. It also writes a review sheet to `tools/out/logo-sheet.png`. Check that sheet before going on. The second writes the resized WebP to `assets/logos/`.
+5. Paste the chip line that `logos:fetch` prints into the **banner** in `index.html`, in alphabetical order: row one for institutions, row two for studios and companies. There is only one list. The Organisations tab further down copies it as a grid, and its count follows.
    ```html
    <div class="logo-chip"><img src="assets/logos/NAME.webp" alt="Organisation name" /></div>
    ```
-   Use `class="logo-chip wide"` for long wordmarks.
+   The script adds `wide` for long wordmarks.
 
 ### Update FP10 content
 

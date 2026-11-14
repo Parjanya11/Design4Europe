@@ -8,7 +8,9 @@
     "check": "node check.mjs",
     "check:update-baseline": "node check.mjs --update-baseline",
     "social": "node social.mjs",
-    "test:functions": "node test/functions.test.mjs"
+    "test:functions": "node test/functions.test.mjs",
+    "logos:fetch": "node fetch-logos.mjs",
+    "logos": "node logos.mjs"
   },
   "devDependencies": {
     "axe-core": "4.10.2",
