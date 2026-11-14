@@ -13,11 +13,17 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://design4europe.eu/" />
   <meta property="og:site_name" content="Design for Europe" />
-  <!-- <meta property="og:image" content="assets/social-preview.png" /> -->
+  <!-- Share image: generated from tools/social/card.html (npm run social).
+       Absolute URL, because social networks do not resolve relative ones. -->
+  <meta property="og:image" content="https://design4europe.eu/assets/social-preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Europe cannot function without Design. An open letter to the European Commission." />
+  <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Fonts are self-hosted: see the FONTS block at the top of styles.css. -->
+  <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -68,6 +74,8 @@
     </div>
   </header>
 
+  <main id="main">
+
   <!-- =============================== SIGNATORY LOGOS (BANNER) =============================== -->
   <!-- Same marquee component as the signatories section below. -->
   <section class="logo-banner">
@@ -76,30 +84,45 @@
          unit rather than two identical strips. -->
     <div class="marquee">
       <div class="marquee-track">
-        <div class="logo-chip wide"><img src="assets/BEDA_logo.svg" alt="BEDA" /></div>
-        <div class="logo-chip"><img src="assets/bulgarian-design-council.png" alt="Bulgarian Design Council" /></div>
-        <div class="logo-chip"><img src="assets/clicknl_logo.svg" alt="ClickNL" /></div>
-        <div class="logo-chip"><img src="assets/creativefed-big_img.svg" alt="CreativeFED" /></div>
-        <div class="logo-chip"><img src="assets/danish-design-center.png" alt="Danish Design Center" /></div>
-        <div class="logo-chip wide"><img src="assets/design-education-trust.png" alt="The Design Education Trust" /></div>
-        <div class="logo-chip"><img src="assets/dutch-design-foundation.jpg" alt="Dutch Design Foundation" /></div>
-        <div class="logo-chip"><img src="assets/logo%20ekip.svg" alt="EKIP" /></div>
-        <div class="logo-chip"><img src="assets/greek-design-matters.jpg" alt="Greek Design Matters" /></div>
-        <div class="logo-chip wide"><img src="assets/idz-berlin.png" alt="Internationales Design Zentrum Berlin" /></div>
-        <div class="logo-chip"><img src="assets/TU-Delft-IDE-logo.png" alt="TU Delft, Industrial Design Engineering" /></div>
-        <div class="logo-chip"><img src="assets/tue-id.jpg" alt="TU/e Industrial Design" /></div>
-        <div class="logo-chip wide"><img src="assets/paris-saclay-design-spot.jpg" alt="Universite Paris-Saclay, Design Spot" /></div>
-        <div class="logo-chip wide"><img src="assets/wageningen-ur.jpg" alt="Wageningen University & Research" /></div>
+        <div class="logo-chip"><img src="assets/logos/bayern-design.webp" alt="bayern design" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/beda.webp" alt="BEDA" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/bulgarian-design-council.webp" alt="Bulgarian Design Council" /></div>
+        <div class="logo-chip"><img src="assets/logos/clicknl.webp" alt="ClickNL" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/ciid.webp" alt="Copenhagen Institute of Interaction Design" /></div>
+        <div class="logo-chip"><img src="assets/logos/creativefed.webp" alt="CreativeFED" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/danish-design-center.webp" alt="Danish Design Center" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/design-education-trust.webp" alt="The Design Education Trust" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/designaustria.webp" alt="designaustria" /></div>
+        <div class="logo-chip"><img src="assets/logos/dutch-design-foundation.webp" alt="Dutch Design Foundation" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/easd-alcoi.webp" alt="EASD Alcoi" /></div>
+        <div class="logo-chip"><img src="assets/logos/ekip.webp" alt="EKIP" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/esdapc.webp" alt="Escola Superior de Disseny i d'Arts Plàstiques de Catalunya" /></div>
+        <div class="logo-chip"><img src="assets/logos/flanders-dc.webp" alt="Flanders District of Creativity" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/fundacio-disseny.webp" alt="Fundació del Disseny Comunitat Valenciana" /></div>
+        <div class="logo-chip"><img src="assets/logos/greek-design-matters.webp" alt="Greek Design Matters" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/iaac-fablab-bcn.webp" alt="IaaC Fab Lab Barcelona" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/idz-berlin.webp" alt="Internationales Design Zentrum Berlin" /></div>
+        <div class="logo-chip"><img src="assets/logos/polimi-design.webp" alt="Politecnico di Milano, Scuola del Design" /></div>
+        <div class="logo-chip"><img src="assets/logos/tum.webp" alt="Technical University of Munich" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/tu-delft-ide.webp" alt="TU Delft, Industrial Design Engineering" /></div>
+        <div class="logo-chip"><img src="assets/logos/tue-id.webp" alt="TU/e Industrial Design" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/universitat-valencia.webp" alt="Universitat de València" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/paris-saclay-design-spot.webp" alt="Universite Paris-Saclay, Design Spot" /></div>
+        <div class="logo-chip"><img src="assets/logos/vdid.webp" alt="Verband Deutscher Industrie Designer" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/wageningen-ur.webp" alt="Wageningen University & Research" /></div>
+        <div class="logo-chip"><img src="assets/logos/wallonie-design.webp" alt="Wallonie Design" /></div>
       </div>
     </div>
     <div class="marquee marquee-reverse">
       <div class="marquee-track">
-        <div class="logo-chip"><img src="assets/Brand.svg" alt="Brand.Brief" /></div>
-        <div class="logo-chip"><img src="assets/curis-design.jpg" alt="Curis Design" /></div>
-        <div class="logo-chip wide"><img src="assets/designtech.jpg" alt="Designtech" /></div>
-        <div class="logo-chip"><img src="assets/meso.jpg" alt="MESO Digital Interiors" /></div>
-        <div class="logo-chip"><img src="assets/pdr.jpg" alt="pdr." /></div>
-        <div class="logo-chip wide"><img src="assets/studio-peter-post.jpg" alt="studio peter post x petra esveld" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/brand-brief.webp" alt="Brand.Brief" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/curis-design.webp" alt="Curis Design" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/designtech.webp" alt="Designtech" /></div>
+        <div class="logo-chip"><img src="assets/logos/meso.webp" alt="MESO Digital Interiors" /></div>
+        <div class="logo-chip"><img src="assets/logos/normal-people.webp" alt="Normal People" /></div>
+        <div class="logo-chip wide"><img src="assets/logos/omvorm.webp" alt="omvorm" /></div>
+        <div class="logo-chip"><img src="assets/logos/pdr.webp" alt="pdr." /></div>
+        <div class="logo-chip wide"><img src="assets/logos/studio-peter-post.webp" alt="studio peter post x petra esveld" /></div>
       </div>
     </div>
   </section>
@@ -141,7 +164,7 @@
           </p>
         </div>
         <div class="ask-logo">
-          <img src="assets/visual-design-for-europe.svg" alt="Design for Europe and Europe for Design" />
+          <img src="assets/visual-design-for-europe.svg" loading="lazy" decoding="async" alt="Design for Europe and Europe for Design" />
         </div>
       </div>
 
@@ -196,8 +219,6 @@
           <div class="stat-src">McKinsey Design Index</div>
         </div>
 
-      <!-- Draft-text quotes, rendered from fp10.js -->
-      <div class="q" id="fp10Quotes"></div>
         <div class="stat-card">
           <div class="stat-num">1.5&times;</div>
           <div class="stat-desc">Higher total returns delivered to shareholders</div>
@@ -214,6 +235,10 @@
           <div class="stat-src">Creative sector, EU</div>
         </div>
       </div>
+
+      <!-- Draft-text quotes, rendered from fp10.js. After the stats, not
+           inside their grid: inside it, they split the cards into rows. -->
+      <div class="q" id="fp10Quotes"></div>
     </div>
   </section>
 
@@ -244,7 +269,7 @@
           </div>
         </div>
         <figure class="why-figure">
-          <img src="assets/visual-design-perspectives.svg" alt="Diagram: Design provides and connects human-centred, system-centred, and transdisciplinary perspectives" />
+          <img src="assets/visual-design-perspectives.svg" loading="lazy" decoding="async" alt="Diagram: Design provides and connects human-centred, system-centred, and transdisciplinary perspectives" />
         </figure>
       </div>
     </div>
@@ -272,13 +297,11 @@
           <p class="sign-sub" id="signSub">Organisations sign on below. Every name strengthens the case before FP10 is finalised.</p>
         </div>
 
-        <!-- ============================================================= -->
-        <!-- Submissions go to Formspree (endpoint in the action).         -->
-        <!-- script.js intercepts submit and POSTs via fetch so the        -->
-        <!-- visitor stays on this page.                                   -->
-        <!-- ============================================================= -->
+        <!-- Posts to our own Netlify Function (netlify/functions/signon.js),
+             which stores the signature and sends both emails. script.js
+             intercepts submit so the visitor stays on this page. -->
         <form class="signon-form" id="signonForm" action="/.netlify/functions/signon" method="POST">
-          <!-- Honeypot: hidden from humans; bots fill it and Formspree drops those (_gotcha convention) -->
+          <!-- Honeypot: hidden from humans. Bots fill it, and signon.js silently discards those submissions. -->
           <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
           <label>
@@ -373,67 +396,50 @@
     </div>
   </section>
 
-  <!-- =============================== SIGNATORIES MARQUEE =============================== -->
-  <section class="signatories">
-    <div class="container signatories-head">
-      <div class="section-eyebrow center">Signatories</div>
-      <h2 class="section-title">Backed by Europe's design community</h2>
-    </div>
-    <!-- Two bars: institutions above, studios and agencies below.
-           The lower bar scrolls the other way so the pair reads as one
-           unit rather than two identical strips. -->
-      <div class="marquee">
-        <div class="marquee-track">
-          <div class="logo-chip wide"><img src="assets/BEDA_logo.svg" alt="BEDA" /></div>
-          <div class="logo-chip"><img src="assets/bulgarian-design-council.png" alt="Bulgarian Design Council" /></div>
-          <div class="logo-chip"><img src="assets/clicknl_logo.svg" alt="ClickNL" /></div>
-          <div class="logo-chip"><img src="assets/creativefed-big_img.svg" alt="CreativeFED" /></div>
-          <div class="logo-chip"><img src="assets/danish-design-center.png" alt="Danish Design Center" /></div>
-          <div class="logo-chip wide"><img src="assets/design-education-trust.png" alt="The Design Education Trust" /></div>
-          <div class="logo-chip"><img src="assets/dutch-design-foundation.jpg" alt="Dutch Design Foundation" /></div>
-          <div class="logo-chip"><img src="assets/logo%20ekip.svg" alt="EKIP" /></div>
-          <div class="logo-chip"><img src="assets/greek-design-matters.jpg" alt="Greek Design Matters" /></div>
-          <div class="logo-chip wide"><img src="assets/idz-berlin.png" alt="Internationales Design Zentrum Berlin" /></div>
-          <div class="logo-chip"><img src="assets/TU-Delft-IDE-logo.png" alt="TU Delft, Industrial Design Engineering" /></div>
-          <div class="logo-chip"><img src="assets/tue-id.jpg" alt="TU/e Industrial Design" /></div>
-          <div class="logo-chip wide"><img src="assets/paris-saclay-design-spot.jpg" alt="Universite Paris-Saclay, Design Spot" /></div>
-          <div class="logo-chip wide"><img src="assets/wageningen-ur.jpg" alt="Wageningen University & Research" /></div>
-        </div>
-      </div>
-      <div class="marquee marquee-reverse">
-        <div class="marquee-track">
-          <div class="logo-chip"><img src="assets/Brand.svg" alt="Brand.Brief" /></div>
-          <div class="logo-chip"><img src="assets/curis-design.jpg" alt="Curis Design" /></div>
-          <div class="logo-chip wide"><img src="assets/designtech.jpg" alt="Designtech" /></div>
-          <div class="logo-chip"><img src="assets/meso.jpg" alt="MESO Digital Interiors" /></div>
-          <div class="logo-chip"><img src="assets/pdr.jpg" alt="pdr." /></div>
-          <div class="logo-chip wide"><img src="assets/studio-peter-post.jpg" alt="studio peter post x petra esveld" /></div>
-        </div>
-      </div>
-    </section>
-
-  <!-- =============================== SIGNATORY LIST =============================== -->
-  <section class="roll" id="signatories">
+  <!-- =============================== SIGNATORIES =============================== -->
+  <!-- Two tabs: organisation logos first, individuals on request. -->
+  <section class="signatories" id="signatories">
     <div class="container">
-      <div class="section-eyebrow center">The undersigned</div>
-      <h2 class="section-title roll-title">Who has signed</h2>
+      <div class="section-eyebrow center">Signatories</div>
+      <h2 class="section-title signatories-title">Backed by Europe's design community</h2>
 
       <!-- Resting state before the signatories function answers; filled in
            place by script.js. -->
       <p class="roll-lede" id="rollLede">Loading the list of signatories&hellip;</p>
 
-      <div class="roll-list" id="rollList" aria-live="polite"></div>
+      <div class="sig-tabs" role="tablist" aria-label="Signatories">
+        <button type="button" class="sig-tab" role="tab" id="tabOrgs" aria-controls="panelOrgs" aria-selected="true">
+          Organisations <span class="sig-count" id="orgCount"></span>
+        </button>
+        <button type="button" class="sig-tab" role="tab" id="tabPeople" aria-controls="panelPeople" aria-selected="false" tabindex="-1">
+          Individuals <span class="sig-count" id="peopleCount"></span>
+        </button>
+      </div>
 
-      <p class="roll-note" id="rollNote" hidden></p>
+      <!-- The logo list lives once, in the banner under the hero; script.js
+           copies it here as a grid, so the two can never drift apart. -->
+      <div class="sig-panel" role="tabpanel" id="panelOrgs" aria-labelledby="tabOrgs" tabindex="0">
+        <div class="logo-grid" id="logoGrid"></div>
+      </div>
+
+      <div class="sig-panel" role="tabpanel" id="panelPeople" aria-labelledby="tabPeople" tabindex="0" hidden>
+        <div class="roll-list" id="rollList" aria-live="polite"></div>
+        <p class="roll-note" id="rollNote" hidden></p>
+      </div>
     </div>
   </section>
+
+  </main>
 
   <!-- =============================== FOOTER =============================== -->
   <footer class="footer">
     <div class="container footer-grid">
       <div>
-        <div class="footer-logo">DESIGN</div>
-        <p class="footer-about">An initiative of Europe's Design Research faculties, Education institutes, and Design Industry.</p>
+        <div class="footer-brand">
+          <img src="assets/visual-design-for-europe-icon.svg" alt="" width="32" height="30" />
+          <span class="footer-logo">Design4Europe</span>
+        </div>
+        <p class="footer-about">This campaign is coordinated by the Faculty of Industrial Design Engineering at Delft University of Technology, in partnership with BEDA, CreativeFED, ekip, CLICKNL, the Dutch Design Foundation, and the Danish Design Centre. Together, these organisations have initiated a European coalition to strengthen the role of design in FP10 and future European policies. We invite organisations from all European regions to join this growing network.</p>
       </div>
       <div>
         <div class="footer-h">Contact</div>

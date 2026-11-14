@@ -1,0 +1,594 @@
+{
+ "_note": "FAKE DATA for local preview only. Never real signatories.",
+ "ok": true,
+ "total": 109,
+ "listed": 97,
+ "unlisted": 12,
+ "countries": 12,
+ "organisations": 5,
+ "signatories": [
+  {
+   "name": "Anna Demo",
+   "organisation": "",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Anna Dummy",
+   "organisation": "Sample Design Academy",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Anna Example",
+   "organisation": "Sample Design Academy",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Anna Fixture",
+   "organisation": "Mock Polytechnic",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Anna Mock",
+   "organisation": "Demo Studio",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Anna Placeholder",
+   "organisation": "Example University",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Anna Sample",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Anna Testperson",
+   "organisation": "",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Demo",
+   "organisation": "Sample Design Academy",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Dummy",
+   "organisation": "",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Example",
+   "organisation": "",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Fixture",
+   "organisation": "Example University",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Mock",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Placeholder",
+   "organisation": "Demo Studio",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Sample",
+   "organisation": "",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Clara Testperson",
+   "organisation": "Mock Polytechnic",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Demo",
+   "organisation": "",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Dummy",
+   "organisation": "Mock Polytechnic",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Example",
+   "organisation": "Mock Polytechnic",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Fixture",
+   "organisation": "Demo Studio",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Mock",
+   "organisation": "",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Placeholder",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Sample",
+   "organisation": "Sample Design Academy",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Elena Testperson",
+   "organisation": "Example University",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Demo",
+   "organisation": "Mock Polytechnic",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Dummy",
+   "organisation": "Example University",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Example",
+   "organisation": "Example University",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Fixture",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Mock",
+   "organisation": "Sample Design Academy",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Placeholder",
+   "organisation": "",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Sample",
+   "organisation": "",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Greta Testperson",
+   "organisation": "Demo Studio",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Demo",
+   "organisation": "Example University",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Dummy",
+   "organisation": "Demo Studio",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Example",
+   "organisation": "Demo Studio",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Fixture",
+   "organisation": "",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Mock",
+   "organisation": "",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Placeholder",
+   "organisation": "Sample Design Academy",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Sample",
+   "organisation": "Mock Polytechnic",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ines Testperson",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Demo",
+   "organisation": "Demo Studio",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Dummy",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Example",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Fixture",
+   "organisation": "Sample Design Academy",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Mock",
+   "organisation": "Mock Polytechnic",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Placeholder",
+   "organisation": "",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Sample",
+   "organisation": "Example University",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Katja Testperson",
+   "organisation": "",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Demo",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Dummy",
+   "organisation": "",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Example",
+   "organisation": "",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Fixture",
+   "organisation": "",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Mock",
+   "organisation": "Example University",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Placeholder",
+   "organisation": "Mock Polytechnic",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Sample",
+   "organisation": "Demo Studio",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maria Testperson",
+   "organisation": "Sample Design Academy",
+   "country": "Germany",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Maximiliana Longname-Doppelnachname von Beispielhausen",
+   "organisation": "An Unusually Long Organisation Name For Testing Wrapping",
+   "country": "Germany",
+   "category": "Other"
+  },
+  {
+   "name": "Olga Demo",
+   "organisation": "",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Olga Dummy",
+   "organisation": "Sample Design Academy",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Olga Example",
+   "organisation": "Sample Design Academy",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Olga Fixture",
+   "organisation": "Mock Polytechnic",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Olga Mock",
+   "organisation": "Demo Studio",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Olga Placeholder",
+   "organisation": "Example University",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Olga Sample",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Olga Testperson",
+   "organisation": "",
+   "country": "Denmark",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Demo",
+   "organisation": "Sample Design Academy",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Dummy",
+   "organisation": "",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Example",
+   "organisation": "",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Fixture",
+   "organisation": "Example University",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Mock",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Placeholder",
+   "organisation": "Demo Studio",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Sample",
+   "organisation": "",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Rosa Testperson",
+   "organisation": "Mock Polytechnic",
+   "country": "Spain",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Demo",
+   "organisation": "",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Dummy",
+   "organisation": "Mock Polytechnic",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Example",
+   "organisation": "Mock Polytechnic",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Fixture",
+   "organisation": "Demo Studio",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Mock",
+   "organisation": "",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Placeholder",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Sample",
+   "organisation": "Sample Design Academy",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Tereza Testperson",
+   "organisation": "Example University",
+   "country": "Greece",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Demo",
+   "organisation": "Mock Polytechnic",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Dummy",
+   "organisation": "Example University",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Example",
+   "organisation": "Example University",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Fixture",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Mock",
+   "organisation": "Sample Design Academy",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Placeholder",
+   "organisation": "",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Sample",
+   "organisation": "",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Vera Testperson",
+   "organisation": "Demo Studio",
+   "country": "Finland",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Demo",
+   "organisation": "Example University",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Dummy",
+   "organisation": "Demo Studio",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Example",
+   "organisation": "Demo Studio",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Fixture",
+   "organisation": "",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Mock",
+   "organisation": "",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Placeholder",
+   "organisation": "Sample Design Academy",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Sample",
+   "organisation": "Mock Polytechnic",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  },
+  {
+   "name": "Ylva Testperson",
+   "organisation": "Placeholder Institute of Design",
+   "country": "Bulgaria",
+   "category": "Design Research faculty"
+  }
+ ],
+ "organisationList": []
+}

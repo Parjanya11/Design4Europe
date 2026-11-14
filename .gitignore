@@ -17,3 +17,9 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# QA tool output (screenshots)
+tools/out/
+
+# Logo inbox: originals as sent. The trimmed copies in assets/source/logos/ are kept.
+assets/new logos/

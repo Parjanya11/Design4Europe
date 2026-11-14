@@ -1,0 +1,20 @@
+[
+ "color-contrast | #case > .container > .section-tag > .tag-text",
+ "color-contrast | #opportunities > .container > .section-tag > .tag-text",
+ "color-contrast | #why > .container > .section-tag > .tag-text",
+ "color-contrast | .ask-text > .section-tag > .tag-text",
+ "color-contrast | .btn-primary",
+ "color-contrast | .btn-sign",
+ "color-contrast | .btn-submit",
+ "color-contrast | .center",
+ "color-contrast | .form-note",
+ "color-contrast | .kicker-text",
+ "color-contrast | .stakes-grid > div:nth-child(1) > .section-eyebrow",
+ "color-contrast | .stat-card:nth-child(1) > .stat-src",
+ "color-contrast | .stat-card:nth-child(2) > .stat-src",
+ "color-contrast | .stat-card:nth-child(3) > .stat-src",
+ "color-contrast | .stat-card:nth-child(4) > .stat-src",
+ "color-contrast | .tl > .container > .section-eyebrow",
+ "color-contrast | div:nth-child(2) > .footer-h",
+ "color-contrast | div:nth-child(3) > .footer-h"
+]

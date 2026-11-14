@@ -1,0 +1,52 @@
+# Runs the same checks as `npm run check` and `npm run test:functions`
+# on every pull request and every push to main. Free on a public repo.
+# The run's screenshots are attached to it as a downloadable artifact.
+name: Check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history: one function test compares against an earlier commit.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tools/package-lock.json
+
+      - name: Install site dependencies (for the functions)
+        run: npm ci
+
+      - name: Install tools
+        working-directory: tools
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Functions
+        working-directory: tools
+        run: npm run test:functions
+
+      - name: Page (layout, accessibility, requests, CSP)
+        working-directory: tools
+        run: npm run check
+
+      - name: Keep screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: tools/out/page-*.png
+          retention-days: 14

@@ -11,7 +11,7 @@
 // Email failures therefore do not fail the request.
 // =====================================================================
 
-import { getStore } from '@netlify/blobs';
+import { signatureStore, isPreview } from '../lib/stores.js';
 import nodemailer from 'nodemailer';
 
 const CONNECT_TIMEOUT_MS = 5000;
@@ -36,7 +36,7 @@ const REQUIRED = ['name', 'role', 'country', 'category', 'email', 'signing_as'];
 
 const INSTITUTION = 'On behalf of an institution';
 
-export default async (req) => {
+export default async (req, context) => {
   if (req.method !== 'POST') {
     return json({ ok: false, error: 'Method not allowed' }, 405);
   }
@@ -110,8 +110,7 @@ export default async (req) => {
   const key = `${submittedAt}-${crypto.randomUUID().slice(0, 8)}`;
 
   try {
-    const store = getStore('signatures');
-    await store.setJSON(key, record);
+    await signatureStore(context).setJSON(key, record);
   } catch (err) {
     // Nothing was recorded, so this genuinely failed. Tell the visitor.
     console.error('Blob write failed:', err.message);
@@ -119,6 +118,12 @@ export default async (req) => {
   }
 
   // --- 2 & 3. Email ----------------------------------------------------
+  // Previews store to their own test store and never send email, so the
+  // form can be tried freely on a preview link.
+  if (isPreview(context)) {
+    return json({ ok: true, preview: true });
+  }
+
   // The signature is safely stored by this point. Email problems are logged
   // for us to chase, never surfaced as a failure to the person signing.
   const mail = await sendEmails(record).catch((err) => ({ ok: false, error: err.message }));
@@ -317,7 +322,8 @@ async function sendEmails(record) {
     from,
     to: notifyTo,
     replyTo: record.email,
-    subject: `New signature: ${record.organisation} (${record.country})`,
+    // Individuals may have no organisation; never let that print "undefined".
+    subject: `New signature: ${record.organisation || record.name} (${record.country})`,
     text: [
       'A new signature has been added to the open letter.',
       '',

@@ -13,11 +13,11 @@
 // Get the keys from the export: /.netlify/functions/export?format=json
 // =====================================================================
 
-import { getStore } from '@netlify/blobs';
+import { signatureStore } from '../lib/stores.js';
 
 const MAX_PER_CALL = 50;
 
-export default async (req) => {
+export default async (req, context) => {
   if (req.method !== 'POST') {
     return json(
       {
@@ -73,7 +73,7 @@ export default async (req) => {
     );
   }
 
-  const store = getStore('signatures');
+  const store = signatureStore(context);
 
   // --- Dry run by default -----------------------------------------------
   // Show exactly whose records these are before anything is destroyed.

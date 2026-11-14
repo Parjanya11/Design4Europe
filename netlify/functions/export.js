@@ -9,7 +9,7 @@
 // marked no-store.
 // =====================================================================
 
-import { getStore } from '@netlify/blobs';
+import { signatureStore } from '../lib/stores.js';
 
 // Blobs are fetched one key at a time, so read them in parallel batches
 // rather than sequentially. Bounded to stay well inside the function
@@ -30,7 +30,7 @@ const COLUMNS = [
   ['approved', 'Approved'],
 ];
 
-export default async (req) => {
+export default async (req, context) => {
   const url = new URL(req.url);
 
   // --- Access control --------------------------------------------------
@@ -75,7 +75,7 @@ export default async (req) => {
   // --- Read every signature --------------------------------------------
   let records;
   try {
-    records = await readAllSignatures();
+    records = await readAllSignatures(signatureStore(context));
   } catch (err) {
     console.error('Export failed:', err.message);
     return json({ ok: false, error: 'Could not read the signature store.' }, 500);
@@ -102,8 +102,7 @@ export default async (req) => {
 
 // ---------------------------------------------------------------------
 
-async function readAllSignatures() {
-  const store = getStore('signatures');
+async function readAllSignatures(store) {
   const { blobs } = await store.list();
   const keys = blobs.map((b) => b.key);
 
