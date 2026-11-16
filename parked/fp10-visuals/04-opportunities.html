@@ -1,0 +1,29 @@
+<!--
+  PARKED 2026-11-17: "Opportunities: Where design research fits" theme cards.
+  Added in 08b8f7b ("Add the six FP10 visuals"). It replaced nothing.
+
+  Where it sat: index.html, its own section between WHY DESIGN
+  (section#why) and the SIGN-ON FORM (section#sign). No nav link points
+  to #opportunities.
+
+  Depends on (all still in place):
+  - fp10.js: renderThemes() (FP10.themePairs). No-ops while the mount
+    is absent.
+  - styles.css: ".tc", ".tc-*" (section "4. Theme cards"), plus
+    "FP10 responsive".
+  - tools/axe-baseline.json: had one known contrast issue,
+    "#opportunities > .container > .section-tag > .tag-text". Re-add it
+    with `npm run check:update-baseline` if this comes back.
+-->
+  <!-- =============================== OPPORTUNITIES =============================== -->
+  <section class="tc" id="opportunities" aria-labelledby="tcHeading">
+    <div class="container">
+      <div class="section-tag">
+        <span class="tag-line"></span>
+        <span class="tag-text">Opportunities</span>
+      </div>
+      <h2 class="section-title" id="tcHeading">Where design research fits</h2>
+      <!-- Rendered from the themePairs data in fp10.js -->
+      <div id="fp10Themes"></div>
+    </div>
+  </section>

@@ -1,0 +1,29 @@
+<!--
+  PARKED 2026-11-17: "Where FP10 stands" timeline + trilogue diagram.
+  Added in 08b8f7b ("Add the six FP10 visuals").
+
+  Where it sat: index.html, its own section between the logo banner
+  (section.logo-banner) and THE ASK (section#ask). It replaced the
+  "FP10 is being scoped now" divider, which is back in that spot now.
+  To restore, swap the divider block for this one.
+
+  Depends on (all still in place):
+  - fp10.js: renderTimeline() (FP10.timeline, FP10.timelineCta) and
+    renderTrilogue() (FP10.trilogue). Both no-op while the mounts are absent.
+  - styles.css: ".tl", ".tl-*" (section "1. Where FP10 stands"),
+    ".tg", ".tg-*" (section "1b. Trilogue diagram"), plus "FP10 responsive".
+  - tools/axe-baseline.json: no entries for this section.
+-->
+  <!-- =============================== WHERE FP10 STANDS =============================== -->
+  <section class="tl" aria-labelledby="tlHeading">
+    <div class="container">
+      <div class="section-eyebrow">Where FP10 stands</div>
+      <h2 class="tl-heading" id="tlHeading">The text is being decided now</h2>
+      <!-- Rendered from the timeline data in fp10.js -->
+      <div id="fp10Timeline"></div>
+      <p class="tl-cta" id="fp10TimelineCta"></p>
+
+      <!-- Trilogue diagram, rendered from fp10.js -->
+      <div class="tg" id="fp10Trilogue"></div>
+    </div>
+  </section>

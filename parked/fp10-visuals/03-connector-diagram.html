@@ -1,0 +1,20 @@
+<!--
+  PARKED 2026-11-17: connector diagram in THE STAKES.
+  Added in 08b8f7b ("Add the six FP10 visuals").
+
+  Where it sat: index.html, inside THE STAKES (section.stakes), the second
+  column of .stakes-grid, after the text <div>. It replaced
+  <figure class="stakes-figure"> with assets/visual-design-ecosystem.svg,
+  which is back in that spot now. To restore, swap the figure for this.
+
+  Note: the ecosystem SVG shows three pillars; the stakes paragraph and
+  this diagram use four. Flagged for Hilbrand and Jeroen.
+
+  Depends on (all still in place):
+  - fp10.js: renderConnectors() (FP10.connections). No-ops while the
+    mount is absent.
+  - styles.css: ".cx", ".cx-*" (section "2. Connector diagram"), plus
+    "FP10 responsive".
+-->
+      <!-- Connector diagram, rendered from fp10.js. -->
+      <div class="cx" id="fp10Connectors"></div>
