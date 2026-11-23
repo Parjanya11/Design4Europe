@@ -12,6 +12,9 @@ const FP10 = {
   // Shown on the In detail page as "Updated ...".
   lastUpdated: '2026-11-23',
 
+  // The building on page 1: roof and base labels.
+  programme: { name: 'FP10', years: '2028\u20132034', status: 'Being negotiated now' },
+
   // TODO: confirm with Jeroen. Deck says €154B but the pillar sum is €175B
   // (44.1 + 75.8 + 38.8 + 16.3). Deliberately NOT rendered anywhere until
   // the figures are reconciled.
@@ -331,19 +334,22 @@ const FP10 = {
 
   // --- 1. Timeline -----------------------------------------------------
   // "now" is the first step whose end date has not fully passed.
-  function renderTimeline() {
-    const host = document.getElementById('fp10Timeline');
-    if (!host) return;
-
+  const timelineSteps = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     const steps = FP10.timeline.map((s) => {
       const end = new Date(s.ends || s.date);
       end.setHours(23, 59, 59, 999);
       return { ...s, passed: end < today };
     });
-    const nowIndex = steps.findIndex((s) => !s.passed);
+    return { steps, nowIndex: steps.findIndex((s) => !s.passed) };
+  };
+
+  function renderTimeline() {
+    const host = document.getElementById('fp10Timeline');
+    if (!host) return;
+
+    const { steps, nowIndex } = timelineSteps();
 
     const list = el('ol', 'tl-track');
     steps.forEach((s, i) => {
@@ -570,20 +576,279 @@ const FP10 = {
     host.appendChild(grid);
   }
 
-  // --- 5. Quotes -------------------------------------------------------
-  function renderQuotes() {
-    const host = document.getElementById('fp10Quotes');
+  // --- 5. "Now" line (page 1) ------------------------------------------
+  // The current step of the timeline, so the line moves on by itself.
+  function renderNow() {
+    const host = document.getElementById('fp10Now');
     if (!host) return;
+    const { steps, nowIndex } = timelineSteps();
+    const now = steps[nowIndex];
+    if (!now) { host.closest('.now-line').hidden = true; return; }
+    host.textContent = now.step + ', ' + now.label;
+  }
+
+  // --- 6. The building (page 1) ----------------------------------------
+  // FP10 drawn as a building: roof, four pillars, base. Pillar II holds
+  // its 11 windows as small cells, coloured by state. The figure is one
+  // image to assistive tech, described by a generated aria-label.
+  const cellsFor = (group) => FP10.pillarTwo.cells.filter((c) => c.pillarGroup === group);
+  const pairedCells = () => {
+    // Reading order of the map: row I Competitiveness, row I Society, ...
+    const out = [];
+    ['I', 'II', 'III', 'IV'].forEach((row) => {
+      ['competitiveness', 'society'].forEach((g) => {
+        const c = FP10.pillarTwo.cells.find((x) => x.row === row && x.pillarGroup === g);
+        if (c) out.push(c);
+      });
+    });
+    return out;
+  };
+
+  function renderBuilding() {
+    const host = document.getElementById('fp10Building');
+    if (!host) return;
+    const P = FP10.programme;
+    const named = FP10.pillarTwo.cells.filter((c) => c.state === 'named').length;
+    const total = FP10.pillarTwo.cells.length;
+
+    host.setAttribute('role', 'img');
+    host.setAttribute('aria-label',
+      'FP10 drawn as a building: a roof marked ' + P.years.replace('–', ' to ') +
+      ', four pillars with Pillar II, Competitiveness and Society, widest and highlighted, and a base reading ' +
+      P.status.toLowerCase() + '. Inside Pillar II are its ' + total + ' windows; ' + named +
+      ' are red, where the text covers design as a sector in its own right.');
+
+    const roof = el('div', 'bd-roof');
+    roof.appendChild(el('span', 'bd-roof-name', P.name));
+    roof.appendChild(el('span', 'bd-roof-years', P.years));
+
+    const pillars = el('div', 'bd-pillars');
+    FP10.pillars.forEach((p) => {
+      const col = el('div', 'bd-pillar' + (p.id === 'II' ? ' bd-key' : ''));
+      col.appendChild(el('b', 'bd-id', p.id));
+      if (p.id === 'II') {
+        const pairs = el('div', 'bd-cells');
+        pairedCells().forEach((c) => pairs.appendChild(el('span', 'bd-cell bd-' + c.state)));
+        const horiz = el('div', 'bd-cells bd-cells-h');
+        cellsFor('horizontal').forEach((c) => horiz.appendChild(el('span', 'bd-cell bd-' + c.state)));
+        col.appendChild(pairs);
+        col.appendChild(horiz);
+      }
+      col.appendChild(el('span', 'bd-name', p.name));
+      pillars.appendChild(col);
+    });
+
+    const base = el('div', 'bd-base');
+    base.appendChild(el('span', 'bd-base-dot'));
+    base.appendChild(document.createTextNode(P.status));
 
     host.textContent = '';
-    const list = el('div', 'q-list');
-    FP10.evidence.quotes.forEach((q) => {
-      const fig = el('figure', 'q-item');
-      fig.appendChild(el('blockquote', 'q-text', '“' + q.text + '”'));
-      fig.appendChild(el('figcaption', 'q-attrib', q.ref));
-      list.appendChild(fig);
+    host.append(roof, el('div', 'bd-beam'), pillars, base);
+  }
+
+  // --- 7. Four pillars (In detail, section A) ----------------------------
+  function renderPillars() {
+    const host = document.getElementById('fp10Pillars');
+    if (!host) return;
+    const list = el('ol', 'pa');
+    FP10.pillars.forEach((p) => {
+      const key = p.id === 'II';
+      const li = el('li', 'pa-pillar' + (key ? ' pa-key' : ''));
+      li.appendChild(el('span', 'pa-name', 'Pillar ' + p.id + ' · ' + p.name));
+      if (key) {
+        const parts = el('ul', 'pa-parts');
+        const n = (g) => cellsFor(g).length;
+        [n('competitiveness') + ' Competitiveness windows', n('society') + ' Society windows', 'Horizontal window']
+          .concat((p.extra || []).map((x) => x.name))
+          .forEach((t) => parts.appendChild(el('li', 'pa-part', t)));
+        li.appendChild(parts);
+        const zoom = el('a', 'pa-zoom', 'Zoom into Pillar II ↓');
+        zoom.href = '#c';
+        li.appendChild(zoom);
+      } else {
+        li.appendChild(el('span', 'pa-sum', p.summary));
+      }
+      list.appendChild(li);
     });
+    host.textContent = '';
     host.appendChild(list);
+  }
+
+  // --- 8. Pillar II map (In detail, section C) ----------------------------
+  // Competitiveness | Society in rows I-IV, bridge chips between each pair,
+  // then the Horizontal window as a row of three. Each cell is a button
+  // that opens its quotes in a panel directly below its row. One open at
+  // a time; opening another closes the first.
+  const groupLabel = { competitiveness: 'Competitiveness', society: 'Society', horizontal: 'Horizontal window' };
+  const cellTitle = (c) => (c.row ? groupLabel[c.pillarGroup] + ' ' + c.row : groupLabel.horizontal) + ': ' + c.name;
+
+  const quoteList = (c) => {
+    const frag = document.createDocumentFragment();
+    if (!c.quotes.length) {
+      frag.appendChild(el('p', 'mp-empty', c.state === 'none'
+        ? FP10.pillarTwo.states.none.text
+        : 'The passage for this window is still being confirmed.'));
+      return frag;
+    }
+    c.quotes.forEach((q) => {
+      const fig = el('figure', 'mp-quote');
+      fig.appendChild(el('blockquote', 'mp-quote-text', '“' + q.text + '”'));
+      fig.appendChild(el('figcaption', 'mp-quote-ref', q.ref));
+      frag.appendChild(fig);
+    });
+    return frag;
+  };
+
+  function renderMap() {
+    const host = document.getElementById('fp10Map');
+    if (!host) return;
+    const states = FP10.pillarTwo.states;
+    const buttons = [];
+    const panels = [];
+
+    const cellButton = (c, panelId) => {
+      const b = el('button', 'mp-cell mp-' + c.state);
+      b.type = 'button';
+      b.id = 'cell-' + c.id;
+      b.setAttribute('aria-expanded', 'false');
+      b.setAttribute('aria-controls', panelId);
+      if (c.row) {
+        b.appendChild(el('span', 'u-sr', groupLabel[c.pillarGroup] + ' window '));
+        b.appendChild(el('span', 'mp-cell-row', c.row));
+      }
+      b.appendChild(el('span', 'mp-cell-name', c.short));
+      if (c.hint) b.appendChild(el('span', 'mp-cell-hint', c.hint));
+      b.appendChild(el('span', 'u-sr', '(' + states[c.state].label + ')'));
+      b.addEventListener('click', () => toggle(c, b));
+      buttons.push(b);
+      return b;
+    };
+
+    const panel = (id) => {
+      const p = el('div', 'mp-panel');
+      p.id = id;
+      p.hidden = true;
+      panels.push(p);
+      return p;
+    };
+
+    const toggle = (c, b) => {
+      const wasOpen = b.getAttribute('aria-expanded') === 'true';
+      buttons.forEach((x) => x.setAttribute('aria-expanded', 'false'));
+      panels.forEach((p) => { p.hidden = true; p.textContent = ''; });
+      if (wasOpen) return;
+      const p = document.getElementById(b.getAttribute('aria-controls'));
+      p.className = 'mp-panel mp-panel-' + c.state;
+      p.appendChild(el('p', 'mp-panel-head', cellTitle(c) + (c.topic ? ' · ' + c.topic : '')));
+      p.appendChild(quoteList(c));
+      p.hidden = false;
+      b.setAttribute('aria-expanded', 'true');
+    };
+
+    const map = el('div', 'mp');
+    map.setAttribute('role', 'group');
+    map.setAttribute('aria-label', 'Map of Pillar II windows');
+
+    const heads = el('div', 'mp-heads');
+    heads.setAttribute('aria-hidden', 'true');
+    heads.append(el('span', null, groupLabel.competitiveness), el('span', null, groupLabel.society));
+    map.appendChild(heads);
+
+    ['I', 'II', 'III', 'IV'].forEach((row) => {
+      const panelId = 'mp-panel-' + row;
+      const r = el('div', 'mp-row');
+      ['competitiveness', 'society'].forEach((g) => {
+        const c = FP10.pillarTwo.cells.find((x) => x.row === row && x.pillarGroup === g);
+        r.appendChild(cellButton(c, panelId));
+      });
+      map.appendChild(r);
+      map.appendChild(panel(panelId));
+      const chips = el('ul', 'mp-bridges');
+      chips.setAttribute('aria-label', 'Our example themes for this pair, not EU text');
+      FP10.pillarTwo.bridges[row].forEach((t) => chips.appendChild(el('li', 'mp-chip', t)));
+      map.appendChild(chips);
+    });
+
+    map.appendChild(el('p', 'mp-head-h', groupLabel.horizontal));
+    const h = el('div', 'mp-row mp-row-h');
+    cellsFor('horizontal').forEach((c) => h.appendChild(cellButton(c, 'mp-panel-h')));
+    map.appendChild(h);
+    map.appendChild(panel('mp-panel-h'));
+
+    host.textContent = '';
+    host.appendChild(map);
+  }
+
+  // Legend for the map, from the same state labels.
+  function renderLegend() {
+    const host = document.getElementById('fp10Legend');
+    if (!host) return;
+    const ul = el('ul', 'mp-legend');
+    Object.entries(FP10.pillarTwo.states).forEach(([key, s]) => {
+      const li = el('li', 'mp-legend-item');
+      li.appendChild(el('span', 'mp-swatch mp-' + key));
+      const t = el('span');
+      t.append(el('strong', null, s.label), ': ' + s.text);
+      li.appendChild(t);
+      ul.appendChild(li);
+    });
+    const chip = el('li', 'mp-legend-item');
+    chip.appendChild(el('span', 'mp-chip mp-chip-key', 'theme'));
+    const t = el('span');
+    t.append('Between a pair: ', el('strong', null, 'our examples'), ', not EU text');
+    chip.appendChild(t);
+    ul.appendChild(chip);
+    host.textContent = '';
+    host.appendChild(ul);
+  }
+
+  // "All quotes, window by window": everything the map holds, as a list.
+  function renderAllQuotes() {
+    const host = document.getElementById('fp10AllQuotes');
+    if (!host) return;
+    const order = pairedCells().concat(cellsFor('horizontal'));
+    const count = document.getElementById('fp10AllQuotesCount');
+    if (count) count.textContent = String(order.length);
+    const list = el('ol', 'aq-list');
+    order.forEach((c) => {
+      const li = el('li', 'aq-item');
+      const head = el('p', 'aq-head');
+      head.append(el('span', 'mp-swatch mp-' + c.state), cellTitle(c));
+      li.appendChild(head);
+      li.appendChild(el('p', 'aq-state', FP10.pillarTwo.states[c.state].label + (c.topic ? ' · ' + c.topic : '')));
+      li.appendChild(quoteList(c));
+      list.appendChild(li);
+    });
+    host.textContent = '';
+    host.appendChild(list);
+  }
+
+  // --- 9. Evidence (In detail, section D) --------------------------------
+  function renderEvidence() {
+    const host = document.getElementById('fp10Evidence');
+    if (!host) return;
+    const E = FP10.evidence;
+    host.textContent = '';
+    E.quotes.forEach((q) => {
+      const fig = el('figure', 'ev-quote');
+      fig.appendChild(el('blockquote', 'ev-quote-text', '“' + q.text + '”'));
+      fig.appendChild(el('figcaption', 'ev-quote-ref', q.ref));
+      host.appendChild(fig);
+    });
+    const gap = el('p', 'ev-gap');
+    gap.append(el('strong', null, 'What the text does not yet say: '), E.gap);
+    host.appendChild(gap);
+    host.appendChild(el('h3', 'ev-sources-head', 'Sources'));
+    const ul = el('ul', 'ev-sources');
+    E.sources.forEach((s) => ul.appendChild(el('li', null, s)));
+    host.appendChild(ul);
+  }
+
+  function renderUpdated() {
+    const host = document.getElementById('fp10Updated');
+    if (!host) return;
+    const d = new Date(FP10.lastUpdated + 'T12:00:00');
+    host.textContent = 'Updated ' + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   const start = () => {
@@ -592,7 +857,14 @@ const FP10 = {
     renderConnectors();
     renderStructure();
     renderThemes();
-    renderQuotes();
+    renderNow();
+    renderBuilding();
+    renderPillars();
+    renderLegend();
+    renderMap();
+    renderAllQuotes();
+    renderEvidence();
+    renderUpdated();
   };
 
   if (document.readyState === 'loading') {

@@ -224,3 +224,51 @@ form.addEventListener('submit', async (e) => {
       'The list of signatories could not be loaded. Please refresh to try again.';
   }
 })();
+
+
+// --- Signed-by line over the logos ---------------------------------------
+// Reads the same public counts as the list below, in its own request so
+// the signatory list code stays untouched. Hidden unless the counts load.
+(async () => {
+  const line = document.getElementById('signedLine');
+  if (!line) return;
+  try {
+    const res = await fetch('/.netlify/functions/signatories', {
+      headers: { Accept: 'application/json' },
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const strong = (text) => {
+      const node = document.createElement('strong');
+      node.textContent = text;
+      return node;
+    };
+    const orgs = (data.organisationList || []).length;
+    line.textContent = '';
+    if (orgs) line.append(strong(orgs.toLocaleString('en')), ' organisations and ');
+    line.append(strong(Number(data.total).toLocaleString('en')), ' people have signed');
+    line.hidden = false;
+  } catch (err) {
+    // The line is optional; the list below reports its own failure.
+  }
+})();
+
+// --- Sticky sign bar (phones) --------------------------------------------
+// Shown once the hero has scrolled away, hidden again while the form is
+// on screen. The CSS only displays it below 900px.
+const signBar = document.getElementById('signBar');
+if (signBar && 'IntersectionObserver' in window) {
+  const hero = document.getElementById('top');
+  const signSection = document.getElementById('sign');
+  let heroOnScreen = true;
+  let formOnScreen = false;
+  const update = () => signBar.classList.toggle('is-visible', !heroOnScreen && !formOnScreen);
+  new IntersectionObserver((entries) => {
+    heroOnScreen = entries[entries.length - 1].isIntersecting;
+    update();
+  }).observe(hero);
+  new IntersectionObserver((entries) => {
+    formOnScreen = entries[entries.length - 1].isIntersecting;
+    update();
+  }).observe(signSection);
+}

@@ -882,3 +882,197 @@ a { color: inherit; }
   .signon-form label#categoryOtherLabel { grid-column: auto; } /* single column on mobile */
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
 }
+
+/* =================================================================
+   TWO-PAGE ROUND: PAGE 1
+   The overview: short teasers, each linking to its section on the
+   In detail page. Colours from the tokens at the top of this file.
+   ================================================================= */
+
+/* "Read more" link to a section of the In detail page. The letter is
+   the section on page 2 (A to D). */
+.more {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: fit-content; min-width: min(100%, 280px); max-width: 100%;
+  min-height: 44px; padding: 0 14px;
+  border: 1px solid #c9d3e6; border-radius: 6px; background: #fff;
+  font: 600 14px var(--body); color: var(--ink); text-decoration: none;
+}
+.more:hover { border-color: var(--ink); }
+.more:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+.more-key {
+  background: var(--accent-ink); color: #fff; border-radius: 3px;
+  font: 700 12px var(--body); padding: 2px 7px;
+}
+.more-on-navy { background: transparent; border-color: rgba(255,255,255,.35); color: #fff; margin-top: 30px; }
+.more-on-navy:hover { border-color: #fff; }
+.more-on-navy:focus-visible { outline-color: #fff; }
+
+/* New eyebrows use the darkened red, which clears 4.5:1 on white. The
+   older ones wait for the contrast retone. */
+.eyebrow-ink { color: var(--accent-ink); }
+
+/* Phones: the Sign button stays in the header; the menu holds the rest. */
+.nav-sign-m { display: none; }
+
+/* Signed-by line over the logos. */
+.signed-line {
+  margin: 0; padding: 22px var(--pad) 0; text-align: center;
+  font: 400 15px/1.5 var(--body); color: var(--ink-2);
+}
+.signed-line strong { color: var(--ink); font-weight: 700; }
+
+/* "Now" status line. */
+.now-line { display: block; background: #fff; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.now-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 16px; padding-bottom: 16px; }
+.now-text { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; min-width: 0; }
+.now-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 700 11px var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--accent-ink);
+}
+.now-eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-ink); }
+.now-step { font: 600 15px/1.4 var(--body); }
+.now-more { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font: 600 13px var(--body); color: var(--accent-ink); }
+.now-line:hover .now-step { text-decoration: underline; }
+.now-line:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: -4px; }
+
+/* What is FP10? Text beside the building on desktop, stacked on phones. */
+.fp10 { background: #fff; }
+.fp10 .container { padding-top: 60px; padding-bottom: 60px; }
+.fp10-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: 64px; align-items: center; }
+.fp10 .section-title { margin-bottom: 18px; }
+.fp10-lead { font: 400 18px/1.55 var(--body); color: var(--ink); margin: 0 0 22px; max-width: 46ch; }
+.fp10-key { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 24px; max-width: 46ch; font: 400 15px/1.55 var(--body); color: var(--ink-2); }
+.fp10-key-swatch { width: 14px; height: 14px; flex: none; margin-top: 4px; border-radius: 2px; background: var(--accent); }
+
+/* The building: roof, beam, four pillars, base. Pillar II is the widest
+   and holds the 11 window cells, coloured by state. */
+.bd { margin: 0; display: flex; flex-direction: column; }
+.bd-roof {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  background: var(--navy); color: #fff; padding: 12px 14px; border-radius: 6px 6px 0 0;
+}
+.bd-roof-name { font: 800 22px var(--display); }
+.bd-roof-years { font: 600 13px var(--body); color: var(--on-navy); }
+.bd-beam { height: 6px; background: #1c2b63; }
+.bd-pillars {
+  display: grid; grid-template-columns: 80px minmax(0, 1fr) 80px 80px; gap: 10px;
+  padding: 12px 10px 0; background: var(--bg-soft);
+}
+.bd-pillar {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
+  min-width: 0; min-height: 260px; padding: 9px 7px;
+  background: var(--bg-blue); border: 1px solid #c9d3e6;
+}
+.bd-id { font: 700 14px var(--body); color: var(--ink); }
+.bd-name { font: 400 11px/1.25 var(--body); color: var(--ink-2); overflow-wrap: break-word; hyphens: auto; }
+.bd-key { justify-content: flex-start; padding: 9px; background: var(--blue); border-color: var(--blue); }
+.bd-key .bd-id, .bd-key .bd-name { color: #fff; }
+.bd-key .bd-name { margin-top: auto; }
+.bd-cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.bd-cells-h { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 2px; }
+.bd-cell { height: 26px; border-radius: 2px; }
+.bd-cells-h .bd-cell { height: 20px; }
+.bd-named { background: #ff5a3d; }
+.bd-wording { border: 2px solid #9cb3ea; }
+.bd-none { background: rgba(255,255,255,.16); }
+.bd-base {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--navy); color: #fff; padding: 10px 14px; border-radius: 0 0 6px 6px;
+  font: 600 13px var(--body);
+}
+.bd-base-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff5a3d; flex: none; }
+
+/* The stakes, cut to one line on navy. */
+.stakes-line { background: var(--navy); }
+.stakes-line .container { padding-top: 56px; padding-bottom: 58px; }
+.stakes-line-text { margin: 0; max-width: 30ch; font: 700 32px/1.25 var(--display); color: #fff; text-wrap: pretty; }
+.stakes-line-punch { margin: 14px 0 0; font: 800 32px/1.25 var(--display); color: #ff5a3d; }
+
+/* The ask, one line per point. */
+.ask-list li { padding-top: 12px; padding-bottom: 12px; color: var(--ink); }
+.ask .more { margin-top: 4px; }
+
+/* FAQ */
+.faq { background: #fff; border-top: 1px solid var(--line); }
+.faq .container { padding-top: 56px; padding-bottom: 60px; }
+.faq-inner { max-width: 760px; }
+.faq .section-title { margin-bottom: 24px; }
+.faq-list { border-top: 1px solid var(--line); margin-bottom: 28px; }
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-item > summary {
+  list-style: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 16px 0; font: 600 16px/1.4 var(--body); color: var(--ink);
+}
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::after { content: '+'; flex: none; font: 600 20px/1 var(--body); color: var(--accent-ink); }
+.faq-item[open] > summary::after { content: '\2212'; }
+.faq-item > summary:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.faq-item p { margin: 0 0 18px; max-width: 62ch; font: 400 15.5px/1.6 var(--body); color: var(--ink-2); }
+.faq-item a { color: var(--accent-ink); font-weight: 600; }
+
+/* Sticky "Add your signature" bar: phones and tablets only. */
+.sign-bar { display: none; }
+
+@media (max-width: 899.98px) {
+  .fp10-grid { grid-template-columns: 1fr; gap: 28px; }
+  .bd { max-width: 520px; }
+  /* The campaign mark is decoration; on a phone it only pushes the
+     content down, so it is left out below this width. */
+  .page-home .ask-logo { display: none; }
+
+  .sign-bar {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    min-height: 52px; padding: 0 16px env(safe-area-inset-bottom, 0px);
+    background: var(--accent-ink); color: #fff; text-decoration: none;
+    font: 700 15px var(--body);
+    box-shadow: 0 -4px 16px rgba(4, 21, 74, .18);
+    /* Hidden is also out of the tab order; visibility waits for the
+       slide to finish before switching. */
+    transform: translateY(100%); visibility: hidden;
+    transition: transform .25s ease, visibility 0s linear .25s;
+  }
+  .sign-bar.is-visible { transform: none; visibility: visible; transition: transform .25s ease, visibility 0s; }
+  .sign-bar:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+  /* Room under the footer, so the bar never covers its last line. */
+  .page-home .footer-grid { padding-bottom: 112px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sign-bar, .sign-bar.is-visible { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .section-title, .section-title-light { font-size: 28px; }
+  .nav-sign-m {
+    display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px;
+    margin-left: auto; margin-right: 8px; border-radius: 5px;
+    background: var(--accent-ink); color: #fff; text-decoration: none;
+    font: 600 14px var(--body);
+  }
+  .nav-sign-m:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .now-text { flex-direction: column; gap: 2px; }
+  .fp10 .container { padding-top: 44px; padding-bottom: 44px; }
+  .fp10-lead { font-size: 16.5px; }
+  .bd-pillars { grid-template-columns: 58px minmax(0, 1fr) 58px 58px; gap: 8px; padding: 10px 6px 0; }
+  .bd-pillar { min-height: 196px; padding: 8px 6px; }
+  /* The narrow pillars are too slim for their names across; set them
+     up the column instead, as lettering on a pillar would be. */
+  .bd-pillar:not(.bd-key) .bd-name {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    align-self: center; white-space: nowrap; overflow-wrap: normal;
+  }
+  .bd-key { padding: 8px; }
+  .bd-cell { height: 18px; }
+  .bd-cells-h .bd-cell { height: 14px; }
+  .bd-cells { gap: 4px; }
+  .stakes-line .container { padding-top: 40px; padding-bottom: 42px; }
+  .stakes-line-text, .stakes-line-punch { font-size: 24px; }
+  /* Stats two by two, as in the phone design. */
+  .stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .stat-card { min-width: 0; padding: 16px 14px; }
+  .stat-num { font-size: 34px; }
+  .stat-desc { font-size: 13px; margin: 10px 0 6px; }
+  .faq-item > summary { font-size: 15px; }
+}
