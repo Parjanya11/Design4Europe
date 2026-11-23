@@ -10,7 +10,8 @@
 //   - no axe-core accessibility violation that is not already in the
 //     baseline. Known issues waiting on a design decision live in
 //     axe-baseline.json; anything new fails the run.
-// Also: /docs/* answers 404, and a Pillar II map cell opens its quotes.
+// Also: /docs/* answers 404, a Pillar II map cell opens its quotes, and
+// on phones the sign bar appears and hides where it should.
 // Full-page screenshots are written to tools/out/ for a visual pass.
 
 import { chromium } from 'playwright';
@@ -81,6 +82,22 @@ for (const width of WIDTHS) {
   if (layout.scrollW > layout.clientW + 1) problems.push(`horizontal scroll: page is ${layout.scrollW}px in a ${layout.clientW}px viewport`);
   if (layout.small.length) problems.push(`text under ${MIN_FONT_PX}px: ${layout.small.join(', ')}`);
   if (layout.thirdParty.length) problems.push(`third-party requests: ${[...new Set(layout.thirdParty)].join(', ')}`);
+
+  // Phones: the sign bar shows once the hero is gone, hides at the form.
+  if (pagePath === '/' && width < 900) {
+    const bar = async () => page.evaluate(() => getComputedStyle(document.getElementById('signBar')).visibility);
+    const wait = () => page.waitForTimeout(400);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' })); await wait();
+    const atTop = await bar();
+    await page.evaluate(() => document.getElementById('case').scrollIntoView({ behavior: 'instant' })); await wait();
+    const midPage = await bar();
+    await page.evaluate(() => document.getElementById('sign').scrollIntoView({ behavior: 'instant' })); await wait();
+    const atForm = await bar();
+    await page.evaluate(() => window.scrollTo(0, 0));
+    if (atTop !== 'hidden' || midPage !== 'visible' || atForm !== 'hidden') {
+      problems.push(`sign bar: top ${atTop}, mid-page ${midPage}, at the form ${atForm}`);
+    }
+  }
 
   // The map: a cell opens the panel below its row, and only one is open.
   if (pagePath === '/in-detail') {
