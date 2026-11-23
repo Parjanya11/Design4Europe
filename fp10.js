@@ -9,8 +9,8 @@
 // =====================================================================
 
 const FP10 = {
-  // Shown under the timeline as "Last updated: ...".
-  lastUpdated: '2026-11-10',
+  // Shown on the In detail page as "Updated ...".
+  lastUpdated: '2026-11-23',
 
   // TODO: confirm with Jeroen. Deck says €154B but the pillar sum is €175B
   // (44.1 + 75.8 + 38.8 + 16.3). Deliberately NOT rendered anywhere until
@@ -38,7 +38,8 @@ const FP10 = {
   timelineCta: {
     text: 'Trilogue is expected in December. Sign before the text is locked.',
     linkText: 'Add your signature',
-    href: '#sign',
+    // Root-relative, so the link works from both pages.
+    href: '/#sign',
   },
 
   // --- Trilogue: who settles the final text -----------------------------
@@ -49,7 +50,9 @@ const FP10 = {
     centre: { name: 'Trilogue', timing: 'Expected Dec 2026 – Jan 2027' },
     actors: [
       { name: 'European Commission', brings: 'Its original FP10 proposal', when: 'July 2025' },
-      { name: 'European Parliament', brings: 'Its compromise amendment, which names Design', when: 'Plenary vote 23 Nov 2026' },
+      // Not "which names Design": the brief (section 5) says neither text
+      // names Design as a discipline, and that gap is the campaign's point.
+      { name: 'European Parliament', brings: 'Its compromise text', when: 'Plenary vote 23 Nov 2026' },
       { name: 'Council of the EU', brings: 'Its agreed FP10 position', when: 'June 2026' },
     ],
   },
@@ -62,6 +65,7 @@ const FP10 = {
     {
       id: 'I',
       name: 'Excellent Science',
+      summary: 'European Research Council, Marie Skłodowska-Curie Actions, Joint Research Centre',
       items: [
         { name: 'European Research Council (ERC)', design: 'grants' },
         { name: 'Marie Skłodowska-Curie Actions (MSCA)', design: 'grants' },
@@ -74,13 +78,14 @@ const FP10 = {
     {
       id: 'II',
       name: 'Competitiveness and Society',
+      summary: 'Four Competitiveness windows, four Society windows, a Horizontal window and Fast Track to Innovation',
       expanded: true,
       groups: [
         {
           name: 'Competitiveness Windows',
           windows: [
             { name: "I 'Clean Energy and Industrial Decarbonisation'", design: 'horizontal' },
-            { name: "II 'Biotechnology, Agro, Health, and Sustainable Transition'", design: 'vertical', note: 'Cultural and Creative Industries' },
+            { name: "II 'Biotechnology, Agriculture, Health, and Sustainable Transition'", design: 'vertical', note: 'Cultural and Creative Industries' },
             { name: "III 'Digital Leadership'", design: 'horizontal' },
             { name: "IV 'Critical Raw Materials, Security and Space'", design: 'horizontal' },
           ],
@@ -99,7 +104,8 @@ const FP10 = {
           windows: [
             { name: 'Missions', design: 'horizontal', note: 'Adaptation to Climate Change; Cancer; Restore our Ocean and Waters; 100 Climate-neutral and Smart Cities; A Soil Deal for Europe' },
             { name: 'New European Bauhaus (NEB) Facility', design: 'vertical' },
-            { name: 'Pilot: Sectoral Plan for the SSH-A sector', design: 'vertical', note: 'Social Sciences, Humanities and Arts' },
+            { name: 'Metrology Partnership' },
+            { name: 'Pilot: SSHA Sectoral Plan', design: 'vertical', note: 'Social Sciences, Humanities and the Arts' },
           ],
         },
       ],
@@ -108,6 +114,7 @@ const FP10 = {
     {
       id: 'III',
       name: 'Innovation',
+      summary: 'European Innovation Council, EU innovation ecosystems',
       items: [
         { name: 'European Innovation Council (EIC)' },
         { name: 'EU Innovation Ecosystems' },
@@ -119,6 +126,7 @@ const FP10 = {
     {
       id: 'IV',
       name: 'European Research Area',
+      summary: 'Widening participation, research and technology infrastructures, reform of the R&I system',
       items: [
         { name: 'Widening participation and ERA integration' },
         { name: 'Research and technology infrastructures' },
@@ -149,7 +157,7 @@ const FP10 = {
   connections: [
     { n: 1, from: 'I', to: 'III', text: 'Between Pillars I, II and III: from science to innovation' },
     { n: 2, from: 'II', to: 'II', text: 'Between the Competitiveness and Society Windows within Pillar II' },
-    { n: 3, from: 'II', to: 'II', text: 'Between Social Sciences, Humanities and the Arts in the pilot SSH-A Sector Plan' },
+    { n: 3, from: 'II', to: 'II', text: 'Between Social Sciences, Humanities and the Arts in the pilot SSHA Sectoral Plan' },
     { n: 4, from: 'II', to: 'ECF', text: 'Between Pillar II and the ECF: from innovation to business' },
   ],
 
@@ -161,7 +169,7 @@ const FP10 = {
       themes: ['Circular Design', 'Transition Design'],
     },
     {
-      competitiveness: 'Biotech, Agro, Health & Sustainable Transition',
+      competitiveness: 'Biotechnology, Agriculture, Health & Sustainable Transition',
       society: 'Sustainable, Inclusive & Healthy Societies',
       themes: ['Smart & Inclusive Mobility', 'Healthy Lifestyles'],
     },
@@ -177,15 +185,129 @@ const FP10 = {
     },
   ],
 
-  // --- Verbatim quotes from the draft text -----------------------------
-  // TODO: confirm exact source article/recital with Jeroen
-  quotes: {
-    lead: "Parliament's draft text already names Design.",
-    attribution: 'European Parliament compromise amendment on FP10 (draft)',
-    items: [
-      'Creative and design methods may also be developed and tested as inputs to industrial innovation, where they contribute to product differentiation.',
-      '…include design from the early stages of the innovation journey, while promoting cultural diversity and socio-cultural value.',
-      'Tools, technologies and methods on which European cultural and creative sectors, organisations, creators and businesses can build. This includes artistic research methodologies.',
+  // --- Pillar II, window by window --------------------------------------
+  // One entry per window. Both the building on page 1 and the map in
+  // section C of the In detail page are drawn from this list, so the two
+  // pictures can never disagree.
+  //
+  //   pillarGroup  'competitiveness' | 'society' | 'horizontal'
+  //   row          'I'..'IV' for the paired windows; null for horizontal
+  //   name         window name as in the Specific Programme (SP)
+  //   short        the name as it fits in a map cell
+  //   state        'named' | 'wording' | 'none'  (brief, section 8)
+  //   hint         a few words shown in the cell, taken from its quotes
+  //   topic        the SP topic the quotes sit under, where there is one
+  //   quotes       exact text and reference (brief, section 6)
+  //
+  // TODO: the states are Jeroen's reading as of 23 Nov, still to be
+  // confirmed by him. Competitiveness III is 'wording' in the brief, but
+  // the brief gives no passage for it: its quote is still to be supplied.
+  pillarTwo: {
+    states: {
+      named: { label: 'Design as a sector', text: 'A topic or passage that covers design and the creative sectors in their own right.' },
+      wording: { label: 'Design wording', text: 'Design wording, applied to the window’s own field.' },
+      none: { label: 'Not named', text: 'No design wording in this window.' },
+    },
+    cells: [
+      { id: 'comp-1', pillarGroup: 'competitiveness', row: 'I', state: 'none',
+        name: 'Clean Energy and Industrial Decarbonisation',
+        short: 'Clean Energy & Industrial Decarbonisation',
+        quotes: [] },
+      { id: 'soc-1', pillarGroup: 'society', row: 'I', state: 'wording',
+        name: 'Just Green Transition',
+        short: 'Just Green Transition',
+        hint: 'circular product design',
+        quotes: [
+          { text: 'circular product design', ref: 'Specific Programme, Art. 11e, p. 23' },
+        ] },
+      { id: 'comp-2', pillarGroup: 'competitiveness', row: 'II', state: 'named',
+        name: 'Biotechnology, Agriculture, Health, and Sustainable Transition',
+        short: 'Biotechnology, Agriculture, Health & Sustainable Transition',
+        hint: 'Cultural and Creative Industries',
+        topic: 'Cultural and Creative Industries',
+        quotes: [
+          { text: 'Creative and design methods may also be developed and tested as inputs to industrial innovation, where they contribute to product differentiation.', ref: 'Specific Programme, Art. 11b, p. 18' },
+          { text: '…include design from the early stages of the innovation journey, while promoting cultural diversity and socio-cultural value.', ref: 'Specific Programme, Art. 11b, p. 18' },
+          { text: '[T]he tools, technologies and methods on which European cultural and creative sectors, organisations, creators and businesses can build. This includes artistic research methodologies and non-commercial forms of cultural and artistic creation.', ref: 'Specific Programme, Art. 11b, p. 18' },
+          { text: 'Activities may address production, capture, rendering, translation and distribution technologies across audiovisual and games production, publishing, music, design, architecture, fashion and craft…', ref: 'Specific Programme, Art. 11b, p. 18' },
+        ] },
+      { id: 'soc-2', pillarGroup: 'society', row: 'II', state: 'named',
+        name: 'Sustainable, Inclusive and Healthy Societies',
+        short: 'Sustainable, Inclusive & Healthy Societies',
+        hint: 'Culture and creative sectors',
+        topic: 'Culture, Cultural Heritage, including the Cultural Heritage Cloud and Creative Sectors',
+        quotes: [
+          { text: 'support the vitality of its cultural and creative sectors', ref: 'Specific Programme, Art. 11f, p. 26' },
+          { text: 'the economic and social contribution of the cultural and creative sectors in Europe', ref: 'Specific Programme, Art. 11f, p. 26' },
+          { text: 'New models for public health care should prioritise human-centred design', ref: 'Specific Programme, Art. 11f (Health Care Systems), p. 24' },
+          { text: 'the planning and design of urban spaces', ref: 'Specific Programme, Art. 11f (Communities and Cities), p. 25–26' },
+        ] },
+      { id: 'comp-3', pillarGroup: 'competitiveness', row: 'III', state: 'wording',
+        name: 'Digital Leadership',
+        short: 'Digital Leadership',
+        quotes: [] },
+      { id: 'soc-3', pillarGroup: 'society', row: 'III', state: 'wording',
+        name: 'Inclusive Digital Societies',
+        short: 'Inclusive Digital Societies',
+        hint: 'human-centred digital services',
+        quotes: [
+          { text: 'safer, more transparent and human-centred digital services', ref: 'Specific Programme, Art. 11g, p. 27' },
+        ] },
+      { id: 'comp-4', pillarGroup: 'competitiveness', row: 'IV', state: 'wording',
+        name: 'Critical Raw Materials, Security and Space',
+        short: 'Critical Raw Materials, Security & Space',
+        hint: 'safe- and sustainable-by-design',
+        quotes: [
+          { text: 'Safe- and sustainable-by-design materials', ref: 'Specific Programme, Art. 11d, p. 22' },
+        ] },
+      { id: 'soc-4', pillarGroup: 'society', row: 'IV', state: 'none',
+        name: 'Resilient Societies',
+        short: 'Resilient Societies',
+        quotes: [] },
+      { id: 'missions', pillarGroup: 'horizontal', row: null, state: 'none',
+        name: 'Missions',
+        short: 'Missions',
+        quotes: [] },
+      { id: 'neb', pillarGroup: 'horizontal', row: null, state: 'named',
+        name: 'New European Bauhaus (NEB) Facility',
+        short: 'New European Bauhaus',
+        quotes: [
+          { text: 'the transformation of neighbourhoods into sustainable, inclusive and beautiful places', ref: 'Specific Programme, Art. 11i(b), p. 29' },
+          { text: 'through sustainable, innovative, creative and inclusive design', ref: 'Regulation, Recital 12, p. 8' },
+        ] },
+      { id: 'ssha', pillarGroup: 'horizontal', row: null, state: 'named',
+        name: 'Pilot for an SSHA Sectoral Plan',
+        short: 'SSHA Sectoral Plan pilot',
+        quotes: [
+          { text: 'in form of a SSHA Sectoral Plan', ref: 'Specific Programme, Art. 11k, p. 30–31; Regulation, Art. 15d' },
+        ] },
+    ],
+    // Example themes between each Competitiveness and Society pair. These
+    // are the campaign's own examples, not EU text, and always say so.
+    bridges: {
+      I: ['Circular design', 'Transition design'],
+      II: ['Healthy lifestyles', 'Smart and inclusive mobility'],
+      III: ['eHealth', 'Inclusive responsible AI'],
+      IV: ['Smart materials', 'Community design'],
+    },
+  },
+
+  // --- Evidence: section D of the In detail page ------------------------
+  // Exact quotes and references (brief, section 6).
+  evidence: {
+    quotes: [
+      { text: '…include design from the early stages of the innovation journey, while promoting cultural diversity and socio-cultural value.', ref: 'Specific Programme, Art. 11b, p. 18' },
+      { text: '…provide for the integration of social sciences, humanities and the arts (SSHA) across all components under the Programme', ref: 'Regulation, Art. 5(a), p. 27' },
+      { text: '…promote co-creation and co-design through the engagement of citizens and civil society', ref: 'Regulation, Art. 5(cb), p. 28' },
+    ],
+    gap: 'Neither document names Design as a discipline of its own. That is what we ask Parliament, Council and Commission to add.',
+    // TODO: titles and years for the statistics' sources.
+    sources: [
+      'Regulation establishing Horizon Europe 2028–2034, 2025/0543 (COD), Parliament’s compromise text',
+      'Specific Programme implementing Horizon Europe, 2025/0544 (CNS), Parliament’s compromise text',
+      'McKinsey Design Index: revenue growth and shareholder returns of design-led companies (title and year to add)',
+      'European Commission: the cultural and creative industries’ share of EU GDP value added and of employment (title and year to add)',
+      'European Commission, 2009: the link between the use of design and national competitiveness (title to add)',
     ],
   },
 };
@@ -454,16 +576,14 @@ const FP10 = {
     if (!host) return;
 
     host.textContent = '';
-    host.appendChild(el('p', 'q-lead', FP10.quotes.lead));
-
     const list = el('div', 'q-list');
-    FP10.quotes.items.forEach((t) => {
+    FP10.evidence.quotes.forEach((q) => {
       const fig = el('figure', 'q-item');
-      fig.appendChild(el('blockquote', 'q-text', '“' + t + '”'));
+      fig.appendChild(el('blockquote', 'q-text', '“' + q.text + '”'));
+      fig.appendChild(el('figcaption', 'q-attrib', q.ref));
       list.appendChild(fig);
     });
     host.appendChild(list);
-    host.appendChild(el('p', 'q-attrib', FP10.quotes.attribution));
   }
 
   const start = () => {
