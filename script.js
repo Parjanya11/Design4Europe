@@ -238,6 +238,8 @@ form.addEventListener('submit', async (e) => {
     });
     if (!res.ok) return;
     const data = await res.json();
+    // "0 people have signed" helps nobody; the preview store starts empty.
+    if (!data.total) return;
     const strong = (text) => {
       const node = document.createElement('strong');
       node.textContent = text;
