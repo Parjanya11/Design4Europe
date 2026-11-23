@@ -13,5 +13,7 @@
  "color-contrast | .stat-card:nth-child(3) > .stat-src",
  "color-contrast | .stat-card:nth-child(4) > .stat-src",
  "color-contrast | div:nth-child(2) > .footer-h",
- "color-contrast | div:nth-child(3) > .footer-h"
+ "color-contrast | div:nth-child(3) > .footer-h",
+ "in-detail: color-contrast | div:nth-child(2) > .footer-h",
+ "in-detail: color-contrast | div:nth-child(3) > .footer-h"
 ]
