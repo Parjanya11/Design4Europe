@@ -61,9 +61,8 @@ const FP10 = {
   },
 
   // --- The four pillars ------------------------------------------------
-  // "design" marks where Design appears:
-  //   'vertical'   = Design as a sector in its own right
-  //   'horizontal' = Design as a connector across other sectors
+  // "design" marks where Design appears, using the keys of designLegend
+  // below. Pillar II's windows carry the same keys as their "state".
   pillars: [
     {
       id: 'I',
@@ -83,35 +82,9 @@ const FP10 = {
       name: 'Competitiveness and Society',
       summary: 'Four Competitiveness windows, four Society windows, a Horizontal window and Fast Track to Innovation',
       expanded: true,
-      groups: [
-        {
-          name: 'Competitiveness Windows',
-          windows: [
-            { name: "I 'Clean Energy and Industrial Decarbonisation'", design: 'horizontal' },
-            { name: "II 'Biotechnology, Agriculture, Health, and Sustainable Transition'", design: 'vertical', note: 'Cultural and Creative Industries' },
-            { name: "III 'Digital Leadership'", design: 'horizontal' },
-            { name: "IV 'Critical Raw Materials, Security and Space'", design: 'horizontal' },
-          ],
-        },
-        {
-          name: 'Society Windows',
-          windows: [
-            { name: "I 'Just Green Transition'", design: 'horizontal' },
-            { name: "II 'Sustainable, Inclusive and Healthy Societies'", design: 'vertical', note: 'Culture, Cultural Heritage, including the Cultural Heritage Cloud and Creative Sectors' },
-            { name: "III 'Inclusive Digital Societies'", design: 'horizontal' },
-            { name: "IV 'Resilient Societies'", design: 'horizontal' },
-          ],
-        },
-        {
-          name: 'Horizontal Window',
-          windows: [
-            { name: 'Missions', design: 'horizontal', note: 'Adaptation to Climate Change; Cancer; Restore our Ocean and Waters; 100 Climate-neutral and Smart Cities; A Soil Deal for Europe' },
-            { name: 'New European Bauhaus (NEB) Facility', design: 'vertical' },
-            { name: 'Metrology Partnership' },
-            { name: 'Pilot: SSHA Sectoral Plan', design: 'vertical', note: 'Social Sciences, Humanities and the Arts' },
-          ],
-        },
-      ],
+      // Its windows are FP10.pillarTwo.cells, below: one list for the
+      // structure map, the building on page 1 and the map in section C.
+      windowsFrom: 'pillarTwo',
       extra: [{ name: 'Fast Track to Innovation' }],
     },
     {
@@ -144,14 +117,18 @@ const FP10 = {
     note: 'A separate fund, mirroring the four Competitiveness Windows.',
   },
 
-  // Four ways design appears in the structure. Order matters: it is the
-  // order of the legend and of the colour strength on the map.
+  // Jeroen's legend, "Opportunities for design research": four ways
+  // design appears in the structure. Order matters: it is the order of
+  // the legend and of the colour strength on the map. Pillar II's windows
+  // use the first two; 'unmarked' is the one window with neither.
+  designLegendTitle: 'Opportunities for design research',
   designLegend: [
     { key: 'vertical', label: 'Design as a sector in its own right' },
     { key: 'horizontal', label: 'Design as a connector across other sectors' },
     { key: 'initiative', label: 'Design-related initiatives already running' },
     { key: 'grants', label: 'Personal grants open to design research' },
   ],
+  unmarked: { key: 'unmarked', label: 'Not marked' },
 
   designNote:
     'Every box above is a route into FP10. The four Competitiveness Windows are mirrored by a separate fund, the European Competitiveness Fund.',
@@ -197,34 +174,32 @@ const FP10 = {
   //   row          'I'..'IV' for the paired windows; null for horizontal
   //   name         window name as in the Specific Programme (SP)
   //   short        the name as it fits in a map cell
-  //   state        'named' | 'wording' | 'none'  (brief, section 8)
+  //   state        'vertical' | 'horizontal' | 'unmarked' (Jeroen's legend)
+  //   detail       a line under the name in the structure map (section A)
+  //   note         what the panel says when there is no quote
   //   hint         a few words shown in the cell, taken from its quotes
   //   topic        the SP topic the quotes sit under, where there is one
   //   quotes       exact text and reference (brief, section 6)
   //
-  // TODO: the states are Jeroen's reading, still to be confirmed by him.
-  // Updated 25 Nov: Competitiveness III is 'none' (only chip design),
-  // Competitiveness IV and Society III have new passages, and the
-  // Metrology Partnership is in the Horizontal window.
+  // States follow Jeroen's latest deck (25 Nov): red 'vertical' where design
+  // is a sector in itself, blue 'horizontal' where it crosses over into
+  // another sector, and the Metrology Partnership alone unmarked. The
+  // quotes are the text evidence; a window can be 'horizontal' with no
+  // design wording in the text yet.
   pillarTwo: {
-    states: {
-      named: { label: 'Design as a sector', text: 'A topic or passage that covers design and the creative sectors in their own right.' },
-      wording: { label: 'Design wording', text: 'Design wording, applied to the window’s own field.' },
-      none: { label: 'Not named', text: 'No design wording in this window.' },
-    },
     cells: [
-      { id: 'comp-1', pillarGroup: 'competitiveness', row: 'I', state: 'none',
+      { id: 'comp-1', pillarGroup: 'competitiveness', row: 'I', state: 'horizontal',
         name: 'Clean Energy and Industrial Decarbonisation',
         short: 'Clean Energy & Industrial Decarbonisation',
         quotes: [] },
-      { id: 'soc-1', pillarGroup: 'society', row: 'I', state: 'wording',
+      { id: 'soc-1', pillarGroup: 'society', row: 'I', state: 'horizontal',
         name: 'Just Green Transition',
         short: 'Just Green Transition',
         hint: 'circular product design',
         quotes: [
           { text: 'circular product design', ref: 'Specific Programme, Art. 11e, p. 23' },
         ] },
-      { id: 'comp-2', pillarGroup: 'competitiveness', row: 'II', state: 'named',
+      { id: 'comp-2', pillarGroup: 'competitiveness', row: 'II', state: 'vertical',
         name: 'Biotechnology, Agriculture, Health, and Sustainable Transition',
         short: 'Biotechnology, Agriculture, Health & Sustainable Transition',
         hint: 'Cultural and Creative Industries',
@@ -235,7 +210,7 @@ const FP10 = {
           { text: '[T]he tools, technologies and methods on which European cultural and creative sectors, organisations, creators and businesses can build. This includes artistic research methodologies and non-commercial forms of cultural and artistic creation.', ref: 'Specific Programme, Art. 11b, p. 18' },
           { text: 'Activities may address production, capture, rendering, translation and distribution technologies across audiovisual and games production, publishing, music, design, architecture, fashion and craft…', ref: 'Specific Programme, Art. 11b, p. 18' },
         ] },
-      { id: 'soc-2', pillarGroup: 'society', row: 'II', state: 'named',
+      { id: 'soc-2', pillarGroup: 'society', row: 'II', state: 'vertical',
         name: 'Sustainable, Inclusive and Healthy Societies',
         short: 'Sustainable, Inclusive & Healthy Societies',
         hint: 'Culture and creative sectors',
@@ -246,13 +221,13 @@ const FP10 = {
           { text: 'New models for public health care should prioritise human-centred design', ref: 'Specific Programme, Art. 11f (Health Care Systems), p. 24' },
           { text: 'the planning and design of urban spaces', ref: 'Specific Programme, Art. 11f (Communities and Cities), p. 25–26' },
         ] },
-      { id: 'comp-3', pillarGroup: 'competitiveness', row: 'III', state: 'none',
+      { id: 'comp-3', pillarGroup: 'competitiveness', row: 'III', state: 'horizontal',
         name: 'Digital Leadership',
         short: 'Digital Leadership',
         hint: 'only chip design',
-        note: 'Only chip design.',
+        note: 'In the text, design appears only as chip design.',
         quotes: [] },
-      { id: 'soc-3', pillarGroup: 'society', row: 'III', state: 'wording',
+      { id: 'soc-3', pillarGroup: 'society', row: 'III', state: 'horizontal',
         name: 'Inclusive Digital Societies',
         short: 'Inclusive Digital Societies',
         hint: 'human-centred digital environments',
@@ -261,7 +236,7 @@ const FP10 = {
           // The broadline's title. No page: the brief does not give one.
           { text: 'Human-centred Digital Environments, including Social Media and Addictive Algorithmic Design Patterns', ref: 'Specific Programme, Art. 11g' },
         ] },
-      { id: 'comp-4', pillarGroup: 'competitiveness', row: 'IV', state: 'wording',
+      { id: 'comp-4', pillarGroup: 'competitiveness', row: 'IV', state: 'horizontal',
         name: 'Critical Raw Materials, Security and Space',
         short: 'Critical Raw Materials, Security & Space',
         hint: 'design for recovery',
@@ -269,28 +244,30 @@ const FP10 = {
           // No page: the brief does not give one for this passage.
           { text: 'design for recovery', ref: 'Specific Programme, Art. 11d' },
         ] },
-      { id: 'soc-4', pillarGroup: 'society', row: 'IV', state: 'none',
+      { id: 'soc-4', pillarGroup: 'society', row: 'IV', state: 'horizontal',
         name: 'Resilient Societies',
         short: 'Resilient Societies',
         quotes: [] },
-      { id: 'missions', pillarGroup: 'horizontal', row: null, state: 'none',
+      { id: 'missions', pillarGroup: 'horizontal', row: null, state: 'horizontal',
         name: 'Missions',
         short: 'Missions',
+        detail: 'Adaptation to Climate Change; Cancer; Restore our Ocean and Waters; 100 Climate-neutral and Smart Cities; A Soil Deal for Europe',
         quotes: [] },
-      { id: 'neb', pillarGroup: 'horizontal', row: null, state: 'named',
+      { id: 'neb', pillarGroup: 'horizontal', row: null, state: 'vertical',
         name: 'New European Bauhaus (NEB) Facility',
         short: 'New European Bauhaus',
         quotes: [
           { text: 'the transformation of neighbourhoods into sustainable, inclusive and beautiful places', ref: 'Specific Programme, Art. 11i(b), p. 29' },
           { text: 'through sustainable, innovative, creative and inclusive design', ref: 'Regulation, Recital 12, p. 8' },
         ] },
-      { id: 'metrology', pillarGroup: 'horizontal', row: null, state: 'none',
+      { id: 'metrology', pillarGroup: 'horizontal', row: null, state: 'unmarked',
         name: 'Metrology Partnership',
         short: 'Metrology Partnership',
         quotes: [] },
-      { id: 'ssha', pillarGroup: 'horizontal', row: null, state: 'named',
+      { id: 'ssha', pillarGroup: 'horizontal', row: null, state: 'vertical',
         name: 'Pilot for an SSHA Sectoral Plan',
         short: 'SSHA Sectoral Plan pilot',
+        detail: 'Social Sciences, Humanities and the Arts',
         quotes: [
           { text: 'in form of a SSHA Sectoral Plan', ref: 'Specific Programme, Art. 11k, p. 30–31; Regulation, Art. 15d' },
         ] },
@@ -599,9 +576,11 @@ const FP10 = {
 
   // --- 6. The building (page 1) ----------------------------------------
   // FP10 drawn as a building: roof, four pillars, base. Pillar II holds
-  // its 11 windows as small cells, coloured by state. The figure is one
+  // its windows as small cells, coloured by state. The figure is one
   // image to assistive tech, described by a generated aria-label.
   const cellsFor = (group) => FP10.pillarTwo.cells.filter((c) => c.pillarGroup === group);
+  // A window's state label, from Jeroen's legend.
+  const stateLabel = (key) => (FP10.designLegend.find((l) => l.key === key) || FP10.unmarked).label;
   const pairedCells = () => {
     // Reading order of the map: row I Competitiveness, row I Society, ...
     const out = [];
@@ -618,15 +597,16 @@ const FP10 = {
     const host = document.getElementById('fp10Building');
     if (!host) return;
     const P = FP10.programme;
-    const named = FP10.pillarTwo.cells.filter((c) => c.state === 'named').length;
+    const count = (k) => FP10.pillarTwo.cells.filter((c) => c.state === k).length;
     const total = FP10.pillarTwo.cells.length;
 
     host.setAttribute('role', 'img');
     host.setAttribute('aria-label',
       'FP10 drawn as a building: a roof marked ' + P.years.replace('–', ' to ') +
       ', four pillars with Pillar II, Competitiveness and Society, widest and highlighted, and a base reading ' +
-      P.status.toLowerCase() + '. Inside Pillar II are its ' + total + ' windows; ' + named +
-      ' are red, where the text covers design as a sector in its own right.');
+      P.status.toLowerCase() + '. Inside Pillar II are its ' + total + ' windows: ' + count('vertical') +
+      ' are red, where design is a sector in its own right, and ' + count('horizontal') +
+      ' are blue, where design crosses over into other sectors.');
 
     const roof = el('div', 'bd-roof');
     roof.appendChild(el('span', 'bd-roof-name', P.name));
@@ -686,7 +666,7 @@ const FP10 = {
 
   // --- 8. Pillar II map (In detail, section C) ----------------------------
   // Competitiveness | Society in rows I-IV, bridge chips between each pair,
-  // then the Horizontal window as a row of three. Each cell is a button
+  // then the Horizontal window as a row. Each cell is a button
   // that opens its quotes in a panel directly below its row. One open at
   // a time; opening another closes the first.
   const groupLabel = { competitiveness: 'Competitiveness', society: 'Society', horizontal: 'Horizontal window' };
@@ -695,8 +675,7 @@ const FP10 = {
   const quoteList = (c) => {
     const frag = document.createDocumentFragment();
     if (!c.quotes.length) {
-      frag.appendChild(el('p', 'mp-empty', c.note
-        || (c.state === 'none' ? FP10.pillarTwo.states.none.text : 'The passage for this window is still being confirmed.')));
+      frag.appendChild(el('p', 'mp-empty', c.note || 'No design wording in the text yet.'));
       return frag;
     }
     c.quotes.forEach((q) => {
@@ -711,7 +690,6 @@ const FP10 = {
   function renderMap() {
     const host = document.getElementById('fp10Map');
     if (!host) return;
-    const states = FP10.pillarTwo.states;
     const buttons = [];
     const panels = [];
 
@@ -727,7 +705,7 @@ const FP10 = {
       }
       b.appendChild(el('span', 'mp-cell-name', c.short));
       if (c.hint) b.appendChild(el('span', 'mp-cell-hint', c.hint));
-      b.appendChild(el('span', 'u-sr', '(' + states[c.state].label + ')'));
+      b.appendChild(el('span', 'u-sr', '(' + stateLabel(c.state) + ')'));
       b.addEventListener('click', () => toggle(c, b));
       buttons.push(b);
       return b;
@@ -790,25 +768,24 @@ const FP10 = {
     host.appendChild(map);
   }
 
-  // Legend for the map, from the same state labels.
+  // Legend for the map: the two states Pillar II's windows use, the one
+  // unmarked window, and the bridge chips.
   function renderLegend() {
     const host = document.getElementById('fp10Legend');
     if (!host) return;
     const ul = el('ul', 'mp-legend');
-    Object.entries(FP10.pillarTwo.states).forEach(([key, s]) => {
+    const item = (swatch, ...text) => {
       const li = el('li', 'mp-legend-item');
-      li.appendChild(el('span', 'mp-swatch mp-' + key));
+      li.appendChild(swatch);
       const t = el('span');
-      t.append(el('strong', null, s.label), ': ' + s.text);
+      t.append(...text);
       li.appendChild(t);
       ul.appendChild(li);
-    });
-    const chip = el('li', 'mp-legend-item');
-    chip.appendChild(el('span', 'mp-chip mp-chip-key', 'theme'));
-    const t = el('span');
-    t.append('Between a pair: ', el('strong', null, 'our examples'), ', not EU text');
-    chip.appendChild(t);
-    ul.appendChild(chip);
+    };
+    ['vertical', 'horizontal'].forEach((k) => item(el('span', 'mp-swatch mp-' + k), stateLabel(k)));
+    const unmarked = FP10.pillarTwo.cells.filter((c) => c.state === 'unmarked').map((c) => c.name);
+    if (unmarked.length) item(el('span', 'mp-swatch mp-unmarked'), FP10.unmarked.label + ': ' + unmarked.join(', '));
+    item(el('span', 'mp-chip mp-chip-key', 'theme'), 'Between a pair: ', el('strong', null, 'our examples'), ', not EU text');
     host.textContent = '';
     host.appendChild(ul);
   }
@@ -826,7 +803,7 @@ const FP10 = {
       const head = el('p', 'aq-head');
       head.append(el('span', 'mp-swatch mp-' + c.state), cellTitle(c));
       li.appendChild(head);
-      li.appendChild(el('p', 'aq-state', FP10.pillarTwo.states[c.state].label + (c.topic ? ' · ' + c.topic : '')));
+      li.appendChild(el('p', 'aq-state', stateLabel(c.state) + (c.topic ? ' · ' + c.topic : '')));
       li.appendChild(quoteList(c));
       list.appendChild(li);
     });

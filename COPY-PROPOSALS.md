@@ -157,11 +157,11 @@ Those proposals need rewording before they can be used.
 | B | Where FP10 stands; timeline and trilogue as parked | Parked section. The trilogue card now reads "Its compromise text", not "…which names Design" (brief, section 5) |
 | C | Inside Pillar II · Competitiveness and Society · Where design research fits | Mockup |
 | | Pillar II has eight windows, shown here in pairs by theme (our reading), plus a horizontal window. Red is rare: that is the gap. | Mockup, reworded by Parjanya on 25 Nov: the pairing is our reading, not the text's |
-| | Legend: **Design as a sector**: A topic or passage that covers design and the creative sectors in their own right. / **Design wording**: Design wording, applied to the window's own field. / **Not named**: No design wording in this window. / Between a pair: **our examples**, not EU text | Mockup, reworded: it said "Named as a sector" (brief, section 5) |
+| | Legend: Design as a sector in its own right (red) / Design as a connector across other sectors (blue) / Not marked: Metrology Partnership / Between a pair: **our examples**, not EU text | Jeroen's deck legend, 25 Nov (replaces "Design as a sector / Design wording / Not named") |
 | | Window names, short forms in cells | Brief, section 5 |
 | | Cell hints: circular product design · Cultural and Creative Industries · Culture and creative sectors · only chip design · human-centred digital environments · design for recovery | Brief, section 6, and Parjanya's fixes of 25 Nov: Competitiveness III is "none" with the note "only chip design"; Competitiveness IV quotes "design for recovery" (Art. 11d); Society III quotes its broadline title, "Human-centred Digital Environments, including Social Media and Addictive Algorithmic Design Patterns" (Art. 11g). Neither new passage has a page number in the brief |
 | | Bridge chips | Brief, section 3 (deck examples) |
-| | Empty panels: "No design wording in this window." / Competitiveness III: "Only chip design." | Ours / Parjanya |
+| | Empty panels: "No design wording in the text yet." / Competitiveness III: "In the text, design appears only as chip design." | Parjanya, 25 Nov |
 | | Horizontal window, under the row: Pillar II also includes Fast Track to Innovation. | Parjanya, 25 Nov. The Metrology Partnership is now a cell (state "none") |
 | | All quotes, window by window (12) | Mockup; the count follows the data |
 | | Tap any window to read its text and reference. Quotes: Specific Programme, Art. 11b–11k; Regulation, Recital 12. The reading of each window is pending confirmation. | Mockup, plus the last sentence |
