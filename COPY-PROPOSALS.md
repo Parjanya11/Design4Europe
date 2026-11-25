@@ -152,7 +152,8 @@ Those proposals need rewording before they can be used.
 | | For readers who want the structure, the timeline and the text behind our ask. | Mockup |
 | | Updated [date] · PDF coming soon | Mockup; the button label is ours, as the PDF does not exist yet |
 | Jump bar | A Structure · B Timeline · C Where design fits · D Evidence | Mockup |
-| A | FP10 has four pillars; pillar summaries; "Zoom into Pillar II ↓" | Mockup |
+| A | FP10 has four pillars; "Zoom into Pillar II ↓" | Mockup |
+| | Structure map: every pillar's entries, coded with Jeroen's four categories; "Separate fund" tag on the ECF beside Pillar II; legend "Opportunities for design research" under the pillars; "Every box above is a route into FP10. The four Competitiveness Windows are mirrored by a separate fund, the European Competitiveness Fund." | The parked structure map (10 Nov) and Jeroen's deck, 25 Nov |
 | | Source: Parliament's compromise text of the Regulation establishing Horizon Europe 2028–2034, 2025/0543 (COD). Budget figures follow once confirmed. | Mockup, without its "Art. 4", which the brief does not confirm |
 | B | Where FP10 stands; timeline and trilogue as parked | Parked section. The trilogue card now reads "Its compromise text", not "…which names Design" (brief, section 5) |
 | C | Inside Pillar II · Competitiveness and Society · Where design research fits | Mockup |

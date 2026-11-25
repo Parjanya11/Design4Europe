@@ -432,9 +432,9 @@ a { color: inherit; }
 }
 .sm-swatch { width: 14px; height: 14px; border-radius: 3px; flex: none; }
 .sm-swatch.sm-vertical { background: var(--accent-ink); }
-.sm-swatch.sm-horizontal { background: #fde3de; border: 1px solid #f0a492; }
-.sm-swatch.sm-initiative { background: #c9d8f2; border: 1px solid #5d7dba; }
-.sm-swatch.sm-grants { background: #e8effb; border: 1px solid #a8bde0; }
+.sm-swatch.sm-horizontal { background: #fff; border: 2px solid var(--blue); }
+.sm-swatch.sm-initiative { background: #dfe8f8; border: 1px solid #5d7dba; }
+.sm-swatch.sm-grants { background: #f4f8fe; border: 1px dashed #7d96c4; }
 
 /* The four pillars sit in one row, as in the source deck. */
 .sm-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: start; }
@@ -473,13 +473,35 @@ a { color: inherit; }
   border-bottom-left-radius: 4px;
 }
 /* Design as a sector of its own: dark red on a light tint, not red on red. */
-.sm-window.sm-vertical { background: #fdeeeb; border-color: var(--accent-ink); }
-.sm-window.sm-vertical .sm-window-name { color: #9e2210; font-weight: 700; }
-.sm-window.sm-horizontal { background: #fdf7f5; border-color: #f3d2c9; }
-.sm-window.sm-initiative { background: #eaf1fd; border-color: #5d7dba; }
+/* Jeroen's colours, as on the section C map: red where design is a
+   sector in its own right, blue outline where it crosses over. */
+.sm-window.sm-vertical { background: var(--accent-ink); border-color: var(--accent-ink); }
+.sm-window.sm-vertical .sm-window-name, .sm-window.sm-vertical .sm-window-note { color: #fff; }
+.sm-window.sm-vertical .sm-window-name { font-weight: 700; }
+.sm-window.sm-horizontal { background: #fff; border: 2px solid var(--blue); }
+.sm-window.sm-initiative { background: #dfe8f8; border-color: #5d7dba; }
 .sm-window.sm-initiative .sm-window-name { color: #1f3f7d; font-weight: 600; }
-.sm-window.sm-grants { background: #f4f8fe; border-color: #a8bde0; }
+.sm-window.sm-grants { background: #f4f8fe; border: 1px dashed #7d96c4; }
 .sm-window.sm-grants .sm-window-name { color: #2b4a85; }
+.sm-window.sm-initiative .sm-window-note, .sm-window.sm-grants .sm-window-note { color: var(--ink-2); }
+
+/* Section A: Pillar II widest, the ECF beside it, legend underneath. */
+.sm-a { margin-top: 0; }
+.sm-a .sm-grid { grid-template-columns: 1fr 1.8fr minmax(130px, .8fr) 1fr 1fr; }
+.sm-key { border: 2px solid var(--blue); background: #fff; }
+.sm-key .sm-pillar-id { color: var(--blue); }
+.sm-ecf {
+  align-self: start; display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  margin-top: 54px; padding: 12px; border: 1.5px dashed #7d96c4; border-radius: 9px; background: #fff;
+}
+.sm-ecf-tag { font: 700 11px var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.sm-ecf-name { font: 600 13px/1.3 var(--body); color: var(--ink); overflow-wrap: break-word; }
+.sm-ecf-note { font: 400 12px/1.45 var(--body); color: var(--ink-2); }
+.sm-zoom { display: inline-block; margin-top: 12px; font: 600 13.5px var(--body); color: var(--blue); }
+.sm-zoom:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.sm-legend-wrap { margin-top: 22px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-soft); }
+.sm-legend-title { margin: 0 0 12px; font: 700 13px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+.sm-legend-wrap .sm-legend { margin: 0; }
 .sm-note { margin: 22px 0 0; font: 400 13px/1.6 var(--body); color: var(--ink-3); max-width: 70ch; }
 
 /* --- 4. Theme cards ------------------------------------------------ */
@@ -524,6 +546,9 @@ a { color: inherit; }
 /* --- FP10 responsive ----------------------------------------------- */
 @media (max-width: 1000px) {
   .sm-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Section A stacks: Pillar II with the ECF straight after it. */
+  .sm-a .sm-grid { grid-template-columns: 1fr; }
+  .sm-ecf { margin-top: 0; }
 }
 @media (max-width: 760px) {
   .tl-heading { font-size: 22px; }
@@ -1148,18 +1173,6 @@ a { color: inherit; }
 .di-p { margin: 0 0 22px; max-width: 60ch; font: 400 16px/1.6 var(--body); color: var(--ink-2); }
 .di-ref { margin: 18px 0 0; max-width: 80ch; font: 400 13px/1.55 var(--body); color: var(--ink-3); }
 
-/* A. The four pillars, Pillar II emphasised. */
-.pa { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: 1fr 2fr 1fr 1fr; align-items: stretch; }
-.pa-pillar { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 16px; border-radius: 8px; background: var(--bg-blue); }
-.pa-name { font: 700 16px/1.3 var(--display); color: var(--ink); }
-.pa-sum { font: 400 13.5px/1.5 var(--body); color: var(--ink-2); }
-.pa-key { gap: 12px; padding: 18px 16px; background: var(--blue); }
-.pa-key .pa-name { font-size: 18px; color: #fff; }
-.pa-parts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-.pa-part { padding: 8px 10px; border-radius: 4px; background: #1d4bb0; font: 500 12.5px/1.35 var(--body); color: #fff; }
-.pa-zoom { margin-top: auto; font: 600 14px var(--body); color: #fff; }
-.pa-zoom:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-
 /* B. The timeline keeps its parked styles (.tl-*, .tg-*). */
 #b .tl-cta { margin-top: 22px; }
 
@@ -1272,7 +1285,6 @@ a { color: inherit; }
   .mp-cell-hint { font-size: 12.5px; }
 }
 @media (max-width: 899.98px) {
-  .pa { grid-template-columns: 1fr; }
   /* Four horizontal windows are too narrow side by side on a phone. */
   .mp-row-h { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

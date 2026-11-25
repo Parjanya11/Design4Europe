@@ -445,31 +445,22 @@ const FP10 = {
     host.appendChild(caption);
   }
 
-  // --- 3. Structure map ------------------------------------------------
-  // All four pillars sit in one row, as in the source deck. Each pillar is
-  // a <details> so that on narrow screens it collapses to its heading - an
-  // accordion that is keyboard-operable with no JS. On wide screens every
-  // pillar is open, because the whole point of the map is seeing the four
-  // side by side.
+  // --- 3. Structure map (In detail, section A) ---------------------------
+  // The four pillars side by side, each entry coded with Jeroen's four
+  // categories (FP10.designLegend). Pillar II's windows come from
+  // FP10.pillarTwo.cells, the same list as the section C map. The ECF sits
+  // beside Pillar II, drawn dashed: a separate fund, not a fifth pillar.
+  // Each pillar is a <details>, so on narrow screens it collapses to its
+  // heading; on wide screens all are open.
   function renderStructure() {
     const host = document.getElementById('fp10Structure');
     if (!host) return;
 
-    const legend = el('ul', 'sm-legend');
-    FP10.designLegend.forEach((l) => {
-      const li = el('li', 'sm-legend-item');
-      li.appendChild(el('span', `sm-swatch sm-${l.key}`));
-      li.appendChild(el('span', null, l.label));
-      legend.appendChild(li);
-    });
-
     const legendLabel = {};
     FP10.designLegend.forEach((l) => { legendLabel[l.key] = l.label; });
 
-    // One box per entry, so the colour coding reads the same whether the
-    // entry is a window inside Pillar II or a line in another pillar.
     // The colour is the only visible carrier of the category, so each
-    // coded box also states its category in text for screen readers.
+    // coded box also states it in text for screen readers.
     const box = (entry) => {
       const li = el('li', 'sm-window'
         + (entry.design ? ' sm-' + entry.design : '')
@@ -481,18 +472,30 @@ const FP10 = {
       if (entry.note) li.appendChild(el('span', 'sm-window-note', entry.note));
       return li;
     };
-
     const boxList = (entries) => {
       const ul = el('ul', 'sm-windows');
       entries.forEach((e) => ul.appendChild(box(e)));
       return ul;
     };
 
+    // Pillar II's windows, as structure entries.
+    const windowEntry = (c) => ({
+      name: c.row ? c.row + ' ‘' + c.name + '’' : c.name,
+      design: legendLabel[c.state] ? c.state : null,
+      note: c.state === 'vertical' ? (c.topic || c.detail) : c.detail,
+    });
+    const pillarTwoGroups = [
+      ['Competitiveness Windows', 'competitiveness'],
+      ['Society Windows', 'society'],
+      ['Horizontal Window', 'horizontal'],
+    ];
+
     const grid = el('div', 'sm-grid');
     const panels = [];
 
     FP10.pillars.forEach((p) => {
-      const d = el('details', 'sm-pillar');
+      const key = p.windowsFrom === 'pillarTwo';
+      const d = el('details', 'sm-pillar' + (key ? ' sm-key' : ''));
 
       const sum = el('summary', 'sm-summary');
       sum.appendChild(el('span', 'sm-pillar-id', 'Pillar ' + p.id));
@@ -501,22 +504,47 @@ const FP10 = {
 
       const body = el('div', 'sm-body');
       if (p.items) body.appendChild(boxList(p.items));
-      if (p.groups) {
-        p.groups.forEach((g) => {
-          body.appendChild(el('div', 'sm-group-name', g.name));
-          body.appendChild(boxList(g.windows));
+      if (key) {
+        pillarTwoGroups.forEach(([label, group]) => {
+          body.appendChild(el('div', 'sm-group-name', label));
+          const cells = group === 'horizontal' ? cellsFor('horizontal') : pairedCells().filter((c) => c.pillarGroup === group);
+          body.appendChild(boxList(cells.map(windowEntry)));
         });
       }
       if (p.extra) body.appendChild(boxList(p.extra));
+      if (key) {
+        const zoom = el('a', 'sm-zoom', 'Zoom into Pillar II ↓');
+        zoom.href = '#c';
+        body.appendChild(zoom);
+      }
 
       d.appendChild(body);
       grid.appendChild(d);
       panels.push({ node: d, expanded: !!p.expanded });
+
+      if (key) {
+        const ecf = el('div', 'sm-ecf');
+        ecf.appendChild(el('span', 'sm-ecf-tag', 'Separate fund'));
+        ecf.appendChild(el('span', 'sm-ecf-name', FP10.ecf.name));
+        ecf.appendChild(el('span', 'sm-ecf-note', FP10.ecf.note));
+        grid.appendChild(ecf);
+      }
     });
 
+    const legend = el('div', 'sm-legend-wrap');
+    legend.appendChild(el('p', 'sm-legend-title', FP10.designLegendTitle));
+    const ul = el('ul', 'sm-legend');
+    FP10.designLegend.forEach((l) => {
+      const li = el('li', 'sm-legend-item');
+      li.appendChild(el('span', `sm-swatch sm-${l.key}`));
+      li.appendChild(el('span', null, l.label));
+      ul.appendChild(li);
+    });
+    legend.appendChild(ul);
+
     host.textContent = '';
-    host.appendChild(legend);
     host.appendChild(grid);
+    host.appendChild(legend);
     host.appendChild(el('p', 'sm-note', FP10.designNote));
 
     // Open everything on wide screens, collapse to the key pillar on narrow
@@ -634,34 +662,6 @@ const FP10 = {
 
     host.textContent = '';
     host.append(roof, el('div', 'bd-beam'), pillars, base);
-  }
-
-  // --- 7. Four pillars (In detail, section A) ----------------------------
-  function renderPillars() {
-    const host = document.getElementById('fp10Pillars');
-    if (!host) return;
-    const list = el('ol', 'pa');
-    FP10.pillars.forEach((p) => {
-      const key = p.id === 'II';
-      const li = el('li', 'pa-pillar' + (key ? ' pa-key' : ''));
-      li.appendChild(el('span', 'pa-name', 'Pillar ' + p.id + ' · ' + p.name));
-      if (key) {
-        const parts = el('ul', 'pa-parts');
-        const n = (g) => cellsFor(g).length;
-        [n('competitiveness') + ' Competitiveness windows', n('society') + ' Society windows', 'Horizontal window']
-          .concat((p.extra || []).map((x) => x.name))
-          .forEach((t) => parts.appendChild(el('li', 'pa-part', t)));
-        li.appendChild(parts);
-        const zoom = el('a', 'pa-zoom', 'Zoom into Pillar II ↓');
-        zoom.href = '#c';
-        li.appendChild(zoom);
-      } else {
-        li.appendChild(el('span', 'pa-sum', p.summary));
-      }
-      list.appendChild(li);
-    });
-    host.textContent = '';
-    host.appendChild(list);
   }
 
   // --- 8. Pillar II map (In detail, section C) ----------------------------
@@ -847,7 +847,6 @@ const FP10 = {
     renderThemes();
     renderNow();
     renderBuilding();
-    renderPillars();
     renderLegend();
     renderMap();
     renderAllQuotes();
