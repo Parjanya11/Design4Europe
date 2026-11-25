@@ -831,8 +831,10 @@ const FP10 = {
     const unmarked = FP10.pillarTwo.cells.filter((c) => c.state === 'unmarked').map((c) => c.name);
     if (unmarked.length) item(el('span', 'mp-swatch mp-unmarked'), FP10.unmarked.label + ': ' + unmarked.join(', '));
     item(el('span', 'mp-chip mp-chip-key', 'theme'), 'Between a pair: ', el('strong', null, 'our examples'), ', not EU text');
+    const box = el('div', 'mp-legend-box');
+    box.append(el('p', 'mp-legend-title', FP10.designLegendTitle), ul);
     host.textContent = '';
-    host.appendChild(ul);
+    host.appendChild(box);
   }
 
   // "All quotes, window by window": everything the map holds, as a list.
