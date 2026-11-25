@@ -114,7 +114,8 @@ const FP10 = {
   // Linked to FP10 but a separate fund. Never draw as a fifth pillar.
   ecf: {
     name: 'European Competitiveness Fund (ECF)',
-    note: 'A separate fund, mirroring the four Competitiveness Windows.',
+    // Regulation, Recital 3. Not a mirror of the Competitiveness Windows.
+    note: 'A separate EU fund, tightly linked to FP10. It helps roll out the most successful FP10 results.',
   },
 
   // Jeroen's legend, "Opportunities for design research": four ways
@@ -131,7 +132,7 @@ const FP10 = {
   unmarked: { key: 'unmarked', label: 'Not marked' },
 
   designNote:
-    'Every box above is a route into FP10. The four Competitiveness Windows are mirrored by a separate fund, the European Competitiveness Fund.',
+    'Every box above is a route into FP10. The European Competitiveness Fund is a separate EU fund, tightly linked to FP10, that helps roll out its most successful results.',
 
   // --- Design as transdisciplinary connector ---------------------------
   connections: [
