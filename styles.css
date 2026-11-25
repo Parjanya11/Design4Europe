@@ -789,6 +789,19 @@ a { color: inherit; }
   .logo-tile { padding: 12px 14px; }
   .sig-tab { padding: 11px 14px; letter-spacing: .08em; }
 }
+/* "Show all" for the logo grid: phones only (script.js adds it). */
+.logo-more { display: none; }
+@media (max-width: 899.98px) {
+  .logo-grid:not(.is-expanded) .logo-tile:nth-child(n+9) { display: none; }
+  .logo-more {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; min-height: 44px; margin-top: 12px; cursor: pointer;
+    background: #fff; border: 1px solid #c9d3e6; border-radius: 6px;
+    font: 600 14px var(--body); color: var(--ink);
+  }
+  .logo-more:hover { border-color: var(--ink); }
+  .logo-more:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+}
 /* Phones: the two tabs split the width, tighter, so both fit at 360px. */
 @media (max-width: 460px) {
   .sig-tab { flex: 1 1 0; min-width: 0; justify-content: center; gap: 6px; padding: 11px 6px; font-size: 11px; letter-spacing: .03em; }

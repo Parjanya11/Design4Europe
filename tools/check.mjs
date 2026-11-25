@@ -99,6 +99,24 @@ for (const width of WIDTHS) {
     }
   }
 
+  // Phones: the logo grid shows 8, and "Show all" reveals the rest.
+  if (pagePath === '/' && width < 900) {
+    const logos = await page.evaluate(() => {
+      const tiles = [...document.querySelectorAll('#logoGrid .logo-tile')];
+      const shown = () => tiles.filter((t) => getComputedStyle(t).display !== 'none').length;
+      const btn = document.querySelector('.logo-more');
+      if (!btn) return 'no Show all button';
+      const before = shown();
+      if (before !== 8 || btn.textContent !== `Show all ${tiles.length}`) return `before: ${before} shown, button "${btn.textContent}"`;
+      btn.click();
+      const after = shown();
+      const ok = after === tiles.length && btn.getAttribute('aria-expanded') === 'true';
+      btn.click();
+      return ok ? '' : `after: ${after} of ${tiles.length} shown, aria-expanded ${btn.getAttribute('aria-expanded')}`;
+    });
+    if (logos) problems.push(`logo grid: ${logos}`);
+  }
+
   // The map: a cell opens the panel below its row, and only one is open.
   if (pagePath === '/in-detail') {
     const map = await page.evaluate(() => {

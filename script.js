@@ -36,6 +36,28 @@ if (logoGrid) {
     logoGrid.appendChild(tile);
   }
   document.getElementById('orgCount').textContent = logos.length;
+
+  // Phones show the first few logos and a button for the rest; the CSS
+  // hides the extra tiles below 900px only, so desktop is unchanged.
+  const LOGOS_ON_PHONE = 8;
+  if (logos.length > LOGOS_ON_PHONE) {
+    const more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'logo-more';
+    more.setAttribute('aria-controls', 'logoGrid');
+    more.setAttribute('aria-expanded', 'false');
+    const label = () => {
+      const open = logoGrid.classList.contains('is-expanded');
+      more.textContent = open ? 'Show fewer' : 'Show all ' + logos.length;
+      more.setAttribute('aria-expanded', String(open));
+    };
+    more.addEventListener('click', () => {
+      logoGrid.classList.toggle('is-expanded');
+      label();
+    });
+    label();
+    logoGrid.after(more);
+  }
 }
 
 // --- Signatory tabs -------------------------------------------------------
