@@ -202,9 +202,10 @@ const FP10 = {
   //   topic        the SP topic the quotes sit under, where there is one
   //   quotes       exact text and reference (brief, section 6)
   //
-  // TODO: the states are Jeroen's reading as of 23 Nov, still to be
-  // confirmed by him. Competitiveness III is 'wording' in the brief, but
-  // the brief gives no passage for it: its quote is still to be supplied.
+  // TODO: the states are Jeroen's reading, still to be confirmed by him.
+  // Updated 25 Nov: Competitiveness III is 'none' (only chip design),
+  // Competitiveness IV and Society III have new passages, and the
+  // Metrology Partnership is in the Horizontal window.
   pillarTwo: {
     states: {
       named: { label: 'Design as a sector', text: 'A topic or passage that covers design and the creative sectors in their own right.' },
@@ -245,23 +246,28 @@ const FP10 = {
           { text: 'New models for public health care should prioritise human-centred design', ref: 'Specific Programme, Art. 11f (Health Care Systems), p. 24' },
           { text: 'the planning and design of urban spaces', ref: 'Specific Programme, Art. 11f (Communities and Cities), p. 25–26' },
         ] },
-      { id: 'comp-3', pillarGroup: 'competitiveness', row: 'III', state: 'wording',
+      { id: 'comp-3', pillarGroup: 'competitiveness', row: 'III', state: 'none',
         name: 'Digital Leadership',
         short: 'Digital Leadership',
+        hint: 'only chip design',
+        note: 'Only chip design.',
         quotes: [] },
       { id: 'soc-3', pillarGroup: 'society', row: 'III', state: 'wording',
         name: 'Inclusive Digital Societies',
         short: 'Inclusive Digital Societies',
-        hint: 'human-centred digital services',
+        hint: 'human-centred digital environments',
+        topic: 'Human-centred Digital Environments, including Social Media and Addictive Algorithmic Design Patterns',
         quotes: [
-          { text: 'safer, more transparent and human-centred digital services', ref: 'Specific Programme, Art. 11g, p. 27' },
+          // The broadline's title. No page: the brief does not give one.
+          { text: 'Human-centred Digital Environments, including Social Media and Addictive Algorithmic Design Patterns', ref: 'Specific Programme, Art. 11g' },
         ] },
       { id: 'comp-4', pillarGroup: 'competitiveness', row: 'IV', state: 'wording',
         name: 'Critical Raw Materials, Security and Space',
         short: 'Critical Raw Materials, Security & Space',
-        hint: 'safe- and sustainable-by-design',
+        hint: 'design for recovery',
         quotes: [
-          { text: 'Safe- and sustainable-by-design materials', ref: 'Specific Programme, Art. 11d, p. 22' },
+          // No page: the brief does not give one for this passage.
+          { text: 'design for recovery', ref: 'Specific Programme, Art. 11d' },
         ] },
       { id: 'soc-4', pillarGroup: 'society', row: 'IV', state: 'none',
         name: 'Resilient Societies',
@@ -278,6 +284,10 @@ const FP10 = {
           { text: 'the transformation of neighbourhoods into sustainable, inclusive and beautiful places', ref: 'Specific Programme, Art. 11i(b), p. 29' },
           { text: 'through sustainable, innovative, creative and inclusive design', ref: 'Regulation, Recital 12, p. 8' },
         ] },
+      { id: 'metrology', pillarGroup: 'horizontal', row: null, state: 'none',
+        name: 'Metrology Partnership',
+        short: 'Metrology Partnership',
+        quotes: [] },
       { id: 'ssha', pillarGroup: 'horizontal', row: null, state: 'named',
         name: 'Pilot for an SSHA Sectoral Plan',
         short: 'SSHA Sectoral Plan pilot',
@@ -685,9 +695,8 @@ const FP10 = {
   const quoteList = (c) => {
     const frag = document.createDocumentFragment();
     if (!c.quotes.length) {
-      frag.appendChild(el('p', 'mp-empty', c.state === 'none'
-        ? FP10.pillarTwo.states.none.text
-        : 'The passage for this window is still being confirmed.'));
+      frag.appendChild(el('p', 'mp-empty', c.note
+        || (c.state === 'none' ? FP10.pillarTwo.states.none.text : 'The passage for this window is still being confirmed.')));
       return frag;
     }
     c.quotes.forEach((q) => {
@@ -774,6 +783,8 @@ const FP10 = {
     cellsFor('horizontal').forEach((c) => h.appendChild(cellButton(c, 'mp-panel-h')));
     map.appendChild(h);
     map.appendChild(panel('mp-panel-h'));
+    const extra = FP10.pillars.find((p) => p.id === 'II').extra || [];
+    if (extra.length) map.appendChild(el('p', 'mp-also', 'Pillar II also includes ' + extra.map((x) => x.name).join(', ') + '.'));
 
     host.textContent = '';
     host.appendChild(map);

@@ -159,10 +159,11 @@ Those proposals need rewording before they can be used.
 | | Pillar II has eight windows in matching pairs, plus a horizontal window. Red is rare: that is the gap. | Mockup |
 | | Legend: **Design as a sector**: A topic or passage that covers design and the creative sectors in their own right. / **Design wording**: Design wording, applied to the window's own field. / **Not named**: No design wording in this window. / Between a pair: **our examples**, not EU text | Mockup, reworded: it said "Named as a sector" (brief, section 5) |
 | | Window names, short forms in cells | Brief, section 5 |
-| | Cell hints: circular product design · Cultural and Creative Industries · Culture and creative sectors · human-centred digital services · safe- and sustainable-by-design | Brief, section 6. The mockup's "design methods and tools" for Competitiveness III is left out: the brief has no passage for it |
+| | Cell hints: circular product design · Cultural and Creative Industries · Culture and creative sectors · only chip design · human-centred digital environments · design for recovery | Brief, section 6, and Parjanya's fixes of 25 Nov: Competitiveness III is "none" with the note "only chip design"; Competitiveness IV quotes "design for recovery" (Art. 11d); Society III quotes its broadline title, "Human-centred Digital Environments, including Social Media and Addictive Algorithmic Design Patterns" (Art. 11g). Neither new passage has a page number in the brief |
 | | Bridge chips | Brief, section 3 (deck examples) |
-| | Empty panels: "No design wording in this window." / "The passage for this window is still being confirmed." (Competitiveness III) | Ours |
-| | All quotes, window by window (11) | Mockup |
+| | Empty panels: "No design wording in this window." / Competitiveness III: "Only chip design." | Ours / Parjanya |
+| | Horizontal window, under the row: Pillar II also includes Fast Track to Innovation. | Parjanya, 25 Nov. The Metrology Partnership is now a cell (state "none") |
+| | All quotes, window by window (12) | Mockup; the count follows the data |
 | | Tap any window to read its text and reference. Quotes: Specific Programme, Art. 11b–11k; Regulation, Recital 12. The reading of each window is pending confirmation. | Mockup, plus the last sentence |
 | | Your field is here. Add your signature | Mockup |
 | D | The text behind our ask; three quotes with references | Mockup; quotes verbatim from the brief, section 6 |

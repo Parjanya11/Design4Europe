@@ -970,7 +970,7 @@ a { color: inherit; }
 .bd-key .bd-id, .bd-key .bd-name { color: #fff; }
 .bd-key .bd-name { margin-top: auto; }
 .bd-cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
-.bd-cells-h { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 2px; }
+.bd-cells-h { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 2px; }
 .bd-cell { height: 26px; border-radius: 2px; }
 .bd-cells-h .bd-cell { height: 20px; }
 .bd-named { background: #ff5a3d; }
@@ -1165,7 +1165,8 @@ a { color: inherit; }
 .mp-heads, .mp-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .mp-heads, .mp-head-h { font: 700 11px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
 .mp-head-h { margin: 12px 0 0; }
-.mp-row-h { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mp-row-h { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.mp-also { margin: 2px 0 0; font: 400 13.5px/1.5 var(--body); color: var(--ink-2); }
 
 .mp-cell {
   position: relative; display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 92px;
@@ -1251,6 +1252,8 @@ a { color: inherit; }
 }
 @media (max-width: 899.98px) {
   .pa { grid-template-columns: 1fr; }
+  /* Four horizontal windows are too narrow side by side on a phone. */
+  .mp-row-h { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
   .di-intro .container { padding-top: 32px; padding-bottom: 22px; }
