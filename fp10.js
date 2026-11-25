@@ -406,43 +406,88 @@ const FP10 = {
     host.appendChild(stage);
   }
 
-  // --- 2. Connector diagram -------------------------------------------
+  // --- 2. Connector diagram (In detail, "Design as a connector") ---------
+  // FP10's four pillars in one frame, the ECF outside it under Pillar II.
+  // Numbered badges mark where each of FP10.connections sits:
+  //   1  a bracket over Pillars I to III (science to innovation)
+  //   2  between the Competitiveness and Society windows, inside Pillar II
+  //   3  on the SSHA Sectoral Plan pilot, inside Pillar II
+  //   4  on the link from Pillar II down to the ECF
+  // The diagram is one image to assistive tech; the numbered list after it
+  // carries the content. On phones the diagram drops the badges and inner
+  // detail (CSS), and the list does the explaining.
   function renderConnectors() {
     const host = document.getElementById('fp10Connectors');
     if (!host) return;
+    const C = {};
+    FP10.connections.forEach((c) => { C[c.n] = c; });
+    const badge = (n) => el('span', 'cx-badge', String(n));
+    const pillar = (id) => FP10.pillars.find((p) => p.id === id);
 
-    const map = el('div', 'cx-map');
-    FP10.pillars.forEach((p) => {
-      const box = el('div', 'cx-pillar');
-      box.appendChild(el('span', 'cx-pillar-id', 'Pillar ' + p.id));
+    const diagram = el('div', 'cx-diagram');
+    diagram.setAttribute('role', 'img');
+    diagram.setAttribute('aria-label',
+      'Diagram: FP10’s four pillars inside one frame, and the European Competitiveness Fund outside it, below Pillar II. ' +
+      'Numbers 1 to ' + FP10.connections.length + ' mark where design connects; the list below explains each.');
+
+    const frame = el('div', 'cx-frame');
+    frame.appendChild(el('span', 'cx-boundary-label', 'FP10'));
+
+    if (C[1]) {
+      const span = el('div', 'cx-span');
+      span.appendChild(badge(1));
+      frame.appendChild(span);
+    }
+
+    ['I', 'II', 'III', 'IV'].forEach((id) => {
+      const p = pillar(id);
+      const box = el('div', 'cx-pillar cx-p' + id);
+      box.appendChild(el('span', 'cx-pillar-id', 'Pillar ' + id));
       box.appendChild(el('span', 'cx-pillar-name', p.name));
-      map.appendChild(box);
+      if (id === 'II') {
+        const pair = el('div', 'cx-pair');
+        pair.appendChild(el('span', 'cx-sub', 'Competitiveness windows'));
+        if (C[2]) pair.appendChild(badge(2));
+        pair.appendChild(el('span', 'cx-sub', 'Society windows'));
+        box.appendChild(pair);
+        const ssha = FP10.pillarTwo.cells.find((c) => c.id === 'ssha');
+        if (ssha && C[3]) {
+          const s = el('div', 'cx-sub cx-ssha');
+          s.appendChild(badge(3));
+          s.appendChild(document.createTextNode(ssha.short));
+          box.appendChild(s);
+        }
+      }
+      frame.appendChild(box);
     });
 
-    const fp10Box = el('div', 'cx-fp10');
-    fp10Box.appendChild(el('span', 'cx-boundary-label', 'FP10'));
-    fp10Box.appendChild(map);
-
+    const out = el('div', 'cx-out');
+    const fund = el('div', 'cx-fund');
+    if (C[4]) {
+      const link = el('div', 'cx-link');
+      link.appendChild(badge(4));
+      fund.appendChild(link);
+    }
     const ecf = el('div', 'cx-ecf');
     ecf.appendChild(el('span', 'cx-ecf-name', FP10.ecf.name));
     ecf.appendChild(el('span', 'cx-ecf-note', FP10.ecf.note));
+    fund.appendChild(ecf);
+    out.appendChild(fund);
 
-    const wrap = el('div', 'cx-wrap');
-    wrap.appendChild(fp10Box);
-    wrap.appendChild(ecf);
+    diagram.append(frame, out);
 
-    const caption = el('ol', 'cx-list');
+    const list = el('ol', 'cx-list');
     FP10.connections.forEach((c) => {
       const li = el('li');
       li.appendChild(el('span', 'cx-num', String(c.n)));
       li.appendChild(el('span', 'cx-text', c.text));
-      caption.appendChild(li);
+      list.appendChild(li);
     });
 
     host.textContent = '';
-    host.appendChild(wrap);
+    host.appendChild(diagram);
     host.appendChild(el('p', 'cx-caption-head', 'Design connects, in four ways:'));
-    host.appendChild(caption);
+    host.appendChild(list);
   }
 
   // --- 3. Structure map (In detail, section A) ---------------------------

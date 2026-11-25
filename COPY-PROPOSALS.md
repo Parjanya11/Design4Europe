@@ -155,6 +155,9 @@ Those proposals need rewording before they can be used.
 | A | FP10 has four pillars; "Zoom into Pillar II ↓" | Mockup |
 | | Structure map: every pillar's entries, coded with Jeroen's four categories; "Separate fund" tag on the ECF beside Pillar II; legend "Opportunities for design research" under the pillars; "Every box above is a route into FP10. The four Competitiveness Windows are mirrored by a separate fund, the European Competitiveness Fund." | The parked structure map (10 Nov) and Jeroen's deck, 25 Nov |
 | | Source: Parliament's compromise text of the Regulation establishing Horizon Europe 2028–2034, 2025/0543 (COD). Budget figures follow once confirmed. | Mockup, without its "Art. 4", which the brief does not confirm |
+| Connector (between A and B) | Jump bar: Connector · Connector · Design as a connector | Parjanya, 25 Nov |
+| | Diagram labels: FP10, Pillar I to IV, Competitiveness windows, Society windows, SSHA Sectoral Plan pilot, European Competitiveness Fund (ECF), "A separate fund, mirroring the four Competitiveness Windows." | Parked connector diagram, 10 Nov |
+| | Design connects, in four ways: 1 Between Pillars I, II and III: from science to innovation / 2 Between the Competitiveness and Society Windows within Pillar II / 3 Between Social Sciences, Humanities and the Arts in the pilot SSHA Sectoral Plan / 4 Between Pillar II and the ECF: from innovation to business | Parked connector diagram (Jeroen's deck, slide 5) |
 | B | Where FP10 stands; timeline and trilogue as parked | Parked section. The trilogue card now reads "Its compromise text", not "…which names Design" (brief, section 5) |
 | C | Inside Pillar II · Competitiveness and Society · Where design research fits | Mockup |
 | | Pillar II has eight windows, shown here in pairs by theme (our reading), plus a horizontal window. Red is rare: that is the gap. | Mockup, reworded by Parjanya on 25 Nov: the pairing is our reading, not the text's |
