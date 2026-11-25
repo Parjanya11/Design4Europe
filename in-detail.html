@@ -98,16 +98,26 @@
         <h2 class="section-title" id="cHeading">Where design research fits</h2>
         <p class="di-p" data-draft>Pillar II has eight windows, shown here in pairs by theme (our reading), plus a horizontal window. Red is rare: that is the gap.</p>
 
-        <!-- Legend and map, both rendered from FP10.pillarTwo in fp10.js -->
-        <div id="fp10Legend" data-draft></div>
-        <div id="fp10Map"></div>
+      </div>
 
-        <details class="aq">
-          <summary><span>All quotes, window by window (<span id="fp10AllQuotesCount">12</span>)</span></summary>
-          <div id="fp10AllQuotes"></div>
-        </details>
-        <p class="di-ref" data-draft>Tap any window to read its text and reference. Quotes: Specific Programme, Art. 11b&ndash;11k; Regulation, Recital 12. The reading of each window is pending confirmation.</p>
-        <a class="btn-field" href="/#sign" data-draft>Your field is here. Add your signature</a>
+      <!-- Legend and map, both rendered from FP10.pillarTwo in fp10.js.
+           Phones: legend above the map. Desktop: the legend sits in a
+           sticky right column, so the map keeps its quote panels directly
+           under their rows and the right half is not left empty. -->
+      <div class="mp-layout">
+        <div class="mp-side">
+          <div id="fp10Legend" data-draft></div>
+        </div>
+        <div class="mp-main">
+          <div id="fp10Map"></div>
+
+          <details class="aq">
+            <summary><span>All quotes, window by window (<span id="fp10AllQuotesCount">12</span>)</span></summary>
+            <div id="fp10AllQuotes"></div>
+          </details>
+          <p class="di-ref" data-draft>Tap any window to read its text and reference. Quotes: Specific Programme, Art. 11b&ndash;11k; Regulation, Recital 12. The reading of each window is pending confirmation.</p>
+          <a class="btn-field" href="/#sign" data-draft>Your field is here. Add your signature</a>
+        </div>
       </div>
     </div>
   </section>
