@@ -3,13 +3,15 @@
 //   npm run check                    run everything, exit 1 on any failure
 //   npm run check:update-baseline    accept today's known accessibility issues
 //
-// Checks, at 360 / 768 / 1280 / 1600 px:
+// Checks both pages (/ and /in-detail), at 360 / 390 / 768 / 1280 / 1600 px:
 //   - no horizontal page scroll                    (brief: must hold at 360px)
 //   - no text smaller than 11px                    (brief: site minimum)
 //   - no failed requests, no console errors
 //   - no axe-core accessibility violation that is not already in the
 //     baseline. Known issues waiting on a design decision live in
 //     axe-baseline.json; anything new fails the run.
+// Also: /docs/* answers 404, a Pillar II map cell opens its quotes, and
+// on phones the sign bar appears and hides where it should.
 // Full-page screenshots are written to tools/out/ for a visual pass.
 
 import { chromium } from 'playwright';
@@ -21,7 +23,12 @@ import { startServer } from './serve.mjs';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, 'out');
 const BASELINE = path.join(HERE, 'axe-baseline.json');
-const WIDTHS = [360, 768, 1280, 1600];
+const WIDTHS = [360, 390, 768, 1280, 1600];
+// Index ids carry no prefix, so the existing baseline entries still match.
+const PAGES = [
+  { path: '/', shot: 'page', axePrefix: '' },
+  { path: '/in-detail', shot: 'in-detail', axePrefix: 'in-detail: ' },
+];
 const MIN_FONT_PX = 11;
 const PORT = 8123;
 const updateBaseline = process.argv.includes('--update-baseline');
@@ -35,6 +42,14 @@ const browser = await chromium.launch();
 const failures = [];
 const seenAxe = new Set();
 
+// docs/ is working material: netlify.toml answers it with a 404.
+{
+  const res = await fetch(`http://localhost:${PORT}/docs/BRIEF.md`);
+  if (res.status !== 404) failures.push(`/docs/BRIEF.md answered ${res.status}, expected 404`);
+  console.log(`${res.status === 404 ? '✓' : '✗'} /docs/* is not served`);
+}
+
+for (const { path: pagePath, shot, axePrefix } of PAGES)
 for (const width of WIDTHS) {
   const page = await browser.newPage({ viewport: { width, height: 900 } });
   const problems = [];
@@ -46,7 +61,7 @@ for (const width of WIDTHS) {
     problems.push(`request failed: ${r.url()}`);
   });
 
-  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' });
+  await page.goto(`http://localhost:${PORT}${pagePath}`, { waitUntil: 'networkidle' });
   // Lazy images below the fold only load when scrolled to; scroll through once.
   await page.evaluate(async () => {
     for (let y = 0; y < document.body.scrollHeight; y += 700) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 40)); }
@@ -68,30 +83,81 @@ for (const width of WIDTHS) {
   if (layout.small.length) problems.push(`text under ${MIN_FONT_PX}px: ${layout.small.join(', ')}`);
   if (layout.thirdParty.length) problems.push(`third-party requests: ${[...new Set(layout.thirdParty)].join(', ')}`);
 
+  // Phones: the sign bar shows once the hero is gone, hides at the form.
+  if (pagePath === '/' && width < 900) {
+    const bar = async () => page.evaluate(() => getComputedStyle(document.getElementById('signBar')).visibility);
+    const wait = () => page.waitForTimeout(400);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' })); await wait();
+    const atTop = await bar();
+    await page.evaluate(() => document.getElementById('case').scrollIntoView({ behavior: 'instant' })); await wait();
+    const midPage = await bar();
+    await page.evaluate(() => document.getElementById('sign').scrollIntoView({ behavior: 'instant' })); await wait();
+    const atForm = await bar();
+    await page.evaluate(() => window.scrollTo(0, 0));
+    if (atTop !== 'hidden' || midPage !== 'visible' || atForm !== 'hidden') {
+      problems.push(`sign bar: top ${atTop}, mid-page ${midPage}, at the form ${atForm}`);
+    }
+  }
+
+  // Phones: the logo grid shows 8, and "Show all" reveals the rest.
+  if (pagePath === '/' && width < 900) {
+    const logos = await page.evaluate(() => {
+      const tiles = [...document.querySelectorAll('#logoGrid .logo-tile')];
+      const shown = () => tiles.filter((t) => getComputedStyle(t).display !== 'none').length;
+      const btn = document.querySelector('.logo-more');
+      if (!btn) return 'no Show all button';
+      const before = shown();
+      if (before !== 8 || btn.textContent !== `Show all ${tiles.length}`) return `before: ${before} shown, button "${btn.textContent}"`;
+      btn.click();
+      const after = shown();
+      const ok = after === tiles.length && btn.getAttribute('aria-expanded') === 'true';
+      btn.click();
+      return ok ? '' : `after: ${after} of ${tiles.length} shown, aria-expanded ${btn.getAttribute('aria-expanded')}`;
+    });
+    if (logos) problems.push(`logo grid: ${logos}`);
+  }
+
+  // The map: a cell opens the panel below its row, and only one is open.
+  if (pagePath === '/in-detail') {
+    const map = await page.evaluate(() => {
+      const cell = document.getElementById('cell-comp-2');
+      const other = document.getElementById('cell-neb');
+      if (!cell || !other) return 'map cells missing';
+      cell.click();
+      const panel = document.getElementById(cell.getAttribute('aria-controls'));
+      if (panel.hidden || cell.getAttribute('aria-expanded') !== 'true' || !panel.querySelector('blockquote')) return 'cell did not open its quotes';
+      other.click();
+      if (!panel.hidden || cell.getAttribute('aria-expanded') !== 'false') return 'opening a second cell left the first open';
+      other.click();
+      return document.querySelectorAll('.mp-panel:not([hidden])').length ? 'a panel stayed open after closing' : '';
+    });
+    if (map) problems.push(`map: ${map}`);
+  }
+
   if (width === 360 || width === 1280) {
     // axe is injected as an inline script, which the site's own CSP rightly
     // forbids. Scan in a separate context allowed to bypass it, so the main
     // page above still runs under the real policy and reports violations.
     const axeContext = await browser.newContext({ viewport: { width, height: 900 }, bypassCSP: true });
     const axePage = await axeContext.newPage();
-    await axePage.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' });
+    await axePage.goto(`http://localhost:${PORT}${pagePath}`, { waitUntil: 'networkidle' });
     await axePage.addScriptTag({ content: axeSource });
     const res = await axePage.evaluate(async () => await window.axe.run(document, { resultTypes: ['violations'] }));
     await axeContext.close();
     for (const v of res.violations) for (const n of v.nodes) {
-      const id = `${v.id} | ${n.target.join(' ')}`;
+      const id = `${axePrefix}${v.id} | ${n.target.join(' ')}`;
       seenAxe.add(id);
       if (!baseline.has(id) && !updateBaseline) problems.push(`axe [${v.impact}] ${id}`);
     }
   }
 
-  await page.screenshot({ path: path.join(OUT, `page-${width}.png`), fullPage: true });
+  await page.screenshot({ path: path.join(OUT, `${shot}-${width}.png`), fullPage: true });
   await page.close();
 
   const unique = [...new Set(problems)];
-  console.log(`${unique.length ? '✗' : '✓'} ${width}px${unique.length ? '' : '  clean'}`);
+  console.log(`${unique.length ? '✗' : '✓'} ${pagePath} ${width}px${unique.length ? '' : '  clean'}`);
   unique.forEach((p) => console.log(`    ${p}`));
-  failures.push(...unique.map((p) => `${width}px ${p}`));
+  failures.push(...unique.map((p) => `${pagePath} ${width}px ${p}`));
 }
 
 await browser.close();

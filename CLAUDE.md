@@ -2,6 +2,8 @@
 
 Read `README.md` first: architecture, local preview, and the runbook.
 
+For the current round, read `docs/BRIEF.md` first.
+
 ## Before every push
 
 - `npm run check` and `npm run test:functions` in `tools/`, both green. Look at the screenshots in `tools/out/`. A passing check is not the same as a page that looks right.

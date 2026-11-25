@@ -23,3 +23,7 @@ tools/out/
 
 # Logo inbox: originals as sent. The trimmed copies in assets/source/logos/ are kept.
 assets/new logos/
+
+# Local working files from Claude sessions. Never commit.
+Claude outputs/
+.claude/

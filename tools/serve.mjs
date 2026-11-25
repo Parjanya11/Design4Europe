@@ -74,6 +74,9 @@ export async function startServer(port = 8000) {
       res.writeHead(404, { 'content-type': 'application/json' });
       return res.end(JSON.stringify({ ok: false, error: 'Not available in local preview' }));
     }
+    // Mirrors the [[redirects]] in netlify.toml.
+    if (url.pathname.startsWith('/docs/')) { res.writeHead(404); return res.end('Not found'); }
+    if (url.pathname === '/in-detail') url.pathname = '/in-detail.html';
     let file = path.join(ROOT, decodeURIComponent(url.pathname));
     if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
     try {

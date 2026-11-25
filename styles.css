@@ -376,49 +376,85 @@ a { color: inherit; }
 }
 
 /* --- 2. Connector diagram ----------------------------------------- */
-.cx { min-width: 0; }
-.cx-wrap { display: flex; flex-direction: column; gap: 12px; }
-/* The FP10 boundary is drawn, so the ECF outside it reads as a separate
-   fund rather than a fifth pillar. */
-.cx-fp10 {
-  position: relative; border: 1.5px solid #ccd6e8;
-  border-radius: 10px; padding: 22px 14px 14px;
+/* Four pillars in an FP10 frame; the ECF outside it, below Pillar II.
+   The frame and the row under it share one column grid, so the ECF
+   lines up under Pillar II. */
+.cx { min-width: 0; max-width: 980px; }
+.cx-diagram { --cx-cols: 1fr 2fr 1fr 1fr; --cx-gap: 12px; --cx-pad: 16px; }
+.cx-frame {
+  position: relative; display: grid; grid-template-columns: var(--cx-cols); gap: var(--cx-gap);
+  border: 1.5px solid #ccd6e8; border-radius: 10px; padding: 24px var(--cx-pad) var(--cx-pad);
 }
 .cx-boundary-label {
   position: absolute; top: -9px; left: 14px; padding: 0 7px; background: #fff;
-  font: 700 11px var(--body); letter-spacing: .14em; text-transform: uppercase;
-  color: var(--ink-3);
+  font: 700 11px var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
 }
-.cx-map { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.cx-pillar {
-  display: flex; flex-direction: column; gap: 2px;
-  background: var(--bg-soft); border: 1px solid var(--line);
-  border-radius: 7px; padding: 10px 11px; min-width: 0;
+/* 1: a bracket from the middle of Pillar I to the middle of Pillar III. */
+.cx-span { grid-column: 1 / 4; grid-row: 1; position: relative; height: 26px; }
+.cx-span::before {
+  content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 12px; height: 12px;
+  border: 2px solid #9db0d4; border-bottom: 0; border-radius: 6px 6px 0 0;
 }
-.cx-pillar-id {
-  font: 700 11px var(--body); letter-spacing: .12em;
-  text-transform: uppercase; color: var(--accent-ink);
-}
-.cx-pillar-name { font: 600 12.5px/1.3 var(--body); color: var(--ink); overflow-wrap: break-word; hyphens: auto; }
+.cx-span .cx-badge { position: absolute; left: 50%; top: 0; transform: translateX(-50%); }
 
-.cx-ecf {
-  display: flex; flex-direction: column; gap: 2px;
-  border: 1.5px dashed #c2cee4; border-radius: 10px; padding: 11px 13px;
+.cx-pillar {
+  grid-row: 2; display: flex; flex-direction: column; gap: 3px; min-width: 0;
+  padding: 11px 12px; border-radius: 7px; background: var(--bg-soft); border: 1px solid var(--line);
 }
-.cx-ecf-name { font: 600 12.5px var(--body); color: var(--ink); }
-.cx-ecf-note { font: 400 11.5px/1.4 var(--body); color: var(--ink-3); }
+.cx-pillar-id { font: 700 11px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); }
+.cx-pillar-name { font: 600 13px/1.3 var(--body); color: var(--ink); overflow-wrap: break-word; hyphens: auto; }
+.cx-pII { background: #fff; border: 2px solid var(--blue); }
+.cx-pII .cx-pillar-id { color: var(--blue); }
+/* 2: between the Competitiveness and Society windows. */
+.cx-pair { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 8px; }
+.cx-sub {
+  padding: 7px 9px; border-radius: 5px; background: var(--bg-blue);
+  font: 500 12px/1.3 var(--body); color: var(--ink);
+}
+/* 3: the SSHA Sectoral Plan pilot. */
+.cx-ssha { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+
+/* 4: from Pillar II down to the ECF, outside the frame. */
+.cx-out { display: grid; grid-template-columns: var(--cx-cols); gap: var(--cx-gap); padding: 0 calc(var(--cx-pad) + 1.5px); }
+.cx-fund { grid-column: 2; display: flex; flex-direction: column; align-items: center; }
+.cx-link { position: relative; width: 100%; height: 44px; display: flex; align-items: center; justify-content: center; }
+.cx-link::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; border-left: 2px dashed #9db0d4; }
+.cx-link .cx-badge { position: relative; }
+.cx-ecf {
+  width: 100%; display: flex; flex-direction: column; gap: 2px;
+  border: 1.5px dashed #7d96c4; border-radius: 10px; padding: 11px 13px; background: #fff;
+}
+.cx-ecf-name { font: 600 13px var(--body); color: var(--ink); }
+.cx-ecf-note { font: 400 12px/1.4 var(--body); color: var(--ink-2); }
+
+.cx-badge {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%; background: var(--accent-ink);
+  font: 700 12px/1 var(--body); color: #fff; box-shadow: 0 0 0 3px #fff;
+}
 
 .cx-caption-head {
-  margin: 20px 0 10px; font: 600 11px var(--body); letter-spacing: .1em;
+  margin: 26px 0 10px; font: 600 11px var(--body); letter-spacing: .1em;
   text-transform: uppercase; color: var(--ink-3);
 }
-.cx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
-.cx-list li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; }
+.cx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; max-width: 70ch; }
+.cx-list li { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; }
 .cx-num {
-  width: 20px; height: 20px; border-radius: 50%; background: var(--accent-ink);
-  color: #fff; font: 700 11px/20px var(--body); text-align: center;
+  width: 24px; height: 24px; border-radius: 50%; background: var(--accent-ink);
+  color: #fff; font: 700 12px/24px var(--body); text-align: center;
 }
-.cx-text { font: 400 13.5px/1.5 var(--body); color: var(--ink-2); }
+.cx-text { font: 400 15px/1.55 var(--body); color: var(--ink-2); }
+
+/* Phones: the diagram simplified to the pillars and the fund; the
+   numbered list carries the four connections. */
+@media (max-width: 760px) {
+  .cx-diagram { --cx-cols: 1fr 1fr; }
+  .cx-span, .cx-pair, .cx-ssha, .cx-badge { display: none; }
+  .cx-pillar { grid-row: auto; }
+  .cx-out { padding: 0; }
+  .cx-fund { grid-column: 1 / -1; }
+  .cx-link { height: 18px; }
+}
 
 /* --- 3. Structure map --------------------------------------------- */
 .sm { margin-top: 46px; }
@@ -432,9 +468,9 @@ a { color: inherit; }
 }
 .sm-swatch { width: 14px; height: 14px; border-radius: 3px; flex: none; }
 .sm-swatch.sm-vertical { background: var(--accent-ink); }
-.sm-swatch.sm-horizontal { background: #fde3de; border: 1px solid #f0a492; }
-.sm-swatch.sm-initiative { background: #c9d8f2; border: 1px solid #5d7dba; }
-.sm-swatch.sm-grants { background: #e8effb; border: 1px solid #a8bde0; }
+.sm-swatch.sm-horizontal { background: #fff; border: 2px solid var(--blue); }
+.sm-swatch.sm-initiative { background: #dfe8f8; border: 1px solid #5d7dba; }
+.sm-swatch.sm-grants { background: #f4f8fe; border: 1px dashed #7d96c4; }
 
 /* The four pillars sit in one row, as in the source deck. */
 .sm-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: start; }
@@ -473,13 +509,35 @@ a { color: inherit; }
   border-bottom-left-radius: 4px;
 }
 /* Design as a sector of its own: dark red on a light tint, not red on red. */
-.sm-window.sm-vertical { background: #fdeeeb; border-color: var(--accent-ink); }
-.sm-window.sm-vertical .sm-window-name { color: #9e2210; font-weight: 700; }
-.sm-window.sm-horizontal { background: #fdf7f5; border-color: #f3d2c9; }
-.sm-window.sm-initiative { background: #eaf1fd; border-color: #5d7dba; }
+/* Jeroen's colours, as on the section C map: red where design is a
+   sector in its own right, blue outline where it crosses over. */
+.sm-window.sm-vertical { background: var(--accent-ink); border-color: var(--accent-ink); }
+.sm-window.sm-vertical .sm-window-name, .sm-window.sm-vertical .sm-window-note { color: #fff; }
+.sm-window.sm-vertical .sm-window-name { font-weight: 700; }
+.sm-window.sm-horizontal { background: #fff; border: 2px solid var(--blue); }
+.sm-window.sm-initiative { background: #dfe8f8; border-color: #5d7dba; }
 .sm-window.sm-initiative .sm-window-name { color: #1f3f7d; font-weight: 600; }
-.sm-window.sm-grants { background: #f4f8fe; border-color: #a8bde0; }
+.sm-window.sm-grants { background: #f4f8fe; border: 1px dashed #7d96c4; }
 .sm-window.sm-grants .sm-window-name { color: #2b4a85; }
+.sm-window.sm-initiative .sm-window-note, .sm-window.sm-grants .sm-window-note { color: var(--ink-2); }
+
+/* Section A: Pillar II widest, the ECF beside it, legend underneath. */
+.sm-a { margin-top: 0; }
+.sm-a .sm-grid { grid-template-columns: 1fr 1.8fr minmax(130px, .8fr) 1fr 1fr; }
+.sm-key { border: 2px solid var(--blue); background: #fff; }
+.sm-key .sm-pillar-id { color: var(--blue); }
+.sm-ecf {
+  align-self: start; display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  margin-top: 54px; padding: 12px; border: 1.5px dashed #7d96c4; border-radius: 9px; background: #fff;
+}
+.sm-ecf-tag { font: 700 11px var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.sm-ecf-name { font: 600 13px/1.3 var(--body); color: var(--ink); overflow-wrap: break-word; }
+.sm-ecf-note { font: 400 12px/1.45 var(--body); color: var(--ink-2); }
+.sm-zoom { display: inline-block; margin-top: 12px; font: 600 13.5px var(--body); color: var(--blue); }
+.sm-zoom:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.sm-legend-wrap { margin-top: 22px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-soft); }
+.sm-legend-title { margin: 0 0 12px; font: 700 13px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+.sm-legend-wrap .sm-legend { margin: 0; }
 .sm-note { margin: 22px 0 0; font: 400 13px/1.6 var(--body); color: var(--ink-3); max-width: 70ch; }
 
 /* --- 4. Theme cards ------------------------------------------------ */
@@ -524,6 +582,9 @@ a { color: inherit; }
 /* --- FP10 responsive ----------------------------------------------- */
 @media (max-width: 1000px) {
   .sm-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Section A stacks: Pillar II with the ECF straight after it. */
+  .sm-a .sm-grid { grid-template-columns: 1fr; }
+  .sm-ecf { margin-top: 0; }
 }
 @media (max-width: 760px) {
   .tl-heading { font-size: 22px; }
@@ -789,6 +850,19 @@ a { color: inherit; }
   .logo-tile { padding: 12px 14px; }
   .sig-tab { padding: 11px 14px; letter-spacing: .08em; }
 }
+/* "Show all" for the logo grid: phones only (script.js adds it). */
+.logo-more { display: none; }
+@media (max-width: 899.98px) {
+  .logo-grid:not(.is-expanded) .logo-tile:nth-child(n+9) { display: none; }
+  .logo-more {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; min-height: 44px; margin-top: 12px; cursor: pointer;
+    background: #fff; border: 1px solid #c9d3e6; border-radius: 6px;
+    font: 600 14px var(--body); color: var(--ink);
+  }
+  .logo-more:hover { border-color: var(--ink); }
+  .logo-more:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+}
 /* Phones: the two tabs split the width, tighter, so both fit at 360px. */
 @media (max-width: 460px) {
   .sig-tab { flex: 1 1 0; min-width: 0; justify-content: center; gap: 6px; padding: 11px 6px; font-size: 11px; letter-spacing: .03em; }
@@ -881,4 +955,388 @@ a { color: inherit; }
   .signon-form { grid-template-columns: 1fr; padding: 26px 22px; }
   .signon-form label#categoryOtherLabel { grid-column: auto; } /* single column on mobile */
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* =================================================================
+   TWO-PAGE ROUND: PAGE 1
+   The overview: short teasers, each linking to its section on the
+   In detail page. Colours from the tokens at the top of this file.
+   ================================================================= */
+
+/* "Read more" link to a section of the In detail page. The letter is
+   the section on page 2 (A to D). */
+.more {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: fit-content; min-width: min(100%, 280px); max-width: 100%;
+  min-height: 44px; padding: 0 14px;
+  border: 1px solid #c9d3e6; border-radius: 6px; background: #fff;
+  font: 600 14px var(--body); color: var(--ink); text-decoration: none;
+}
+.more:hover { border-color: var(--ink); }
+.more:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+.more-key {
+  background: var(--accent-ink); color: #fff; border-radius: 3px;
+  font: 700 12px var(--body); padding: 2px 7px;
+}
+.more-on-navy { background: transparent; border-color: rgba(255,255,255,.35); color: #fff; margin-top: 30px; }
+.more-on-navy:hover { border-color: #fff; }
+.more-on-navy:focus-visible { outline-color: #fff; }
+
+/* New eyebrows use the darkened red, which clears 4.5:1 on white. The
+   older ones wait for the contrast retone. */
+.eyebrow-ink { color: var(--accent-ink); }
+
+/* Phones: the Sign button stays in the header; the menu holds the rest. */
+.nav-sign-m { display: none; }
+
+/* Signed-by line over the logos. */
+.signed-line {
+  margin: 0; padding: 22px var(--pad) 0; text-align: center;
+  font: 400 15px/1.5 var(--body); color: var(--ink-2);
+}
+.signed-line strong { color: var(--ink); font-weight: 700; }
+
+/* "Now" status line. */
+.now-line { display: block; background: #fff; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.now-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 16px; padding-bottom: 16px; }
+.now-text { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; min-width: 0; }
+.now-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 700 11px var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--accent-ink);
+}
+.now-eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-ink); }
+.now-step { font: 600 15px/1.4 var(--body); }
+.now-more { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font: 600 13px var(--body); color: var(--accent-ink); }
+.now-line:hover .now-step { text-decoration: underline; }
+.now-line:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: -4px; }
+
+/* What is FP10? Text beside the building on desktop, stacked on phones. */
+.fp10 { background: #fff; }
+.fp10 .container { padding-top: 60px; padding-bottom: 60px; }
+.fp10-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: 64px; align-items: center; }
+.fp10 .section-title { margin-bottom: 18px; }
+.fp10-lead { font: 400 18px/1.55 var(--body); color: var(--ink); margin: 0 0 22px; max-width: 46ch; }
+.fp10-key { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 24px; max-width: 46ch; font: 400 15px/1.55 var(--body); color: var(--ink-2); }
+.fp10-key-swatch { width: 14px; height: 14px; flex: none; margin-top: 4px; border-radius: 2px; background: var(--accent); }
+
+/* The building: roof, beam, four pillars, base. Pillar II is the widest
+   and holds the 11 window cells, coloured by state. */
+.bd { margin: 0; display: flex; flex-direction: column; }
+.bd-roof {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  background: var(--navy); color: #fff; padding: 12px 14px; border-radius: 6px 6px 0 0;
+}
+.bd-roof-name { font: 800 22px var(--display); }
+.bd-roof-years { font: 600 13px var(--body); color: var(--on-navy); }
+.bd-beam { height: 6px; background: #1c2b63; }
+.bd-pillars {
+  display: grid; grid-template-columns: 80px minmax(0, 1fr) 80px 80px; gap: 10px;
+  padding: 12px 10px 0; background: var(--bg-soft);
+}
+.bd-pillar {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
+  min-width: 0; min-height: 260px; padding: 9px 7px;
+  background: var(--bg-blue); border: 1px solid #c9d3e6;
+}
+.bd-id { font: 700 14px var(--body); color: var(--ink); }
+.bd-name { font: 400 11px/1.25 var(--body); color: var(--ink-2); overflow-wrap: break-word; hyphens: auto; }
+.bd-key { justify-content: flex-start; padding: 9px; background: var(--blue); border-color: var(--blue); }
+.bd-key .bd-id, .bd-key .bd-name { color: #fff; }
+.bd-key .bd-name { margin-top: auto; }
+.bd-cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.bd-cells-h { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 2px; }
+.bd-cell { height: 26px; border-radius: 2px; }
+.bd-cells-h .bd-cell { height: 20px; }
+.bd-vertical { background: #ff5a3d; }
+.bd-horizontal { border: 2px solid #9cb3ea; }
+.bd-unmarked { background: rgba(255,255,255,.16); }
+.bd-base {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--navy); color: #fff; padding: 10px 14px; border-radius: 0 0 6px 6px;
+  font: 600 13px var(--body);
+}
+.bd-base-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff5a3d; flex: none; }
+
+/* The stakes, cut to one line on navy. */
+.stakes-line { background: var(--navy); }
+.stakes-line .container { padding-top: 56px; padding-bottom: 58px; }
+.stakes-line-text { margin: 0; max-width: 30ch; font: 700 32px/1.25 var(--display); color: #fff; text-wrap: pretty; }
+.stakes-line-punch { margin: 14px 0 0; font: 800 32px/1.25 var(--display); color: #ff5a3d; }
+
+/* The ask, one line per point. */
+.ask-list li { padding-top: 12px; padding-bottom: 12px; color: var(--ink); }
+.ask .more { margin-top: 4px; }
+
+/* FAQ */
+.faq { background: #fff; border-top: 1px solid var(--line); }
+.faq .container { padding-top: 56px; padding-bottom: 60px; }
+.faq-inner { max-width: 760px; }
+.faq .section-title { margin-bottom: 24px; }
+.faq-list { border-top: 1px solid var(--line); margin-bottom: 28px; }
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-item > summary {
+  list-style: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 16px 0; font: 600 16px/1.4 var(--body); color: var(--ink);
+}
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::after { content: '+'; flex: none; font: 600 20px/1 var(--body); color: var(--accent-ink); }
+.faq-item[open] > summary::after { content: '\2212'; }
+.faq-item > summary:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.faq-item p { margin: 0 0 18px; max-width: 62ch; font: 400 15.5px/1.6 var(--body); color: var(--ink-2); }
+.faq-item a { color: var(--accent-ink); font-weight: 600; }
+
+/* Sticky "Add your signature" bar: phones and tablets only. */
+.sign-bar { display: none; }
+
+@media (max-width: 899.98px) {
+  .fp10-grid { grid-template-columns: 1fr; gap: 28px; }
+  .bd { max-width: 520px; }
+  /* The campaign mark is decoration; on a phone it only pushes the
+     content down, so it is left out below this width. */
+  .page-home .ask-logo { display: none; }
+
+  .sign-bar {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    min-height: 52px; padding: 0 16px env(safe-area-inset-bottom, 0px);
+    background: var(--accent-ink); color: #fff; text-decoration: none;
+    font: 700 15px var(--body);
+    box-shadow: 0 -4px 16px rgba(4, 21, 74, .18);
+    /* Hidden is also out of the tab order; visibility waits for the
+       slide to finish before switching. */
+    transform: translateY(100%); visibility: hidden;
+    transition: transform .25s ease, visibility 0s linear .25s;
+  }
+  .sign-bar.is-visible { transform: none; visibility: visible; transition: transform .25s ease, visibility 0s; }
+  .sign-bar:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+  /* Room under the footer, so the bar never covers its last line. */
+  .page-home .footer-grid { padding-bottom: 112px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sign-bar, .sign-bar.is-visible { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .section-title, .section-title-light { font-size: 28px; }
+  .nav-sign-m {
+    display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px;
+    margin-left: auto; margin-right: 8px; border-radius: 5px;
+    background: var(--accent-ink); color: #fff; text-decoration: none;
+    font: 600 14px var(--body);
+  }
+  .nav-sign-m:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .now-text { flex-direction: column; gap: 2px; }
+  .fp10 .container { padding-top: 44px; padding-bottom: 44px; }
+  .fp10-lead { font-size: 16.5px; }
+  .bd-pillars { grid-template-columns: 58px minmax(0, 1fr) 58px 58px; gap: 8px; padding: 10px 6px 0; }
+  .bd-pillar { min-height: 196px; padding: 8px 6px; }
+  /* The narrow pillars are too slim for their names across; set them
+     up the column instead, as lettering on a pillar would be. */
+  .bd-pillar:not(.bd-key) .bd-name {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    align-self: center; white-space: nowrap; overflow-wrap: normal;
+  }
+  .bd-key { padding: 8px; }
+  .bd-cell { height: 18px; }
+  .bd-cells-h .bd-cell { height: 14px; }
+  .bd-cells { gap: 4px; }
+  .stakes-line .container { padding-top: 40px; padding-bottom: 42px; }
+  .stakes-line-text, .stakes-line-punch { font-size: 24px; }
+  /* Stats two by two, as in the phone design. */
+  .stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .stat-card { min-width: 0; padding: 16px 14px; }
+  .stat-num { font-size: 34px; }
+  .stat-desc { font-size: 13px; margin: 10px 0 6px; }
+  .faq-item > summary { font-size: 15px; }
+}
+
+/* =================================================================
+   TWO-PAGE ROUND: PAGE 2 (/in-detail)
+   ================================================================= */
+
+/* Header: back to the overview, and signing one tap away. */
+.dh { background: #fff; border-bottom: 1px solid var(--line); }
+.dh-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+.dh-back {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px;
+  font: 600 15px var(--body); color: var(--ink); text-decoration: none;
+}
+.dh-back:hover { color: var(--accent-ink); }
+.dh-sign, .btn-field {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--accent-ink); color: #fff; text-decoration: none; border-radius: 6px;
+}
+.dh-sign { min-height: 40px; padding: 0 16px; font: 600 14px var(--body); white-space: nowrap; }
+.dh-back:focus-visible, .dh-sign:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+
+/* Intro */
+.di-intro .container { padding-top: 48px; padding-bottom: 32px; }
+.di-intro .section-eyebrow { margin-bottom: 12px; }
+.di-title { margin: 0 0 16px; font: 800 52px/1.05 var(--display); letter-spacing: -.01em; color: var(--ink); }
+.di-lead { margin: 0 0 22px; max-width: 56ch; font: 400 18px/1.55 var(--body); color: var(--ink-2); }
+.di-meta { display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap; }
+.di-updated { font: 400 13.5px var(--body); color: var(--ink-3); }
+.di-pdf {
+  padding: 10px 12px; border-radius: 6px; cursor: not-allowed;
+  font: 600 13px var(--body); color: var(--ink-3); background: #fff; border: 1px solid #c9d3e6;
+}
+
+/* Jump bar: sticks to the top, scrolls sideways on phones. */
+.jump { position: sticky; top: 0; z-index: 20; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.jump-inner { display: flex; gap: 8px; padding-top: 10px; padding-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
+.jump-inner::-webkit-scrollbar { display: none; }
+.jump a {
+  flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px;
+  border: 1px solid #c9d3e6; border-radius: 6px; white-space: nowrap;
+  font: 600 13.5px var(--body); color: var(--ink); text-decoration: none;
+}
+.jump a:hover { border-color: var(--ink); }
+.jump a:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.jump-key { font-weight: 700; color: var(--accent-ink); }
+/* html's scroll-padding-top (80px) already clears the sticky jump bar. */
+
+/* Sections */
+.di-sec { background: #fff; }
+.di-sec > .container { padding-top: 56px; padding-bottom: 60px; }
+.di-soft { background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.di-sec .section-title { margin-bottom: 22px; }
+.key-eyebrow {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  font: 700 12.5px var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--accent-ink);
+}
+.key { background: var(--accent-ink); color: #fff; letter-spacing: 0; padding: 2px 8px; border-radius: 3px; font-size: 13px; }
+.di-p { margin: 0 0 22px; max-width: 60ch; font: 400 16px/1.6 var(--body); color: var(--ink-2); }
+.di-ref { margin: 18px 0 0; max-width: 80ch; font: 400 13px/1.55 var(--body); color: var(--ink-3); }
+
+/* A section that follows another white one gets a rule between them. */
+.di-rule { border-top: 1px solid var(--line); }
+
+/* B. The timeline keeps its parked styles (.tl-*, .tg-*). */
+#b .tl-cta { margin-top: 22px; }
+
+/* C. The Pillar II map. */
+/* Header text stays at reading width; the map and legend use the full
+   container (see .mp-layout). */
+.mp-wrap { max-width: 880px; }
+.mp-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+.mp-band { margin: 0 0 18px; padding: 10px 14px; border-radius: 6px; background: var(--blue); font: 600 13.5px var(--body); color: #fff; }
+.mp-legend-box { margin: 0 0 24px; }
+.mp-legend-title { margin: 0 0 12px; font: 700 13px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+.mp-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mp-legend-item { display: flex; gap: 10px; align-items: flex-start; font: 400 14px/1.45 var(--body); color: var(--ink-2); }
+.mp-legend-item strong { color: var(--ink); }
+.mp-swatch { width: 18px; height: 18px; flex: none; margin-top: 1px; border-radius: 3px; }
+.mp-swatch.mp-vertical { background: var(--accent-ink); }
+.mp-swatch.mp-horizontal { background: #fff; border: 2px solid var(--blue); }
+.mp-swatch.mp-unmarked { background: #eef1f6; border: 1px solid #c9d3e6; }
+
+.mp { display: flex; flex-direction: column; gap: 8px; }
+.mp-heads, .mp-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.mp-heads, .mp-head-h { font: 700 11px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.mp-head-h { margin: 12px 0 0; }
+.mp-row-h { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.mp-also { margin: 2px 0 0; font: 400 13.5px/1.5 var(--body); color: var(--ink-2); }
+
+.mp-cell {
+  position: relative; display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 92px;
+  padding: 10px 26px 10px 10px; border-radius: 6px; cursor: pointer;
+  text-align: left; font-family: inherit;
+}
+.mp-row-h .mp-cell { min-height: 72px; }
+.mp-cell::after { content: '+'; position: absolute; right: 9px; top: 7px; font: 600 16px/1 var(--body); }
+.mp-cell[aria-expanded="true"]::after { content: '\2212'; }
+.mp-cell-row { font: 700 13px var(--body); }
+.mp-cell-name { font: 500 13px/1.3 var(--body); overflow-wrap: break-word; hyphens: auto; }
+.mp-cell-hint { font: 700 11px/1.3 var(--body); }
+.mp-cell.mp-unmarked { background: #eef1f6; border: 1px solid #c9d3e6; color: var(--ink-2); }
+.mp-cell.mp-horizontal { background: #fff; border: 2px solid var(--blue); color: var(--ink); }
+.mp-cell.mp-horizontal .mp-cell-hint { color: var(--blue); }
+.mp-cell.mp-vertical { background: var(--accent-ink); border: 2px solid var(--accent-ink); color: #fff; }
+.mp-cell.mp-vertical .mp-cell-name { font-weight: 600; }
+.mp-cell:hover { box-shadow: 0 0 0 3px rgba(0, 49, 152, .18); }
+.mp-cell[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--ink); }
+.mp-cell:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* The quote panel opens directly below its row. */
+.mp-panel { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border-radius: 6px; background: #fff; border: 2px solid var(--ink); }
+.mp-panel[hidden] { display: none; }
+.mp-panel-vertical { border-color: var(--accent-ink); }
+.mp-panel-horizontal { border-color: var(--blue); }
+.mp-panel-unmarked { border-color: #c9d3e6; }
+.mp-panel-head { margin: 0; font: 700 11px/1.45 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.mp-quote { margin: 0; }
+.mp-quote-text { margin: 0; font: 400 15px/1.55 var(--body); color: var(--ink); }
+.mp-quote-ref { margin-top: 4px; font: 400 12.5px var(--body); color: var(--ink-3); }
+.mp-empty { margin: 0; font: 400 14.5px/1.5 var(--body); color: var(--ink-2); }
+
+/* Bridge chips: our own example themes, between each pair. */
+.mp-bridges { list-style: none; margin: 0; padding: 2px 0 6px; display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; }
+.mp-chip { padding: 4px 10px; border-radius: 999px; background: var(--bg-blue); font: 500 12px var(--body); color: var(--ink); }
+.mp-chip-key { flex: none; }
+
+/* All quotes, window by window. */
+.aq { margin-top: 22px; border: 1px solid #c9d3e6; border-radius: 6px; background: #fff; }
+.aq > summary {
+  list-style: none; cursor: pointer; min-height: 48px; padding: 0 14px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  font: 600 14.5px var(--body); color: var(--ink);
+}
+.aq > summary::-webkit-details-marker { display: none; }
+.aq > summary::after { content: '+'; font: 600 18px/1 var(--body); color: var(--accent-ink); }
+.aq[open] > summary::after { content: '\2212'; }
+.aq > summary:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.aq-list { list-style: none; margin: 0; padding: 0 14px 6px; }
+.aq-item { display: flex; flex-direction: column; gap: 8px; padding: 14px 0; border-top: 1px solid var(--line); }
+.aq-head { display: flex; align-items: center; gap: 10px; margin: 0; font: 600 14.5px/1.35 var(--body); color: var(--ink); }
+.aq-head .mp-swatch { width: 14px; height: 14px; margin-top: 0; }
+.aq-state { margin: 0; font: 600 11px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+
+.btn-field { min-height: 48px; padding: 0 20px; margin-top: 22px; font: 700 15px var(--body); }
+.btn-field:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+/* D. Evidence */
+.ev { display: flex; flex-direction: column; gap: 12px; max-width: 880px; }
+.ev-quote { margin: 0; padding: 16px 18px; background: #fff; border-left: 3px solid var(--accent-ink); border-radius: 0 8px 8px 0; }
+.ev-quote-text { margin: 0; font: 700 18px/1.35 var(--display); color: var(--ink); }
+.ev-quote-ref { margin-top: 8px; font: 400 13px var(--body); color: var(--ink-3); }
+.ev-gap { margin: 10px 0 0; font: 400 15px/1.6 var(--body); color: var(--ink-2); }
+.ev-gap strong { color: var(--ink); }
+.ev-sources-head { margin: 14px 0 0; font: 700 15px var(--body); color: var(--ink); }
+.ev-sources { display: grid; gap: 4px; margin: 0; padding-left: 18px; font: 400 13.5px/1.55 var(--body); color: var(--ink-2); }
+
+/* Back to the form */
+.di-end { background: var(--navy); }
+.di-end .container { padding-top: 52px; padding-bottom: 56px; }
+.di-end-eyebrow { margin: 0 0 12px; font: 700 12.5px var(--body); letter-spacing: .16em; text-transform: uppercase; color: #ff8a75; }
+.di-end-title { margin: 0; font: 800 32px/1.15 var(--display); color: #fff; }
+.di-end .btn-field:focus-visible { outline-color: #fff; }
+
+@media (min-width: 900px) {
+  /* Map left at up to 880px, legend in a sticky column on the right. */
+  .mp-layout { grid-template-columns: minmax(0, 880px) minmax(220px, 300px); gap: 48px; justify-content: space-between; }
+  .mp-main { grid-column: 1; grid-row: 1; }
+  .mp-side { grid-column: 2; grid-row: 1; align-self: start; position: sticky; top: 92px; }
+  .mp-side .mp-legend-box { margin: 0; padding: 18px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px; }
+  .mp-side .mp-legend { gap: 14px; }
+  .mp-heads, .mp-row { gap: 12px; }
+  .mp-cell { min-height: 116px; padding: 14px 30px 14px 14px; }
+  .mp-row-h .mp-cell { min-height: 84px; }
+  .mp-cell-row { font-size: 14px; }
+  .mp-cell-name { font-size: 15px; }
+  .mp-cell-hint { font-size: 12.5px; }
+}
+@media (max-width: 899.98px) {
+  /* Four horizontal windows are too narrow side by side on a phone. */
+  .mp-row-h { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .di-intro .container { padding-top: 32px; padding-bottom: 22px; }
+  .di-title { font-size: 34px; }
+  .di-lead { font-size: 16px; }
+  .di-sec > .container { padding-top: 40px; padding-bottom: 44px; }
+  .dh-sign { padding: 0 12px; }
+  .btn-field { display: flex; width: 100%; }
+  .ev-quote-text { font-size: 16.5px; }
+  .di-end-title { font-size: 26px; }
 }

@@ -37,3 +37,23 @@
   for = "/assets/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# ---------------------------------------------------------------------
+# Routes. `publish = "."` serves the whole repo, so anything that is not
+# site content has to be shut off here.
+# ---------------------------------------------------------------------
+
+# Page 2. Netlify's pretty URLs would serve in-detail.html at /in-detail
+# anyway; this makes it explicit and independent of that setting.
+[[redirects]]
+  from = "/in-detail"
+  to = "/in-detail.html"
+  status = 200
+
+# docs/ holds the round's brief and design mockups: working files, not
+# site content. Forced, so the files are never served even though they exist.
+[[redirects]]
+  from = "/docs/*"
+  to = "/404.html"
+  status = 404
+  force = true
